@@ -80,4 +80,44 @@ class ContentDAO{
         return $ok;
     }
 
+    public function createContent($belongsToPageNr, $contentDescription, $content, $html_id){
+
+        $pageNummer = (int)$belongsToPageNr;
+        $contentDescription = "".$contentDescription;
+        $thisContent = "".$content;
+        $thisHtml_id = "".$html_id;
+
+        $ok = -1;
+        $sql = "INSERT INTO content (page, content, description, html_id)
+                VALUES (?,?,?,?)";
+        $preStmt = $this->dbConnect->prepare($sql);
+        $preStmt->bind_param("ssss", $pageNummer, $thisContent, $contentDescription, $thisHtml_id);
+        $preStmt->execute();
+        $ok = $preStmt->insert_id;
+        $preStmt->close();
+        unset($preStmt);
+
+        return $ok;
+    }
+
+    public function createContentByCopy(Content $content){
+
+        $pageNummer = (int)$content->getPageNummer();
+        $contentDescription = "".$content->getContentDescription();
+        $thisContent = "".$content->getContent();
+        $html_id = "".$content->getHtml_id();
+
+        $ok = -1;
+        $sql = "INSERT INTO content (page, content, description, html_id)
+                VALUES (?,?,?,?)";
+        $preStmt = $this->dbConnect->prepare($sql);
+        $preStmt->bind_param("ssss", $pageNummer, $thisContent, $contentDescription, $html_id);
+        $preStmt->execute();
+        $ok = $preStmt->insert_id;
+        $preStmt->close();
+        unset($preStmt);
+
+        return $ok;
+    }
+
 }
