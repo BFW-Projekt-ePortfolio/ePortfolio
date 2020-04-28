@@ -21,7 +21,7 @@
             if(!$preStmt = $this->dbConnect->prepare($sql)) {
                 echo "Fehler bei der SQL-Vorbereitung (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
             } else {
-                if(!$preStmt->bind_param("sssss", $firstname, $lastname, $displayname, $email, $passowrd)) {
+                if(!$preStmt->bind_param("sssss", $firstname, $lastname, $displayname, $email, $password)) {
                     echo "Fehler beim Binding (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
                 } else {
                     if(!$preStmt->execute()) {
@@ -53,8 +53,12 @@
             // ändert die Mail
         }
 
-        public function changeStatus($newStatus) {
+        public function changeStatus($id, $newStatus) {
             // ändert den Status (User, Guest, Admin)
+
+            $sql = "UPDATE user
+                        SET status = ?
+                        WHERE id = ?";
         }
     }
 ?>
