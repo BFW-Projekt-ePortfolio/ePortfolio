@@ -1,0 +1,59 @@
+/* Hier soll das default-theme rein, da standardmäßig geladen wird, wenn der User keines ausgewählt hat */
+body {
+    background-color: #eff1f2;
+    /* background-color: black; */
+    font-family: sans-serif;
+    font-size: 1rem;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+  }
+  
+  li {
+    float: left;
+  }
+  
+  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  li a:hover:not(.active) {
+    background-color: #111;
+  }
+  
+  .active {
+    background-color: #4c6470;
+  }
+
+#main {
+    background-color: #ccd2d6;
+    padding: 15px;
+}
+
+#header {
+    background-color: #ccd2d6;
+    padding: 30px;
+    text-align: center;
+    font-size: 4rem;
+}
+
+#description {
+    background-color: #f4f6f6;
+    padding: 10px;
+    margin-top: 8px;
+}
+
+#content {
+    background-color:#f4f6f6;
+    padding: 10px;
+    margin-top: 8px;
+}
