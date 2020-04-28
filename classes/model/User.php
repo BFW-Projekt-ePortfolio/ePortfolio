@@ -4,7 +4,7 @@
     class User {
 
         private $userId;
-        private $diplayname;
+        private $displayname;
         private $pages;
         private $status;
 
@@ -13,6 +13,18 @@
             $this->displayname = $displayname;
             $this->pages = $pages;
             $this->status = $status;
+        }
+
+        public function getId() {
+            return $this->userId;
+        }
+
+        public function getPages() {
+            return $this->pages;
+        }
+
+        public function getDisplayname() {
+            return $this->displayname;
         }
     }
 ?>

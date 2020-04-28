@@ -37,10 +37,6 @@
             return $id;
         }
 
-        public function createGuest($firstname, $lastname, $displayname, $email, $password) {
-            // erstellt neuen Gast
-        }
-
         public function changeDisplayname($oldDisplayname, $newDisplayname) {
             // ändert den Displayname eines Users;
         }
@@ -55,10 +51,84 @@
 
         public function changeStatus($id, $newStatus) {
             // ändert den Status (User, Guest, Admin)
+        }
 
-            $sql = "UPDATE user
-                        SET status = ?
-                        WHERE id = ?";
+        public function exist($email) {
+
+            $sql = "SELECT id
+                        FROM user
+                        WHERE email = ?";
+
+            $found = false;
+
+            if(!$preStmt = $this->dbConnect->prepare($sql)){
+                echo "Fehler bei SQL-Vorbereitung (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
+            }
+            else{
+                if(!$preStmt->bind_param("s", $email)){
+                    echo "Fehler beim Binding (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
+                }
+                else{
+                    if(!$preStmt->execute()){
+                        echo "Fehler beim Ausführen (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
+                    }
+                    else{
+                        $preStmt->store_result();
+                        if($preStmt->num_rows == 1){
+                            $found = true;
+                        }
+                    }
+                }
+            }
+            return $found;
+
+        }
+
+        public function authenfication($email, $password) {
+            
+            $user = null;
+
+            if($this->exist($email)) {
+
+                $sql = "SELECT id, displayname, status
+                            FROM user
+                            WHERE email = ?
+                            AND passwd = ?";
+
+                /* an dieser Stelle mit if prüfen, ob guest, user oder admin oder an anderer Stelle? */
+
+                if(!$preStmt = $this->dbConnect->prepare($sql)){
+                    echo "Fehler bei SQL-Vorbereitung (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
+                }
+                else{
+                    if(!$preStmt->bind_param("ss", $email, $password)){
+                        echo "Fehler beim Binding (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
+                    }
+                    else{
+                        if(!$preStmt->execute()){
+                            echo "Fehler beim Ausführen (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
+                        }
+                        else{
+                            if(!$preStmt->bind_result($id, $displayname, $status)){
+                                echo "Fehler beim Ergebnis-Binding (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
+                            }
+                            else{
+                                if($preStmt->fetch()){
+
+                                    /* $pageDAO = new PageDAO();
+                                    $pages[] = $pageDAO->getPages($id);
+                                    soll die Pages als Obkekt zuweisen */
+
+                                    $user = new User($id, $displayname, $pages, $status);
+                                }
+                                $preStmt->free_result();
+                            }
+                        }
+                    }
+                    $preStmt->close();
+                }
+            }
+            return $user;
         }
     }
 ?>
