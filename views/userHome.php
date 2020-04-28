@@ -31,5 +31,6 @@
                 Hier kommt der Content rein. Dateinamen aus der DB zu den jeweiligen Dateien im Ordner des User (Pfand evtl.: ./userId/pageId/file).
             </div>
         </div>
+        <footer>&copy; 2020 M. Mandler & D. Zielke</footer>
     </body>
 </html>
