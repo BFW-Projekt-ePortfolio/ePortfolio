@@ -12,37 +12,38 @@ class Content{
         $this->nummer = $nummer;
         $this->pageNummer = $pageNummer;
         $this->contentDescription = $contentDescription;
+        $this->content = $content;
         $this->html_id = $html_id;
     }
 
-    private function getNummer(){
+    public function getNummer(){
         return $this->nummer;
     }
-    private function setNummer($nummer){
+    public function setNummer($nummer){
         $this->nummer = $nummer;
     }
-    private function getPageNummer(){
+    public function getPageNummer(){
         return $this->pageNummer;
     }
-    private function setPageNummer($pageNummer){
+    public function setPageNummer($pageNummer){
         $this->pageNummer = $pageNummer;
     }
-    private function getContentDescription(){
+    public function getContentDescription(){
         return $this->contentDescription;
     }
-    private function setContentDescription($contentDescription){
+    public function setContentDescription($contentDescription){
         $this->contentDescription = $contentDescription;
     }
-    private function getContent(){
+    public function getContent(){
         return $this->content;
     }
-    private function setContent($content){
+    public function setContent($content){
         $this->content = $content;
     }
-    private function getHtml_id(){
+    public function getHtml_id(){
         return $this->html_id;
     }
-    private function setHtml_id($html_id){
+    public function setHtml_id($html_id){
         $this->html_id = $html_id;
     }
 }
