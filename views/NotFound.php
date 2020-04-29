@@ -12,7 +12,7 @@
         </div>
         <ul>
              <!-- Die Navigationsleiste, horizontal, evtl mit foreach aus dem pages-Array ein li-Element erzeugen? -->
-            <li><a class="active" href="#home">Home</a></li>
+            <li><a class="active" href="index.php?cmd=MainPage">Home</a></li>
             <?php 
                 // Wenn über Command ausgeführt muss das genommen werden
                 // foreach($this->pageList as $page) {

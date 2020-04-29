@@ -11,7 +11,9 @@
 
 			$template = new HtmlTemplateView($view);
 
-			//$template->assign('link', $link);
+			$style = "default";
+
+			$template->assign('style', $style);
 			$template->render( $request, $response);
 		}
 	}
