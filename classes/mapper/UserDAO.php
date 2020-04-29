@@ -84,51 +84,90 @@
 
         }
 
+        public function passwordCheck($email, $passwordLogin) {
+
+            $passed = false;
+
+            $hash = null;
+
+            $sql = "SELECT password
+                        FROM user
+                        WHERE email = ?";
+            
+            if(!$preStmt = $this->dbConnect->prepare($sql)){
+                echo "Fehler bei SQL-Vorbereitung (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
+            } else {
+                if(!$preStmt->bind_param("ss", $email, $passwordLogin)){
+                    echo "Fehler beim Binding (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
+                } else {
+                    if(!$preStmt->execute()){
+                        echo "Fehler beim Ausführen (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
+                    } else {
+                        if(!$preStmt->bind_result($password)){
+                            echo "Fehler beim Ergebnis-Binding (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
+                        } else {
+                            if($preStmt->fetch()) {
+                                $hash = $password;
+                            }
+                            $preStmt->free_result();
+                        }
+                    }
+                }
+                $preStmt->close();
+            }
+
+            if(password_verify($passwordLogin, $hash)) {
+                $passed = true;
+            }
+            return $passed;
+        }
+
         public function authenfication($email, $password) {
             
             $user = null;
 
             if($this->exist($email)) {
 
-                $sql = "SELECT id, displayname, status
-                            FROM user
-                            WHERE email = ?
-                            AND passwd = ?";
+                if($this-checkPassword($email, $password)) {
+                    
+                    $sql = "SELECT id, displayname, status
+                                FROM user
+                                WHERE email = ?
+                                AND passwd = ?";
 
-                /* an dieser Stelle mit if prüfen, ob guest, user oder admin oder an anderer Stelle? */
-
-                if(!$preStmt = $this->dbConnect->prepare($sql)){
-                    echo "Fehler bei SQL-Vorbereitung (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
-                }
-                else{
-                    if(!$preStmt->bind_param("ss", $email, $password)){
-                        echo "Fehler beim Binding (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
+                    if(!$preStmt = $this->dbConnect->prepare($sql)){
+                        echo "Fehler bei SQL-Vorbereitung (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
                     }
                     else{
-                        if(!$preStmt->execute()){
-                            echo "Fehler beim Ausführen (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
+                        if(!$preStmt->bind_param("ss", $email, $password)){
+                            echo "Fehler beim Binding (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
                         }
                         else{
-                            if(!$preStmt->bind_result($id, $displayname, $status)){
-                                echo "Fehler beim Ergebnis-Binding (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
+                            if(!$preStmt->execute()){
+                                echo "Fehler beim Ausführen (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
                             }
                             else{
-                                if($preStmt->fetch()){
-
-                                    $pageDAO = new PageDAO();
-
-                                    $pageList = $pageDAO->readPagesOfUserWithContent($id);
-
-                                    $user = new User($id, $displayname, $pageList, $status);
+                                if(!$preStmt->bind_result($id, $displayname, $status)){
+                                    echo "Fehler beim Ergebnis-Binding (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
                                 }
-                                $preStmt->free_result();
+                                else{
+                                    if($preStmt->fetch()){
+
+                                        $pageDAO = new PageDAO();
+
+                                        $pageList = $pageDAO->readPagesOfUserWithContent($id);
+
+                                        $user = new User($id, $displayname, $pageList, $status);
+                                    }
+                                    $preStmt->free_result();
+                                }
                             }
                         }
+                        $preStmt->close();
                     }
-                    $preStmt->close();
                 }
+                return $user;
             }
-            return $user;
         }
     }
 ?>

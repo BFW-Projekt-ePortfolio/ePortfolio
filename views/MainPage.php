@@ -20,9 +20,16 @@
                     E-Mail: <br><input type="text" name="email"><br>
                     Password: <br><input type="password" name="password"><br><br>
                     <input type="submit" name="submit" value="anmelden"><br>
+
+                    <?php
+                        if(isset($_POST['submit'])) {
+                            $this->email = $_POST['email'];
+                            $this->passwordLogin = $_POST['password'];
+                        }
+                    ?>
+
                 </form>
                 <br>
-                <a href="index.php?cmd=Registration">Registrieren Sie sich</a>
             </div>
         </main>
         <footer>&copy; 2020 M. Mandler & D. Zielke</footer>
