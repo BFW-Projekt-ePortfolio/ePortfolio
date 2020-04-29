@@ -34,16 +34,19 @@ class FrontController {
 	
 	public function loadCommand($cmdName){
 		//$class = $cmdName . "Command";
-		//$cmdName = rtrim($cmdName, DIRECTORY_SEPARATOR);
 		$class = $this->path . "\\" . $cmdName . "Command";
-		$file = $this->path . "/" . $cmdName . "Command.php";
+		$newPath = str_replace('\\', DIRECTORY_SEPARATOR, $this->path);
+		$file = $newPath . DIRECTORY_SEPARATOR . $cmdName . "Command.php";
 		
 		if (!file_exists($file)) {
 			return false;
+			// $command = new NotFoundCommand();
+		} else {
+			$command = new $class();
 		}
 		
 		//include_once $file;
-		$command = new $class();
+		// $command = new $class();
 		return $command;
 	}
 }
