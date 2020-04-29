@@ -15,8 +15,8 @@
             
             $id = -1;
             
-            $sql = "INSERT INTO user (firstname, lastname, displayname, email, passwd, status)
-                        VALUES (?,?,?,?,?, 'user')";
+            $sql = "INSERT INTO user (firstname, lastname, displayname, email, passwd, status, validation)
+                        VALUES (?,?,?,?,?, 'user', 0)";
             
             if(!$preStmt = $this->dbConnect->prepare($sql)) {
                 echo "Fehler bei der SQL-Vorbereitung (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
@@ -88,16 +88,14 @@
 
             $passed = false;
 
-            $hash = null;
-
-            $sql = "SELECT password
+            $sql = "SELECT passwd
                         FROM user
                         WHERE email = ?";
             
             if(!$preStmt = $this->dbConnect->prepare($sql)){
                 echo "Fehler bei SQL-Vorbereitung (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
             } else {
-                if(!$preStmt->bind_param("ss", $email, $passwordLogin)){
+                if(!$preStmt->bind_param("s", $email)){
                     echo "Fehler beim Binding (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
                 } else {
                     if(!$preStmt->execute()){

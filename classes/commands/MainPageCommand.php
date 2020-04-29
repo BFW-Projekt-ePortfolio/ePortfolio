@@ -27,17 +27,17 @@
 				$user = $userDAO->authentification($template->email, $template->passwordLogin);
 
 				if(!$user == null) {
-					$_SESSION['user'] = serialize($user);
+					// $_SESSION['user'] = serialize($user);
 
 					switch($user->getStatus()) {
 						case "user":
 							header('location: index.php?cmd=UserHome');
 							exit;
 						case "admin":
-							header('location: index.php?cmd=UserHome');
+							header('location: index.php?cmd=AdminHome');
 							exit;
 						case "guest":
-							header('location: index.php?cmd=UserHome');
+							header('location: index.php?cmd=GuestHome');
 							exit;
 					}
 				} else {
