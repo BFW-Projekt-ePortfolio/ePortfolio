@@ -18,6 +18,9 @@ class UserHomeCommand implements Command{
 
         $pageList = $pageDAO->readPagesOfUserWithContent($userId);
 
+        $style = "default"; // provisorisch
+
+        $template->assign('style', $style);
 		$template->assign('pageList', $pageList);
 		$template->render( $request, $response);
 	}
