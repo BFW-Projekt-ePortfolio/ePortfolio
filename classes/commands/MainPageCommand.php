@@ -1,17 +1,18 @@
 <?php
-namespace classes\commands;
+	namespace classes\commands;
 
-use classes\request\Request;
-use classes\response\Response;
-use classes\template\HtmlTemplateView;
+	use classes\request\Request;
+	use classes\response\Response;
+	use classes\template\HtmlTemplateView;
 
-class MainPageCommand implements Command{
-	public function execute(Request $request, Response $response){
-        $view = 'mainPage';
+	class MainPageCommand implements Command{
+		public function execute(Request $request, Response $response){
+			$view = 'MainPage';
 
-		$template = new HtmlTemplateView($view);
+			$template = new HtmlTemplateView($view);
 
-		//$template->assign('link', $link);
-		$template->render( $request, $response);
+			//$template->assign('link', $link);
+			$template->render( $request, $response);
+		}
 	}
-}
+?>

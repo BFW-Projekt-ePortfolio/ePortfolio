@@ -1,4 +1,5 @@
 <?php
+	session_start();
 	use classes\request\HttpRequest;
 	use classes\response\HttpResponse;
 	use classes\commands\FrontController;

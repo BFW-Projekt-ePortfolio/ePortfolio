@@ -4,8 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Document</title>
-        <?php $style = "default" ?> <!-- kann raus, wenn es mit dem Command ausgeführt wird-->
-        <link href="../css/<?= $style ?>.css" rel="stylesheet" type="text/css"> <!-- $style in $this->style ändern, wenn es mit dem Command ausgeführt wird-->
+        <link href="./css/<?= $this->style ?>.css" rel="stylesheet" type="text/css"> <!-- $style in $this->style ändern, wenn es mit dem Command ausgeführt wird-->
     </head>
     <body>
         <div id="header">
@@ -32,7 +31,7 @@
             </div>
 
             <div id="content">
-                Hier kommt der Content rein. Dateinamen aus der DB zu den jeweiligen Dateien im Ordner des User (Pfand evtl.: ./userId/pageId/file).
+                Hier kommt der Content rein. Dateinamen aus der DB zu den jeweiligen Dateien im Ordner des User (Pfad evtl.: ./userId/pageId/file).
             </div>
         </div>
         <footer>&copy; 2020 M. Mandler & D. Zielke</footer>
