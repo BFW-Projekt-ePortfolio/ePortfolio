@@ -22,8 +22,7 @@
                     <input type="submit" name="submit" value="anmelden"><br>
                 </form>
                 <br>
-                <br>
-                Wird noch aufgewertet.
+                <a href="index.php?cmd=Registration">Registrieren Sie sich</a>
             </div>
         </main>
         <footer>&copy; 2020 M. Mandler & D. Zielke</footer>
