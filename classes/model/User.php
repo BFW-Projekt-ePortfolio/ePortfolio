@@ -26,5 +26,9 @@
         public function getDisplayname() {
             return $this->displayname;
         }
+
+        public function getStatus() {
+            return $this->status;
+        }
     }
 ?>

@@ -115,11 +115,11 @@
                             else{
                                 if($preStmt->fetch()){
 
-                                    /* $pageDAO = new PageDAO();
-                                    $pages[] = $pageDAO->getPages($id);
-                                    soll die Pages als Obkekt zuweisen */
+                                    $pageDAO = new PageDAO();
 
-                                    $user = new User($id, $displayname, $pages, $status);
+                                    $pageList = $pageDAO->readPagesOfUserWithContent($id);
+
+                                    $user = new User($id, $displayname, $pageList, $status);
                                 }
                                 $preStmt->free_result();
                             }

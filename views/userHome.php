@@ -13,9 +13,11 @@
         <ul>
              <!-- Die Navigationsleiste, horizontal, evtl mit foreach aus dem pages-Array ein li-Element erzeugen? -->
             <li><a class="active" href="#home">Home</a></li>
-            <li><a href="#news">News</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li><a href="#about">About</a></li>
+            <?php 
+                foreach($this->pageList as $page) {
+                    echo "<li><a></a></li>"; // Link zur jeweiligen Page?
+                }
+            ?>
         </ul>
         <div id="main">
             <div id="description">
