@@ -33,7 +33,7 @@
             }
 
             $preStmt->free_result();
-            $preStmt->close()
+            $preStmt->close();
             return $id;
         }
 
@@ -122,13 +122,13 @@
             return $passed;
         }
 
-        public function authenfication($email, $password) {
+        public function authentification($email, $password) {
             
             $user = null;
 
             if($this->exist($email)) {
 
-                if($this-checkPassword($email, $password)) {
+                if($this->passwordCheck($email, $password)) {
                     
                     $sql = "SELECT id, displayname, status
                                 FROM user
@@ -137,20 +137,16 @@
 
                     if(!$preStmt = $this->dbConnect->prepare($sql)){
                         echo "Fehler bei SQL-Vorbereitung (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
-                    }
-                    else{
+                    } else {
                         if(!$preStmt->bind_param("ss", $email, $password)){
                             echo "Fehler beim Binding (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
-                        }
-                        else{
+                        } else {
                             if(!$preStmt->execute()){
                                 echo "Fehler beim Ausführen (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
-                            }
-                            else{
+                            } else {
                                 if(!$preStmt->bind_result($id, $displayname, $status)){
                                     echo "Fehler beim Ergebnis-Binding (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
-                                }
-                                else{
+                                } else {
                                     if($preStmt->fetch()){
 
                                         $pageDAO = new PageDAO();

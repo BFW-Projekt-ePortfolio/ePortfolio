@@ -32,14 +32,17 @@
 					switch($user->getStatus()) {
 						case "user":
 							header('location: index.php?cmd=UserHome');
-							break;
+							exit;
 						case "admin":
 							header('location: index.php?cmd=UserHome');
-							break;
+							exit;
 						case "guest":
 							header('location: index.php?cmd=UserHome');
-							break;
+							exit;
 					}
+				} else {
+					header('location: index.php?cmd=NotFound');
+					exit;
 				}
 			}
 		}
