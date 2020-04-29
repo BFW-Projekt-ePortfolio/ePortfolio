@@ -8,15 +8,15 @@ use classes\template\HtmlTemplateView;
 
 class UserHomeCommand implements Command{
 	public function execute(Request $request, Response $response){
-        $view = 'UserHome';
+        $view = 'userHome';
 
-        $user = $_SESSION['user'];
+        $userId = $_SESSION['userId'];
 
         $template = new HtmlTemplateView($view);
         
         $pageDAO = new PageDAO();
 
-        $pageList = $pageDAO->readPagesOfUserWithContent($user->getId());
+        $pageList = $pageDAO->readPagesOfUserWithContent($userId);
 
 		$template->assign('pageList', $pageList);
 		$template->render( $request, $response);
