@@ -39,8 +39,8 @@ class FrontController {
 		$file = $newPath . DIRECTORY_SEPARATOR . $cmdName . "Command.php";
 		
 		if (!file_exists($file)) {
-			return false;
-			// $command = new NotFoundCommand();
+			// return false;
+			$command = new NotFoundCommand();
 		} else {
 			$command = new $class();
 		}
