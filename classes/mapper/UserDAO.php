@@ -126,11 +126,11 @@
 
             if($this->exist($email)) {
                 if($this->passwordCheck($email, $password)) {
-                    $sql = "SELECT id, displayname, status
-                                FROM user
-                                WHERE email = ?";
-                              //AND passwd = ?"; -edited out this part- in der Datenbank liegt ja das verschlüsselte PW - dass ist niemal gleich dem unverschlüsseltem $password hier. und die überprüfung hast du ja eh schon in der if abfrage davor gemacht.
-
+                    $sql = "SELECT user.*
+                            FROM user
+                            WHERE email = ?";
+                          //AND passwd = ?"; -edited out this part- in der Datenbank liegt ja das verschlüsselte PW - dass ist niemal gleich dem unverschlüsseltem $password hier. und die überprüfung hast du ja eh schon in der if abfrage davor gemacht.
+                            // hab beu Select auch gleich einfach alles genommen, damit wir den user komplett initialisieren- um ihn dann in die Session zu ballern.
                     if(!$preStmt = $this->dbConnect->prepare($sql)){
                         echo "Fehler bei SQL-Vorbereitung (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
                     } else {
@@ -141,7 +141,7 @@
                                 echo "Fehler beim Ausführen (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
                             } else {
                                 $preStmt->store_result(); // added wegen zwischeinizialisierung von $pagelist
-                                if(!$preStmt->bind_result($id, $displayname, $status)){
+                                if(!$preStmt->bind_result($id, $firstname, $lastname, $email, $passwd, $validation, $displayname, $status)){
                                     echo "Fehler beim Ergebnis-Binding (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
                                 } else {
                                     if($preStmt->fetch()){
@@ -149,7 +149,7 @@
                                         $pageDAO = new PageDAO();
                                         $pageList = $pageDAO->readPagesOfUserWithContent($id);
 
-                                        $user = new User($id, "", "", "", "", 0, $displayname, $status, $pageList);
+                                        $user = new User($id, $firstname, $lastname, $email, $passwd, $validation, $displayname, $status, $pageList);
                                     }
                                     $preStmt->free_result();
                                 }
