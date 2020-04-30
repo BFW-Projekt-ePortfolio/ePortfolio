@@ -27,15 +27,20 @@
                     E-Mail:<br><input type="text" name="email"><br>
                     Passwort:<br><input type="password" name="password"><br>
                     Passwort wiederholen:<br><input type="password" name="pwRepeat"><br>
-                    <input type="submit" name="submit" value="anlegen">\
+                    <input type="submit" name="submit" value="anlegen">
 
                     <?php
+                        // Prüft, ob submit betätigt und, ob in den Felder was eingetragen wurde und danach, ob die PW übereinstimmen
                         if(isset($_POST['submit'])) {
-                            if($_POST['password'] === $_POST['pwRepeat']) {
-                                $this->password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-                                $this->firstname = $_POST['firstname'];
-                                $this->lastname = $_POST['lastname'];
-                                $this->email = $_POST['email'];
+                            if($_POST['firstname'] == "" || $_POST['lastname'] == "" || $_POST['email'] == "" || $_POST['password'] == "") {
+                                echo "geht so nich!";
+                            } else {
+                                if($_POST['password'] === $_POST['pwRepeat']) {
+                                    $this->password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+                                    $this->firstname = $_POST['firstname'];
+                                    $this->lastname = $_POST['lastname'];
+                                    $this->email = $_POST['email'];
+                                }
                             }
                         }
                     ?>

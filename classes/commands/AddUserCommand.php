@@ -14,34 +14,30 @@
                 exit;
             }
 
-            $password = "";
-            $email = "";
-            $firstname = "";
-            $lastname = "";
-
-            if($request->issetParameter('email') && $request->issetParameter('password') && $request->issetParameter('firstname') && $request->issetParameter('lastname')) {
-                $password = $request->issetParameter('password');
-                $email = $request->issetParameter('email');
-                $firstname = $request->issetParameter('firstname');
-                $lastname = $request->issetParameter('lastname');
-
-                $userDAO = new UserDAO();
-                $displayname = $template->firstname . " " . $template->lastname;
-                $id = $userDAO->createUser($template->firstname, $template->lastname, $displayname, $template->email, $template->password);
-                mkdir($id); // ich musste vorher mit chown den Eigentümer ändern. Sonst gibt es Probleme mit den Berechtigungen. mit chmod ist mir zu unsicher, da sonst jeder lesen und schreiben kann usw.
-
-                header('location: index.php?cmd=AdminHome'); // kehrt zurück zum Home Bildschirm, wenn User angelegt ist
-                exit;                                        // Muss noch nach einer besseren Lösung suchen und diese imlementieren
-            }
-
-            // Hier fehlt noch ein Else falls das Formular nicht vollständig ausgefüllt wurde.
-
             $view = 'AddUser';
 
             $template = new HtmlTemplateView($view);
             $style = "default"; // provisorisch
             $template->assign('style', $style);
             $template->render( $request, $response);
+
+            if(isset($template->email) && isset($template->password) && isset($template->firstname) && isset($template->lastname)) {
+                $password = $template->password;
+                $email = $template->email;
+                $firstname = $template->firstname;
+                $lastname = $template->lastname;
+
+                $userDAO = new UserDAO();
+                $displayname = $template->firstname . " " . $template->lastname;
+                $id = $userDAO->createUser($firstname, $lastname, $displayname, $email, $password);
+                
+                // es muss für die betreffenden Ordner chown ausgeführt und auf den User des Servers übertragen werden (zB daemon, www-data usw.)
+                // Es muss auch ein geeigneterer Pfade gefunden werden. Die index.php befindet sich bei mir in /opt/lampp/htdocs/ePortfolio
+                mkdir('/opt/lampp/ePortfolio/users/' . $id); 
+
+                header('location: index.php?cmd=AdminHome');
+                exit;
+            }
         }
     }
 ?>
