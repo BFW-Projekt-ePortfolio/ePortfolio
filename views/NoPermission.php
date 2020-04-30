@@ -12,19 +12,24 @@
         </div>
         <ul>
              <!-- Die Navigationsleiste, horizontal, evtl mit foreach aus dem pages-Array ein li-Element erzeugen? -->
-            <li><a class="active" href="index.php?cmd=AdminHome">Home</a></li>
-            <li><a href="index.php?cmd=AddUser">User anlegen</a></li>
-            <li><a href="index.php?cmd=RemoveUser">User löschen</a></li>
-            <li><a href="index.php?cmd=RemoveGuest">Gäste löschen</a></li>
-            <li><a href="index.php/cmd=AddAdmin">Admin anlegen</a></li>
-            <li><a href="index.php?cmd=Logout">Logout</a></li>
+            <li><a class="active" href="index.php?cmd=MainPage">Home</a></li>
+            <?php 
+                // Wenn über Command ausgeführt muss das genommen werden
+                // foreach($this->pageList as $page) {
+                //     echo "<li><a></a></li>"; // Link zur jeweiligen Page?
+                // }
+            ?>
         </ul>
         <div id="main">
             <div id="description">
-                Adminbereich.
+                Sie haben für diese Aktion keine Berechtigung!<br>
+                <br>
+                <br>
+                <br>
             </div>
 
             <div id="content">
+                Kann man leider nichts machen.
             </div>
         </div>
         <footer>&copy; 2020 M. Mandler & D. Zielke</footer>
