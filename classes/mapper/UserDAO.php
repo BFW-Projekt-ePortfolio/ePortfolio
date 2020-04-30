@@ -334,6 +334,60 @@
             
             return $userList;
         }
+//
+        public function deleteGuest($guestId){
+            $guest_id = "".$guestId;
+            $pageDAO = new PageDAO;
+            $pageDAO->deleteAllPermissionsOfGuest($guest_id);
+
+            $ok = 0;
+            $sql = "DELETE FROM user
+                    WHERE user.id = ?";
+            $preStmt = $this->dbConnect->prepare($sql);
+            $preStmt->bind_param("s", $guest_id);
+            $preStmt->execute();
+            $ok = $this->dbConnect->affected_rows;
+            $preStmt->free_result();
+            $preStmt->close();
+    
+            return $ok;
+
+        }
+
+        public function deleteUser($userId){
+            $user_id = "".$userId;
+            $pageDAO = new PageDAO;
+            // -liste von seinen Gästen holen und alle löschen inklusive derer Berechtigungen-
+            $myGuestList = $this->readGuestListOfUser($user_id);
+            foreach($myGuestList as $guest){
+                $guest_id = $guest->getId();
+
+                $pageDAO->deleteAllPermissionsOfGuest($guest_id);
+    
+                $sql = "DELETE FROM user
+                        WHERE user.id = ?";
+                $preStmt = $this->dbConnect->prepare($sql);
+                $preStmt->bind_param("s", $guest_id);
+                $preStmt->execute();
+                $preStmt->free_result();
+                $preStmt->close();
+            }
+            // dann die eigenen Permissions löschen.
+            $pageDAO->deleteAllPermissionsOfGuest($user_id);
+            // dann die Pages des Users alle löschen.
+            $pageDAO->deleteAllPagesOfUser($userId);
+            // und dann den user löschen
+            $ok = 0;
+            $sql = "DELETE FROM user
+                    WHERE user.id = ?";
+            $preStmt = $this->dbConnect->prepare($sql);
+            $preStmt->bind_param("s", $user_id);
+            $preStmt->execute();
+            $ok = $this->dbConnect->affected_rows;
+            $preStmt->free_result();
+            $preStmt->close();         
+            return $ok;
+        }
 
     }
 ?>
