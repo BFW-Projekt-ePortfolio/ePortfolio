@@ -8,6 +8,9 @@
 
     class AddUserCommand implements Command{
         public function execute(Request $request, Response $response) {
+
+            // ich werde heute noch den Command hier anpassen damit nur Admins hierauf zugreifen können. Da diente nur zu Testzwecken, ob auch ein Ordner angelegt wird. klappt soweit.
+
             $view = 'AddUser';
 
             $user = unserialize($_SESSION['user']);
@@ -29,7 +32,9 @@
 
                 $displayname = $template->firstname . " " . $template->lastname;
 
-                $userDAO->createUser($template->firstname, $template->lastname, $displayname, $template->email, $template->password);
+                $id = $userDAO->createUser($template->firstname, $template->lastname, $displayname, $template->email, $template->password);
+
+                mkdir($id); // ich musste vorher mit chown den Eigentümer ändern. Sonst gibt es Probleme mit den Berechtigungen. mit chmod ist mir zu unsicher, da sonst jeder lesen und schreiben kann usw.
             }
         }
     }
