@@ -120,4 +120,35 @@ class ContentDAO{
         return $ok;
     }
 
+    public function deleteContent($contentId){
+        $content_id = "".$contentId;
+        $ok = 0;
+        $sql = "DELETE FROM content
+                WHERE content.id = ?";
+        $preStmt = $this->dbConnect->prepare($sql);
+        $preStmt->bind_param("s", $content_id);
+        $preStmt->execute();
+        $ok = $this->dbConnect->affected_rows;
+        $preStmt->free_result();
+        $preStmt->close();
+        
+        return $ok;
+    }
+
+    public function deleteAllContentOfPage($pageId){
+        $page_id = "".$pageId;
+
+        $ok = 0;
+        $sql = "DELETE FROM content
+                WHERE content.page = ?";
+        $preStmt = $this->dbConnect->prepare($sql);
+        $preStmt->bind_param("s", $page_id);
+        $preStmt->execute();
+        $ok = $this->dbConnect->affected_rows;
+        $preStmt->free_result();
+        $preStmt->close();
+        
+        return $ok;
+    }
+
 }

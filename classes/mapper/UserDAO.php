@@ -359,6 +359,7 @@
             $pageDAO = new PageDAO;
             // -liste von seinen Gästen holen und alle löschen inklusive derer Berechtigungen-
             $myGuestList = $this->readGuestListOfUser($user_id);
+            $myPages = $pageDAO->readPagesOfUser($user_id);
             foreach($myGuestList as $guest){
                 $guest_id = $guest->getId();
 
@@ -375,7 +376,10 @@
             // dann die eigenen Permissions löschen.
             $pageDAO->deleteAllPermissionsOfGuest($user_id);
             // dann die Pages des Users alle löschen.
-            $pageDAO->deleteAllPagesOfUser($userId);
+            // hier muss ich leider ein array der am anfang der ganzen löschorgie angelegten seiten übergeben
+            // denn zu diesem Zeitpunkt funktionieren die readfunktionen nicht, weil schon rumgelöscht.
+            // daher diese blöde funktion eine zeile weiter.
+            $pageDAO->deleteAllPagesGivenAllPagesOfUser($myPages);
             // und dann den user löschen
             $ok = 0;
             $sql = "DELETE FROM user

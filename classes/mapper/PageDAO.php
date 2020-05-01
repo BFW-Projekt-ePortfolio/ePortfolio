@@ -175,6 +175,10 @@ class PageDAO{
 
     public function deletePage($pageId){
         $page_id = "".$pageId;
+        // Content muss mitgelöscht werden
+        $contentDao = new ContentDao;
+        $contentDao->deleteAllContentOfPage($page_id);
+        // Jetzt wird die Seite gelöscht
         $ok = 0;
         $sql = "DELETE FROM page
                 WHERE page.id = ?";
@@ -185,11 +189,21 @@ class PageDAO{
         $preStmt->free_result();
         $preStmt->close();
 
+        
         return $ok;
     }
 
     public function deleteAllPagesOfUser($userId){
         $user_id = "".$userId;
+        // der Content muss erst gelöscht werden.
+        $contentDao = new ContentDao;
+        $myPages = $this->readPagesOfUser($user_id);
+        
+        foreach($myPages as $page){
+            $page_id = $page->getNummer();
+            $contentDao->deleteAllContentOfPage($page_id);
+        }
+        // jetzt die Seiten
         $ok = 0;
         $sql = "DELETE FROM page
                 WHERE page.owner = ?";
@@ -201,6 +215,26 @@ class PageDAO{
         $preStmt->close();
 
         return $ok;
+    }
+
+    public function deleteAllPagesGivenAllPagesOfUser($pageList){
+        // der Content muss erst gelöscht werden.
+        $contentDao = new ContentDao;
+        
+        foreach($pageList as $page){
+            $page_id = $page->getNummer();
+            $contentDao->deleteAllContentOfPage($page_id);
+
+            // jetzt die Seiten
+            $sql = "DELETE FROM page
+                    WHERE page.id = ?";
+            $preStmt = $this->dbConnect->prepare($sql);
+            $preStmt->bind_param("s", $page_id);
+            $preStmt->execute();
+            $ok = $this->dbConnect->affected_rows;
+            $preStmt->free_result();
+            $preStmt->close();
+        }
     }
 
 
