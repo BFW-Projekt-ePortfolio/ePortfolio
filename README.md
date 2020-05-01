@@ -20,5 +20,9 @@ deleteAllPagesOfUser($userId)
 
 ///////// UserDAO
 deleteGuest($guestId) mit all seinen permissions
-deleteUser($userId) mit allen Gästen, permissions und pages
+deleteUser($userId) mit allen Gästen, permissions und pages und Contents
+
+//////// ContentDAO
+deleteContent($contentId)
+deleteAllContentOfPage($pageId)
 -------------------------------
