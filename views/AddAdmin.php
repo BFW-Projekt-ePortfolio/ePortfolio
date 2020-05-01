@@ -21,7 +21,7 @@
         </ul>
         <div id="main">
             <div id="description">
-                Neuen Admin anlegen.<br><br>
+                Neuen Admin anlegen. <?= $this->error ?> <br><br>
                 <form method="POST" action="#">
                     Vorname:<br><input type="text" name="firstname"><br>
                     Nachname:<br><input type="text" name="lastname"><br>
@@ -30,24 +30,6 @@
                     Passwort:<br><input type="password" name="password"><br>
                     Passwort wiederholen:<br><input type="password" name="pwRepeat"><br>
                     <input type="submit" name="submit" value="anlegen">
-
-                    <?php
-                        // Prüft, ob submit betätigt und, ob in den Felder was eingetragen wurde und danach, ob die PW übereinstimmen
-                        if(isset($_POST['submit'])) {
-                            if($_POST['firstname'] == "" || $_POST['lastname'] == "" || $_POST['email'] == "" || $_POST['password'] == "" || $_POST['displayname'] == "") {
-                                echo "geht so nich!";
-                            } else {
-                                if($_POST['password'] === $_POST['pwRepeat']) {
-                                    $this->password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-                                    $this->firstname = $_POST['firstname'];
-                                    $this->lastname = $_POST['lastname'];
-                                    $this->email = $_POST['email'];
-                                    $this->displayname = $_POST['displayname'];
-                                }
-                            }
-                        }
-                    ?>
-
                 </form>
             </div>
 
