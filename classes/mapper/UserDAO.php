@@ -3,6 +3,8 @@
 
     use classes\model\User;
 
+    include_once('./conf/dirs.inc');
+
     class UserDAO {
 
         private $dbConnect;

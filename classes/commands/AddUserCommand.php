@@ -31,9 +31,10 @@
                 $displayname = $template->firstname . " " . $template->lastname;
                 $id = $userDAO->createUser($firstname, $lastname, $displayname, $email, $password);
                 
-                // es muss für die betreffenden Ordner chown ausgeführt und auf den User des Servers übertragen werden (zB daemon, www-data usw.)
-                // Es muss auch ein geeigneterer Pfade gefunden werden. Die index.php befindet sich bei mir in /opt/lampp/htdocs/ePortfolio
-                mkdir('/opt/lampp/ePortfolio/users/' . $id); 
+                // Die Konstante wird in conf/dirs.inc definiert und über die UserDAO geladen. Bin mir noch nicht sicher, ob das so passt.
+                // Die Berechtigungen für die einzelnen Ordner und Dateien im gesamten Projekt muss ich noch anpassen, habe mich etwas eingelesen
+                // und muss das noch testen.
+                mkdir(USER_DIR . $id);
 
                 header('location: index.php?cmd=AdminHome');
                 exit;
