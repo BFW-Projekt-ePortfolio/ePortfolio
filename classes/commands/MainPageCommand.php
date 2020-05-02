@@ -20,7 +20,6 @@
 				// destroy the session
 				session_destroy();
 			}
-			$view = 'MainPage';
 			// prüfen ob das Formular ausgefüllt wurde:
 			$password = "";
 			$email = "";
@@ -64,26 +63,37 @@
 				else{
 					// Sie haben tatsächlich mehrere freigaben mit dem selben PW bekommen
 					// herzlichen Glückwunsch und willkommen in der seltensten if Bedingung!!!
-					echo "test";
+					$view = "ChoosePortfolio";
+					$style = "default";
+					$template = new HtmlTemplateView($view);
+					$template->assign('style', $style);
+					$template->assign('Guestemail', $email);
+					$template->assign('users', $user); // He has permissions to see all portfolios in $user[]
+					$template->render( $request, $response);
 				}
+			
+			}
+			else{	// Die Anmeldung schlug fehl, oder die Seite wurde neu aufgerufen:
+
+				if ($password != "" || $email != ""){
+					// Du hast ungültige Daten eingegeben - vertippt...
+				}
+	
+	
+				// else {
+				// 		header('location: index.php?cmd=NotFound');
+				// 		exit;
+				// }
+	
+				$view = 'MainPage';
+				$template = new HtmlTemplateView($view);
+				$style = "default";
+				$template->assign('style', $style);
+				$template->render( $request, $response);
+
 			}
 
-			if ($password != "" || $email != ""){
-				// Du hast ungültige Daten eingegeben - vertippt...
-			}
 
-
-			// else {
-			// 		header('location: index.php?cmd=NotFound');
-			// 		exit;
-			// }
-
-
-			$template = new HtmlTemplateView($view);
-
-			$style = "default";
-			$template->assign('style', $style);
-			$template->render( $request, $response);
 		}
 	}
 ?>
