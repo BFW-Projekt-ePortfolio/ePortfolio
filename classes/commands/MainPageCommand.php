@@ -68,6 +68,12 @@
 					$template = new HtmlTemplateView($view);
 					$template->assign('style', $style);
 					$template->assign('Guestemail', $email);
+
+					$ownerArray = array();
+					foreach($user as $guest){
+						$ownerArray[] = $userDAO->readUserById($guest->getPages()[0]->getOwner());
+					}
+					$template->assign('ownerArray', $ownerArray); // These are the Owners of the different portfolios he has permission to. 
 					$template->assign('users', $user); // He has permissions to see all portfolios in $user[]
 					$template->render( $request, $response);
 				}
