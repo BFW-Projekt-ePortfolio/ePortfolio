@@ -5,6 +5,7 @@
 	use classes\response\Response;
 	use classes\template\HtmlTemplateView;
 	use classes\mapper\UserDAO;
+	use classes\mapper\ContentDAO;
 	use classes\model\User;
 
 	class MainPageCommand implements Command{
@@ -19,10 +20,11 @@
 				// destroy the session
 				session_destroy();
 			}
+			$view = 'MainPage';
 			// prüfen ob das Formular ausgefüllt wurde:
 			$password = "";
 			$email = "";
-			$user = null;
+			$user = array();
 			if ($request->issetParameter("password") && $request->issetParameter("email")){
 				$password = $request->getParameter("password");
 				$email = $request->getParameter("email");
@@ -32,31 +34,37 @@
 				$userDAO = new UserDAO();
 				$user = $userDAO->authentification($email, $password);
 			}
-
-			if(!$user == null) {
+			
+			if(Count($user) != 0) {
 				// Userdaten erfolgreich geladen: also Session starten und die Daten da reinballern.
-
 				// $_SESSION['user'] = serialize($user);
-
-				switch($user->getStatus()) {
-					case "user":
-						session_start();
-						$_SESSION["user"] = serialize($user);
-						header('location: index.php?cmd=UserHome');
-						exit;
-					break;
-					case "admin":
-						session_start();
-						$_SESSION["admin"] = serialize($user);
-						header('location: index.php?cmd=AdminHome');
-						exit;
-					break;
-					case "guest":
-						session_start();
-						$_SESSION["guest"] = serialize($user);
-						header('location: index.php?cmd=GuestHome');
-						exit;
-					break;
+				if (Count($user) == 1){
+				
+					switch($user[0]->getStatus()) {
+						case "user":
+							session_start();
+							$_SESSION["user"] = serialize($user[0]);
+							header('location: index.php?cmd=UserHome');
+							exit;
+						break;
+						case "admin":
+							session_start();
+							$_SESSION["admin"] = serialize($user[0]);
+							header('location: index.php?cmd=AdminHome');
+							exit;
+						break;
+						case "guest":
+							session_start();
+							$_SESSION["guest"] = serialize($user[0]);
+							header('location: index.php?cmd=GuestHome');
+							exit;
+						break;
+					}
+				}
+				else{
+					// Sie haben tatsächlich mehrere freigaben mit dem selben PW bekommen
+					// herzlichen Glückwunsch und willkommen in der seltensten if Bedingung!!!
+					echo "test";
 				}
 			}
 
@@ -64,12 +72,13 @@
 				// Du hast ungültige Daten eingegeben - vertippt...
 			}
 
+
 			// else {
 			// 		header('location: index.php?cmd=NotFound');
 			// 		exit;
 			// }
 
-			$view = 'MainPage';
+
 			$template = new HtmlTemplateView($view);
 
 			$style = "default";
