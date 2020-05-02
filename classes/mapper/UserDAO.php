@@ -223,6 +223,32 @@
             return $user;
         }
 
+        public function readUserById($userId){
+            $uid = "".$userId;
+            $sql = "SELECT user.* 
+                    FROM user
+                    WHERE user.id = ?";
+            $preStmt = $this->dbConnect->prepare($sql);
+            $preStmt->bind_param("s", $uid);
+            $preStmt->execute();
+            $preStmt->store_result();
+            $preStmt->bind_result($id, $firstname, $lastname, $email, $passwd, $validation, $displayname, $status);
+            
+            $error = 0;
+            while($preStmt->fetch()){
+                $user = new User($id, $firstname, $lastname, $email, $passwd, $validation, $displayname, $status);
+                $error++;
+            }
+            
+            $preStmt->free_result();
+            $preStmt->close();
+            
+            if($error != 1){
+                return false;
+            }
+            return $user;
+        }
+
         public function readUserWithPages($userId){
             $uid = "".$userId;
             $sql = "SELECT user.* 
