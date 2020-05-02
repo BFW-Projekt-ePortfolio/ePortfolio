@@ -24,7 +24,7 @@
                 
                 $userDAO = new UserDAO();
 
-                if(!$userDAO->exist($$request->getParameter("email")) {
+                if(!$userDAO->exist($request->getParameter("email"))) {
                     if($request->getParameter("password") === $request->getParameter("pwRepeat")) {
                         $password = password_hash($request->getParameter("password"), PASSWORD_DEFAULT);
                         $email = $request->getParameter("email");
