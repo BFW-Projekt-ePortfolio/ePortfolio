@@ -3,8 +3,6 @@
 
     use classes\model\User;
 
-    include_once('./conf/dirs.inc');
-
     class UserDAO {
 
         private $dbConnect;
@@ -102,7 +100,7 @@
                     }
                     else{
                         $preStmt->store_result();
-                        if($preStmt->num_rows == 1){
+                        if($preStmt->num_rows >= 1){
                             $found = true;
                         }
                     }
@@ -114,9 +112,11 @@
 
         public function passwordCheck($email, $passwordLogin) {
 
-            $passed = false;
+            $hashes = array(); // changed on 02.05 hab den Fall einbezogen, dass ein Gast mehrere Freigaben hat.
+            $user_ids = array();
+            $verifyedUser_ids = array();
 
-            $sql = "SELECT passwd
+            $sql = "SELECT passwd, id
                         FROM user
                         WHERE email = ?";
             
@@ -129,11 +129,12 @@
                     if(!$preStmt->execute()){
                         echo "Fehler beim Ausführen (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
                     } else {
-                        if(!$preStmt->bind_result($password)){
+                        if(!$preStmt->bind_result($password, $user_id)){
                             echo "Fehler beim Ergebnis-Binding (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
                         } else {
-                            if($preStmt->fetch()) {
-                                $hash = $password;
+                            while($preStmt->fetch()){
+                                $hashes[] = $password;
+                                $user_ids[] = $user_id;
                             }
                             $preStmt->free_result();
                         }
@@ -141,28 +142,32 @@
                 }
                 $preStmt->close();
             }
-
-            if(password_verify($passwordLogin, $hash)) {
-                $passed = true;
+            // 
+            for($i = 0; $i < count($hashes); $i++){
+                if(password_verify($passwordLogin, $hashes[$i])) {
+                    $verifyedUser_ids[] = $user_ids[$i];
+                }
             }
-            return $passed;
+
+            return $verifyedUser_ids;
         }
 
         public function authentification($email, $password) {
-            
-            $user = null;
-
+            // changed on 02.05 hab den Fall einbezogen, dass ein Gast mehrere Freigaben hat.             
+            $user = array();
             if($this->exist($email)) {
-                if($this->passwordCheck($email, $password)) {
+                $verifyedUser_ids = $this->passwordCheck($email, $password);
+                foreach($verifyedUser_ids as $user_id){
+                    $id = "".$user_id;
                     $sql = "SELECT user.*
                             FROM user
-                            WHERE email = ?";
-                          //AND passwd = ?"; -edited out this part- in der Datenbank liegt ja das verschlüsselte PW - dass ist niemal gleich dem unverschlüsseltem $password hier. und die überprüfung hast du ja eh schon in der if abfrage davor gemacht.
-                            // hab beu Select auch gleich einfach alles genommen, damit wir den user komplett initialisieren- um ihn dann in die Session zu ballern.
+                            WHERE id = ?";
+                  //AND passwd = ?"; -edited out this part- in der Datenbank liegt ja das verschlüsselte PW - dass ist niemal gleich dem unverschlüsseltem $password hier. und die überprüfung hast du ja eh schon in der if abfrage davor gemacht.
+                    // hab beu Select auch gleich einfach alles genommen, damit wir den user komplett initialisieren- um ihn dann in die Session zu ballern.
                     if(!$preStmt = $this->dbConnect->prepare($sql)){
                         echo "Fehler bei SQL-Vorbereitung (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
                     } else {
-                        if(!$preStmt->bind_param("s", $email)){ // if(!$preStmt->bind_param("ss", $email, $password))
+                        if(!$preStmt->bind_param("s", $id)){ // if(!$preStmt->bind_param("ss", $email, $password))
                             echo "Fehler beim Binding (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
                         } else {
                             if(!$preStmt->execute()){
@@ -172,12 +177,12 @@
                                 if(!$preStmt->bind_result($id, $firstname, $lastname, $email, $passwd, $validation, $displayname, $status)){
                                     echo "Fehler beim Ergebnis-Binding (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
                                 } else {
-                                    if($preStmt->fetch()){
+                                    while($preStmt->fetch()){
 
                                         $pageDAO = new PageDAO();
                                         $pageList = $pageDAO->readPagesOfUserWithContent($id);
 
-                                        $user = new User($id, $firstname, $lastname, $email, $passwd, $validation, $displayname, $status, $pageList);
+                                        $user[] = new User($id, $firstname, $lastname, $email, $passwd, $validation, $displayname, $status, $pageList);
                                     }
                                     $preStmt->free_result();
                                 }
@@ -186,17 +191,11 @@
                         $preStmt->close();
                     }
                 }
-                return $user;
             }
+            return $user;
         }
 
-
-
-
-
         // added 29.04 -latenight
-
-
         public function readUserByEmail($email){
             $userEmail = "".$email;
             $sql = "SELECT user.* 
