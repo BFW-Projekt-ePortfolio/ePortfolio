@@ -18,10 +18,10 @@
 				session_destroy();
 			}
 			// prüfen ob das Formular ausgefüllt wurde:
-			
-			if($request->issetParameter('submit_param')){
+
+			if($request->issetParameter('submitparam')){
 				$userDAO = new UserDAO;
-				$chosenUser = $userDAO->readUserWithPagesAndTheirContent($request->getParameter('submit_param'));
+				$chosenUser = $userDAO->readUserWithPagesAndTheirContent($request->getParameter('submitparam'));
 				session_start();
 				$_SESSION["guest"] = serialize($chosenUser);
 				header('location: index.php?cmd=GuestHome');
