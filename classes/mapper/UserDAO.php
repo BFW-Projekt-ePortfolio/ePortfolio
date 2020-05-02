@@ -2,6 +2,7 @@
     namespace classes\mapper;
 
     use classes\model\User;
+    include_once('./conf/dirs.inc');
 
     class UserDAO {
 
