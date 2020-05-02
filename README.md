@@ -25,4 +25,6 @@ deleteUser($userId) mit allen Gästen, permissions und pages und Contents
 //////// ContentDAO
 deleteContent($contentId)
 deleteAllContentOfPage($pageId)
--------------------------------
+------------------------------
+
+Bin die Problematik angeganen wenn ein Gast mehrere Freigaben verschiedener Portfolios hat.
