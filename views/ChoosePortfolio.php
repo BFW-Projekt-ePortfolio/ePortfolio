@@ -1,10 +1,10 @@
 <?php
     $prepareButtons = '';
-    foreach($this->users as $user){
-        $buttonValue = $user->getId();
-        $userInformation = $user->getFirstname() ." ". $user->getLastname() ."&nbsp;&nbsp;Nickname:&nbsp;". $user->getDisplayname();
+    for($i = 0; $i < count($this->users); $i++){
+        $buttonValue = $this->users[$i]->getId();
+        $userInformation = $this->ownerArray[$i]->getFirstname() ." ". $this->ownerArray[$i]->getLastname() ."&nbsp;&nbsp;Nickname:&nbsp;". $this->ownerArray[$i]->getDisplayname();
         $prepareButtons .= '<form method="post" action="./?cmd=ChoosePortfolio" class="inline">';
-        $prepareButtons .= '<button type="submit" name="submit_param" value="'. $buttonValue .'" class="link-button">';
+        $prepareButtons .= '<button type="submit" name="submitparam" value="'. $buttonValue .'" class="link-button">';
         $prepareButtons .= $userInformation;
         $prepareButtons .= '</button></form>';
     }
