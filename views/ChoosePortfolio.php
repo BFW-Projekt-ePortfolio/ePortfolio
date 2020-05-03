@@ -20,14 +20,12 @@
     </head>
     <body>
         <div id="header">
-            Das ePortfolio von Gnaabert!
+            Willkommen <?= $this->Guestemail ?>
         </div>
         <hr>
         <div id="main">
             <div id="description">
-                <h1 Style="text-align:center">Willkommen <?= $this->Guestemail ?></h1>
-                <br>
-                <h3>Sie haben Freigaben zu folgenden Portfolios:</h1> 
+                <h1 Style="text-align:center">Sie haben Freigaben zu folgenden Portfolios:</h1>
             </div>
 
             <div id="content">

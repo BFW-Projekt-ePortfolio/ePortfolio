@@ -8,30 +8,27 @@
     </head>
     <body>
         <div id="header">
-            Das ePortfolio von Gnaabert!
+            Das ePortfolio von <?= $this->owner->getFirstname() ." ". $this->owner->getLastname() ?>!
         </div>
         <ul>
              <!-- Die Navigationsleiste, horizontal, evtl mit foreach aus dem pages-Array ein li-Element erzeugen? -->
             <li><a class="active" href="./">Home</a></li>
             <?php 
                 // Wenn über Command ausgeführt muss das genommen werden
+                $indexOfPageList = 0;
                 foreach($this->pageList as $page) {
-                     echo "<li><a>". $page->getTitle() ."</a></li>"; // Link zur jeweiligen Page?
+                     echo '<li><a href="./?cmd=GuestHome&page='.$indexOfPageList.'">'. $page->getTitle() ."</a></li>"; // Link zur jeweiligen Page?
+                     $indexOfPageList++;
                 }
             ?>
         </ul>
         <div id="main">
-            <div id="description">
-                Hier soll die Beschreibung aus der DB rein. <br>
-                Ist jetzt zwar noch nicht sonderlich hübsch, aber man kann vorerst damit arbeiten.<br>
-                <br>
-                <br>
-                <br>
-                Wird noch aufgewertet.
-            </div>
-
             <div id="content">
-                Hier kommt der Content rein. Dateinamen aus der DB zu den jeweiligen Dateien im Ordner des User (Pfad evtl.: ./userId/pageId/file).
+                <?php
+                foreach($this->requestedContent as $content){
+                    echo $content->getContent();
+                } 
+                ?>
             </div>
         </div>
         <footer>&copy; 2020 M. Mandler & D. Zielke</footer>
