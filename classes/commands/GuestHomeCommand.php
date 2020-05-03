@@ -5,6 +5,7 @@
     use classes\response\Response;
     use classes\template\HtmlTemplateView;
     use classes\mapper\PageDAO;
+    use classes\mapper\UserDAO;
 
     class GuestHomeCommand implements Command{
         public function execute(Request $request, Response $response) {
@@ -25,19 +26,27 @@
                 // header to bye bye weil kein user - glaub nun sollten alle möglichen unberechtigten rausgefiltert worden sein.
             }
 
+            $userDAO = new UserDAO;
+            $pageList = $currentUser->getPages();
+            $ContentList = $pageList[0]->getContentList();
+            $owner = $userDAO->readUserById($pageList[0]->getOwner());
+
+            if($request->issetParameter('page')){
+                $index = $request->getParameter('page');
+                if($index < count($pageList)){
+                    $ContentList = $pageList[$index]->getContentList();
+                }
+            }
 
             $view = 'GuestHome';
-
-            $userId = $currentUser->getId();
+            $style = "default"; // provisorisch
 
             $template = new HtmlTemplateView($view);
             
-           $pageList = $currentUser->getPages();
-
-            $style = "default"; // provisorisch
-
+            $template->assign('owner', $owner);
             $template->assign('style', $style);
             $template->assign('pageList', $pageList);
+            $template->assign('requestedContent', $ContentList);
             $template->render( $request, $response);
         }
     }
