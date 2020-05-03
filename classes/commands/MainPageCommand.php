@@ -21,6 +21,7 @@
 				session_destroy();
 			}
 			// prüfen ob das Formular ausgefüllt wurde:
+			$allertText = "";
 			$password = "";
 			$email = "";
 			$user = array();
@@ -53,29 +54,67 @@
 							exit;
 						break;
 						case "guest":
-							session_start();
-							$_SESSION["guest"] = serialize($user[0]);
-							header('location: index.php?cmd=GuestHome');
-							exit;
+							// Den Fall rausgefiltert, dass ein Gast zwar existiert, aber überhaupt keine Freigaben hat.
+							$pageList = array();
+							$pageList = $user[0]->getPages();
+							if(count($pageList) != 0){
+								session_start();
+								$_SESSION["guest"] = serialize($user[0]);
+								header('location: index.php?cmd=GuestHome');
+								exit;
+							}
+							else{	// dann wird er nicht eingeloggt
+								$view = 'MainPage';
+								$template = new HtmlTemplateView($view);
+								$style = "default";
+								$allertText = '<span style="color: red">Login fehlgeschlagen</span><br>';
+								$template->assign('allertText', $allertText); 
+								$template->assign('style', $style);
+								$template->render( $request, $response);
+							}
 						break;
 					}
 				}
 				else{
 					// Sie haben tatsächlich mehrere freigaben mit dem selben PW bekommen
 					// herzlichen Glückwunsch und willkommen in der seltensten if Bedingung!!!
-					$view = "ChoosePortfolio";
-					$style = "default";
-					$template = new HtmlTemplateView($view);
-					$template->assign('style', $style);
-					$template->assign('Guestemail', $email);
-
+					// Dieser Gast hat mehrere Portfolio-berechtigungen mit dem gleichen pw.
+					// Den Fall rausgefiltert, dass ein Gast zwar existiert, aber überhaupt keine Freigaben hat
 					$ownerArray = array();
+					$updatedUserList = array();
 					foreach($user as $guest){
-						$ownerArray[] = $userDAO->readUserById($guest->getPages()[0]->getOwner());
+						$pageList = array();
+						$pageList = $guest->getPages();
+						if(count($pageList) != 0){
+							$ownerArray[] = $userDAO->readUserById($pageList[0]->getOwner());
+							$updatedUserList[] = $guest;
+						}
 					}
-					$template->assign('ownerArray', $ownerArray); // These are the Owners of the different portfolios he has permission to. 
-					$template->assign('users', $user); // He has permissions to see all portfolios in $user[]
-					$template->render( $request, $response);
+					if(count($updatedUserList) > 1){
+						$view = "ChoosePortfolio";
+						$style = "default";
+						$template = new HtmlTemplateView($view);
+						$template->assign('style', $style);
+						$template->assign('Guestemail', $email);					
+						$template->assign('ownerArray', $ownerArray); // These are the Owners of the different portfolios he has permission to. 
+						$template->assign('users', $updatedUserList); // He has permissions to see all portfolios in $user[]
+						$template->render( $request, $response);
+					}
+					elseif(count($updatedUserList) == 1){
+						session_start();
+						$_SESSION["guest"] = serialize($updatedUserList[0]);
+						header('location: index.php?cmd=GuestHome');
+						exit;
+					}
+					else{
+						$style = "default";
+						$view = 'MainPage';
+						$template = new HtmlTemplateView($view);
+						$template->assign('style', $style);
+						$allertText = '<span style="color: red">Login fehlgeschlagen</span><br>';
+						$template->assign('allertText', $allertText); 
+						$template->render( $request, $response);
+					}
 				}
 			
 			}
@@ -83,6 +122,7 @@
 
 				if ($password != "" || $email != ""){
 					// Du hast ungültige Daten eingegeben - vertippt...
+					$allertText = '<span style="color: red">Login fehlgeschlagen</span><br>'; 
 				}
 	
 	
@@ -95,6 +135,7 @@
 				$template = new HtmlTemplateView($view);
 				$style = "default";
 				$template->assign('style', $style);
+				$template->assign('allertText', $allertText);
 				$template->render( $request, $response);
 
 			}
