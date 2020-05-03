@@ -33,7 +33,7 @@
 
             if($request->issetParameter('page')){
                 $index = $request->getParameter('page');
-                if($index < count($pageList)){
+                if($index >= 0 && $index < count($pageList) && is_numeric($index)){
                     $ContentList = $pageList[$index]->getContentList();
                 }
             }
