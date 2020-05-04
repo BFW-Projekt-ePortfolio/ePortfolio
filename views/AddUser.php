@@ -18,6 +18,7 @@
             <li><a href="index.php?cmd=RemoveUser">User löschen</a></li>
             <li><a href="index.php?cmd=RemoveGuest">Gäste löschen</a></li>
             <li><a href="index.php?cmd=AddAdmin">Admin anlegen</a></li>
+            <li><a href="index.php?cmd=AdminVerwaltung">Admins Verwalten</a></li>
             <li><a href="index.php?cmd=Logout">Logout</a></li>
         </ul>
         <div id="main">
