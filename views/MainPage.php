@@ -15,6 +15,7 @@
 
             <div id="main">
                 <div id="description">
+                <?= $this->allertText ?>
                 Bitte melden Sie sich an:<br>
                 <br>
                 <form method="POST" action="#">

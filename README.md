@@ -25,4 +25,9 @@ deleteUser($userId) mit allen Gästen, permissions und pages und Contents
 //////// ContentDAO
 deleteContent($contentId)
 deleteAllContentOfPage($pageId)
--------------------------------
+------------------------------
+
+Bin die Problematik angeganen wenn ein Gast mehrere Freigaben verschiedener Portfolios hat.
+So, wenn er mehrere Freigaben hat mit verschiedenen pws, wird er anhand des pws zum richtigen portfolio geleitet.
+Wenn er mehrere freigaben hat mit gleichem pw, so wird er jetzt aufgefordert zu wählen welches portfolio er sehen will und wird
+dann dorthin geleitet.
