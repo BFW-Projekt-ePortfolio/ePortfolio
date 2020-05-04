@@ -33,7 +33,7 @@
             $pageDAO = new PageDAO();
 
             $style = "default"; // provisorisch
-
+            $template->assign('currentAdmin', $currentUser);
             $template->assign('style', $style);
             $template->render( $request, $response);
         }
