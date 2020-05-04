@@ -21,6 +21,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Document</title>
         <link href="./css/<?= $this->style ?>.css" rel="stylesheet" type="text/css"> <!-- $style in $this->style ändern, wenn es mit dem Command ausgeführt wird-->
+        <link rel="shortcut icon" type="image/x-icon" href="./favicon_96x96.png" size="48x48">
     </head>
     <body>
         <div id="header">
@@ -33,6 +34,7 @@
             <li><a href="index.php?cmd=RemoveUser">User löschen</a></li>
             <li><a href="index.php?cmd=RemoveGuest">Gäste löschen</a></li>
             <li><a href="index.php?cmd=AddAdmin">Admin anlegen</a></li>
+            <li><a href="index.php?cmd=AdminVerwaltung">Admins Verwalten</a></li>
             <li><a href="index.php?cmd=Logout">Logout</a></li>
         </ul>
         <div id="main">
