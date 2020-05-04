@@ -4,7 +4,7 @@
         $outputString .= "<p> Die Gäste von: ". $user[0]->getFirstname()." ". $user[0]->getLastname();
         for($i = 0; $i < count($user[1]); $i++){
             $outputString .= "<div>";
-            $outputString .= "<strong>".$user[1][$i]->getFirstname()." ".$user[1][$i]->getLastname()."</strong> löschen?";
+            $outputString .= "<strong>".$user[1][$i]->getEmail()."</strong> löschen?";
             $outputString .= '<form action="?cmd=RemoveGuest" method="post"><button type="submit" value="'. $user[1][$i]->getId() .'" name="deleteGuest">löschen!</button></form>';
             $outputString .= '<br>';
             $outputString .= "</div>";
