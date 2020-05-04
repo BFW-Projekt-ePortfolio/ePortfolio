@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>ePortfolio</title>
     <link href="./css/<?= $this->style ?>.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" type="image/x-icon" href="./favicon_96x96.png" size="48x48">
 </head>
     <body>
         <main>
@@ -20,14 +21,6 @@
                     E-Mail: <br><input type="text" name="email"><br>
                     Password: <br><input type="password" name="password"><br><br>
                     <input type="submit" name="submit" value="anmelden"><br>
-
-                    <?php
-                        if(isset($_POST['submit'])) {
-                            $this->email = $_POST['email'];
-                            $this->passwordLogin = $_POST['password'];
-                        }
-                    ?>
-
                 </form>
                 <br>
             </div>
