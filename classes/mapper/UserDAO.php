@@ -277,6 +277,30 @@
             return $user;
         }
 
+        public function readAllUsersWithPages($status){
+            $userStatus = "".$status;
+            $user = array();
+            $sql = "SELECT user.* 
+                    FROM user
+                    WHERE user.status = ?";
+            $preStmt = $this->dbConnect->prepare($sql);
+            $preStmt->bind_param("s", $userStatus);
+            $preStmt->execute();
+            $preStmt->store_result();
+            $preStmt->bind_result($id, $firstname, $lastname, $email, $passwd, $validation, $displayname, $status);
+            
+            $pageDAO = new PageDAO;
+            while($preStmt->fetch()){
+                $pageList = $pageDAO->readPagesOfUser($id);
+                $user[] = new User($id, $firstname, $lastname, $email, $passwd, $validation, $displayname, $status, $pageList);
+            }
+            
+            $preStmt->free_result();
+            $preStmt->close();
+            
+            return $user;
+        }
+
         public function readUserWithPagesAndTheirContent($userId){
             $uid = "".$userId;
             $sql = "SELECT user.* 
