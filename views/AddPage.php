@@ -23,18 +23,9 @@
                 }
             ?>
             <li><a href="./?cmd=UserSettings">Einstellungen</a></li>
-            <li><a href="./?cmd=AddPage">+</a></li>
         </ul>
         <div id="main">
-
-            <h2><?= $this->requestedTitle ?></h2>
-            <?= $this->editLink ?>
-
-            <?php
-                foreach($this->requestedContent as $content) {
-                    echo "<div id='content'><img src='" . $this->filepath . $content->getContent() . "'><br><br>" . $content->getContentDescription() . "</div>";
-                }
-            ?>
+                Hier kann der User eine neue Seite anlegen. Sollen die auf eine bestimmte Zahl begrenzt werden?
         </div>
         <footer>&copy; 2020 M. Mandler & D. Zielke</footer>
     </body>
