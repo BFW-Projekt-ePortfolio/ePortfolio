@@ -364,7 +364,8 @@
                     WHERE user.status = "guest"
                     AND user.id = permission.user_id
                     AND permission.page = page.id
-                    AND page.owner = ?';
+                    AND page.owner = ?
+                    GROUP BY user.id';
             $preStmt = $this->dbConnect->prepare($sql);
             $preStmt->bind_param("s", $ownerId);
             $preStmt->execute();
