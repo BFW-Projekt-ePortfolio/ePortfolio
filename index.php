@@ -3,6 +3,8 @@
 	use classes\request\HttpRequest;
 	use classes\response\HttpResponse;
 	use classes\commands\FrontController;
+	
+	include_once('conf/dirs.inc');
 
 	/*
 	*	Anders als in der Literatur funktionieren Namespaces nicht wie oben angegeben unter Linux/Unix
