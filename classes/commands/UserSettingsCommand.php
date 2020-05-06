@@ -33,7 +33,6 @@
 
             // Hier muss noch einiges rein damit der User seinen Account und seine Pages verwalten kann. Seiten bearbeiten macht er an anderer Stelle
 
-
             // Hier müsste das was unter style in der Tabelle user hinterlegt ist geladen werden. Wie z. B.
             // $style = $currentUser->getStyle();
             $style = "default";
@@ -46,6 +45,7 @@
             $template->assign('pageList', $pageList);
             $template->assign('displayname', $displayname);
             $template->render( $request, $response);
+            
         }
     }
 ?>
