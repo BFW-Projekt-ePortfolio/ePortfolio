@@ -84,3 +84,8 @@ hr {
 #content .link-button:active {
   color:red;
   }
+
+img {
+    width:100%;
+    max-width:400px;
+}
