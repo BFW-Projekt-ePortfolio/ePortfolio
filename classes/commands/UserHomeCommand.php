@@ -8,8 +8,6 @@
     use classes\mapper\ContentDAO;
     use classes\mapper\UserDAO;
 
-    include_once('conf/dirs.inc');
-
     class UserHomeCommand implements Command{
         public function execute(Request $request, Response $response) {
 
