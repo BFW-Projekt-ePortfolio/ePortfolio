@@ -31,8 +31,32 @@
             <?= $this->editLink ?>
 
             <?php
+
+                $tmp = null;
                 foreach($this->requestedContent as $content) {
-                    echo "<div id='content'><img src='" . $this->filepath . $content->getContent() . "'><br><br>" . $content->getContentDescription() . "</div>";
+
+                    $file = $this->filepath . $content->getContent();
+
+                    $mimeType = mime_content_type($file);
+
+                    switch($mimeType) {
+                        case "image/gif":
+                            $tmp = base64_encode(file_get_contents($file));
+                            echo "<div id='content'><a href='data:image/gif;base64,$tmp' target='_blank'><img src='data:image/gif;base64,$tmp'></a><br><br>" . $content->getContentDescription() . "</div>";
+                        break;
+                        case "image/jpeg":
+                            $tmp = base64_encode(file_get_contents($file));
+                            echo "<div id='content'><a href='data:image/jpeg;base64,$tmp' target='_blank'><img src='data:image/jpeg;base64,$tmp'></a><br><br>" . $content->getContentDescription() . "</div>";
+                        break;
+                        case "application/pdf":
+                            $tmp = base64_encode(file_get_contents($file));
+                            echo "<div id='content'><a href='data:application/pdf;base64,$tmp' target='_blank'>" . $content->getContentDescription() . "</a></div>";
+
+                        // kann man beliebig fortführen
+                        // WICHTIG: Beim Datei Upload muss geprüft werden welche MIME Types hochgeladen werde. am besten keine html oder php oder áhnliches
+                        //          Evtl auch Dateigröße beschränken
+
+                    }
                 }
             ?>
         </div>
