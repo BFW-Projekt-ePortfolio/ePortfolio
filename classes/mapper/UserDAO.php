@@ -64,6 +64,32 @@
             return $id;
         }
 
+        public function createGuest($firstname, $lastname, $displayname, $email, $password) {
+            
+            $id = -1;
+            
+            $sql = "INSERT INTO user (firstname, lastname, displayname, email, passwd, status, validation)
+                        VALUES (?,?,?,?,?, 'guest', 0)";
+            
+            if(!$preStmt = $this->dbConnect->prepare($sql)) {
+                echo "Fehler bei der SQL-Vorbereitung (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
+            } else {
+                if(!$preStmt->bind_param("sssss", $firstname, $lastname, $displayname, $email, $password)) {
+                    echo "Fehler beim Binding (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
+                } else {
+                    if(!$preStmt->execute()) {
+                        echo "Fehler beim Ausführen (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
+                    } else {
+                        $id = $preStmt->insert_id;
+                    }
+                }
+            }
+
+            $preStmt->free_result();
+            $preStmt->close();
+            return $id;
+        }
+
         public function changeDisplayname($oldDisplayname, $newDisplayname) {
             // ändert den Displayname eines Users;
         }
