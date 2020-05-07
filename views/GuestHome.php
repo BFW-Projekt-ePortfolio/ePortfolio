@@ -27,7 +27,7 @@
             <div id="content">
                 <?php
                 foreach($this->requestedContent as $content){
-                    echo $content->getContent();
+                    echo $content->getContentDescription();
                 } 
                 ?>
             </div>
