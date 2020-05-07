@@ -472,5 +472,26 @@
             return $ok;
         }
 
+        public function updateUser(User $user){
+            $firstname = "".$user->getFirstname();
+            $lastname = "".$user->getLastname();
+            $email = "".$user->getEmail();
+            $password = "".$user->getPassed();
+            $displayname = "". $user->getDisplayname();
+            $user_id = "".$user->getId();
+
+            $ok = false;
+            $sql = "UPDATE user
+                    SET user.firstname = ?, user.lastname = ?, user.email = ?, user.passwd = ?, user.displayname = ?
+                    WHERE user.id = ?";
+            $preStmt = $this->dbConnect->prepare($sql);
+            $preStmt->bind_param("ssssss", $firstname, $lastname, $email, $password, $displayname, $user_id);
+            $preStmt->execute();
+            $ok = $this->dbConnect->affected_rows;
+            $preStmt->free_result();
+            $preStmt->close();
+            
+            return $ok;
+        }
     }
 ?>
