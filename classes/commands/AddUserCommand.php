@@ -71,16 +71,16 @@
             $ownerId = $userId;
             $title = "Home";
 
-            $contentDescription = "defaultContent";
-            $content = '<h1 id="defaultContent">Willkommen '.$firstname." ".$lastname. '</h1>';
-            $content .= '<h3>Diese Seite wird automatisch all Ihren Gästen zur Begrüßung angezeigt.<br>';
-            $content .= 'Sie sollten also zuallererst diese Seite bearbeiten und nach Ihren Wünschen gestalten.<br>';
-            $content .= 'Wenn Sie danach weitere Seiten eingerichtet haben, so können Sie diese für ausgewählte ';
-            $content .= 'Gäste freigeben. Dieser Gast hat dann über die Navigationsleiste die möglichkeit ';
-            $content .= 'diese Seite(n) zu öffnen.<br>';
-            $content .= 'Sie haben neben der Möglichkeit Texte zu schreiben auch die Option ';
-            $content .= 'Bilder zur Dekoration einzufügen und Pdf-Dateien, sowie links auf all Ihren Seiten zu hinterlegen.';
-            $content .= 'Wir wünschen Ihnen viel Spaß beim erstellen Ihres Portfolios</h3>';
+            $content = "defaultContent";
+            $contentDescription = '<h1 id="defaultContent">Willkommen '.$firstname." ".$lastname. '</h1>';
+            $contentDescription .= '<h3>Diese Seite wird automatisch all Ihren Gästen zur Begrüßung angezeigt.<br>';
+            $contentDescription .= 'Sie sollten also zuallererst diese Seite bearbeiten und nach Ihren Wünschen gestalten.<br>';
+            $contentDescription .= 'Wenn Sie danach weitere Seiten eingerichtet haben, so können Sie diese für ausgewählte ';
+            $contentDescription .= 'Gäste freigeben. Dieser Gast hat dann über die Navigationsleiste die möglichkeit ';
+            $contentDescription .= 'diese Seite(n) zu öffnen.<br>';
+            $contentDescription .= 'Sie haben neben der Möglichkeit Texte zu schreiben auch die Option ';
+            $contentDescription .= 'Bilder zur Dekoration einzufügen und Pdf-Dateien, sowie links auf all Ihren Seiten zu hinterlegen.';
+            $contentDescription .= 'Wir wünschen Ihnen viel Spaß beim erstellen Ihres Portfolios</h3>';
             $html_id = "defaultContent";
 
             $belongsToPageNr = $pageDAO->createPage($ownerId, $title);
