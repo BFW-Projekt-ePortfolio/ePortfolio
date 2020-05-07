@@ -53,7 +53,9 @@
         public function getPassed(){
             return $this->passwd;
         }
-        // no setpw
+        public function setPasswd($passwd){
+            $this->passwd = $passwd;
+        }
         public function getValidation(){
             return $this->validation;
         }
