@@ -31,6 +31,10 @@
             Hier können Sie einen Gast löschen oder dessen Berechtigungen verwalten.
             <form action="?cmd=GuestManagement" method="post"><button type="submit" value="manageGuest" name="manageGuest">Gäste verwalten!</button></form>
             <br>
+             Hier können Sie Ihr Profil verwalten.
+            <form action="?cmd=updateGuest" method="post"><button type="submit" value="updateUser" name="updateUser">Profil bearbeiten!</button></form>
+            <br>
+            
                 Hier soll der User Einstellungen vornehmen können. Wie Displaynamen ändern, Style ändern, Seite löschen, Account löschen usw.
         </div>
         <footer>&copy; 2020 M. Mandler & D. Zielke</footer>
