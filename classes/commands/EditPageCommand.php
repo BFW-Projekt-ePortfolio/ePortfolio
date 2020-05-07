@@ -10,7 +10,7 @@
 
     // include_once('conf/dirs.inc');
 
-    class UserHomeCommand implements Command{
+    class EditPageCommand implements Command{
         public function execute(Request $request, Response $response) {
 
             if (isset($_SESSION['user'])){
@@ -34,22 +34,48 @@
             $pageList = $currentUser->getPages();
             $ContentList = $pageList[0]->getContentList();
             $requestedTitle = $pageList[0]->getTitle();
-            $editLink = "<a href='./index.php?cmd=EditPage&page=0'>Seite bearbeiten</a><br><br>";
+            $pageId = $pageList[0]->getNummer();
+            $alert = "";
 
-                if($request->issetParameter('page')){
-                    $index = $request->getParameter('page');
-                    if($index >= 0 && $index < count($pageList) && is_numeric($index)){
-                        $ContentList = $pageList[$index]->getContentList();
-                        $requestedTitle = $pageList[$index]->getTitle();
-                        $editLink = "<a href='./index.php?cmd=EditPage&page=" . $index . "'>Seite bearbeiten</a><br><br>";
-                    }
+            if($request->issetParameter('page')){
+                $index = $request->getParameter('page');
+                if($index >= 0 && $index < count($pageList) && is_numeric($index)){
+                    $ContentList = $pageList[$index]->getContentList();
+                    $requestedTitle = $pageList[$index]->getTitle();
+                    $pageId = $pageList[$index]->getNummer();
                 }
+            }
+
+            // Es funktioniert, aber die Seite im Browser lädt die änderung nicht sofort. man muss sich abmelden und neuanmelden. 
+            if($request->issetParameter('changeTitle')) {
+                $pageDAO = new PageDAO();
+                $newTitle = $request->getParameter('newTitle');
+                if ($pageDAO->updatePageTitle($pageId, $newTitle) > 0) {
+                    $userDAO = new UserDAO();
+
+                    $updatedPagesList = $pageDAO->readPagesOfUserWithContent($currentUser->getId());
+
+                    $currentUser->setPages($updatedPagesList);
+
+                    unset($_SESSION['user']);
+
+                    $_SESSION['user'] = serialize($currentUser);
+
+                    header('location: index.php?cmd=EditPage&page=' . $request->getParameter('page'));
+                    exit;
+                    
+                    // der currentUser muss hier noch seine aktuellen Seiten beziehen damit diese im Browser ohne Neuanmeldung angezeigt werden.
+
+                } else {
+                    $alert = "da hat was nicht geklappt!";
+                }
+            }
 
             // Hier müsste das was unter style in der Tabelle user hinterlegt ist geladen werden. Wie z. B.
             // $style = $currentUser->getStyle();
             $style = "default";
 
-            $view = 'UserHome';
+            $view = 'EditPage';
 
             $template = new HtmlTemplateView($view);
             $filepath = USERS_DIR . $currentUser->getId() ."/";
@@ -58,9 +84,9 @@
             $template->assign('pageList', $pageList);
             $template->assign('requestedContent', $ContentList);
             $template->assign('displayname', $displayname);
-            $template->assign('editLink', $editLink);
             $template->assign('requestedTitle', $requestedTitle);
             $template->assign('filepath', $filepath);
+            $template->assign('alert', $alert);
             $template->render( $request, $response);
         }
     }

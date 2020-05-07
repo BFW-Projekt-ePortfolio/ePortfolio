@@ -10,7 +10,7 @@
 
     // include_once('conf/dirs.inc');
 
-    class UserHomeCommand implements Command{
+    class RemoveContentCommand implements Command{
         public function execute(Request $request, Response $response) {
 
             if (isset($_SESSION['user'])){
@@ -33,34 +33,57 @@
 
             $pageList = $currentUser->getPages();
             $ContentList = $pageList[0]->getContentList();
-            $requestedTitle = $pageList[0]->getTitle();
-            $editLink = "<a href='./index.php?cmd=EditPage&page=0'>Seite bearbeiten</a><br><br>";
+            $pageId = $pageList[0]->getNummer();
 
-                if($request->issetParameter('page')){
-                    $index = $request->getParameter('page');
-                    if($index >= 0 && $index < count($pageList) && is_numeric($index)){
-                        $ContentList = $pageList[$index]->getContentList();
-                        $requestedTitle = $pageList[$index]->getTitle();
-                        $editLink = "<a href='./index.php?cmd=EditPage&page=" . $index . "'>Seite bearbeiten</a><br><br>";
-                    }
+            if($request->issetParameter('page')){
+                $index = $request->getParameter('page');
+                if($index >= 0 && $index < count($pageList) && is_numeric($index)){
+                    $ContentList = $pageList[$index]->getContentList();
+                    $pageId = $pageList[$index]->getNummer();
                 }
+            }
+
+            if($request->issetParameter('remove')) {
+                $contentDAO = new ContentDAO();
+                $contentId = $request->getParameter('content');
+
+                $file = $contentDAO->readContentName($contentId);
+
+                // Der Content wird erfolgreich aus der DB und die Datei aus dem Ordner gelöscht, aber die Funktion gibt bei Scheitern nichts zurück
+                shell_exec('rm ' . USERS_DIR . $currentUser->getId() . '/' . $file);
+                $contentDAO->deleteContent($contentId);
+
+                $pageDAO = new PageDAO();
+
+                $updatedPagesList = $pageDAO->readPagesOfUserWithContent($currentUser->getId());
+
+                $currentUser->setPages($updatedPagesList);
+
+                unset($_SESSION['user']);
+
+                $_SESSION['user'] = serialize($currentUser);
+
+                header('location: index.php?cmd=EditPage&page=' . $request->getParameter('page'));
+                exit;
+            }
+
+            if($request->issetParameter('keep')) {
+                header('location: index.php?cmd=EditPage&page=' . $request->getParameter('page'));
+                exit;
+            }
 
             // Hier müsste das was unter style in der Tabelle user hinterlegt ist geladen werden. Wie z. B.
             // $style = $currentUser->getStyle();
             $style = "default";
 
-            $view = 'UserHome';
+            $view = 'RemoveContent';
 
             $template = new HtmlTemplateView($view);
-            $filepath = USERS_DIR . $currentUser->getId() ."/";
+
 
             $template->assign('style', $style);
             $template->assign('pageList', $pageList);
-            $template->assign('requestedContent', $ContentList);
             $template->assign('displayname', $displayname);
-            $template->assign('editLink', $editLink);
-            $template->assign('requestedTitle', $requestedTitle);
-            $template->assign('filepath', $filepath);
             $template->render( $request, $response);
         }
     }

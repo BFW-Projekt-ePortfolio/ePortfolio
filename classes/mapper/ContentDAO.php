@@ -121,12 +121,12 @@ class ContentDAO{
     }
 
     public function deleteContent($contentId){
-        $content_id = "".$contentId;
+        // $content_id = "".$contentId;
         $ok = 0;
         $sql = "DELETE FROM content
-                WHERE content.id = ?";
+                WHERE id = ?";
         $preStmt = $this->dbConnect->prepare($sql);
-        $preStmt->bind_param("s", $content_id);
+        $preStmt->bind_param("s", $contentId);
         $preStmt->execute();
         $ok = $this->dbConnect->affected_rows;
         $preStmt->free_result();
@@ -149,6 +149,29 @@ class ContentDAO{
         $preStmt->close();
         
         return $ok;
+    }
+
+    public function readContentName($id) {
+
+        $ok = 0;
+        $sql = "SELECT content
+                FROM content
+                WHERE id = ?";
+
+        $preStmt = $this->dbConnect->prepare($sql);
+        $preStmt->bind_param("i", $id);
+        $preStmt->execute();
+		$preStmt->store_result();
+        $preStmt->bind_result($content);
+
+        if($preStmt->fetch()){
+            $filename = $content;
+        }
+        
+        $preStmt->free_result();
+        $preStmt->close();
+        
+        return $filename;
     }
 
 }
