@@ -40,14 +40,18 @@
                 $pageDAO->deletePermissionOfGuestForPage($guestId, $pageId);
             }
 
-            $displayname = $currentUser->getDisplayname();
+            $userDAO = new UserDAO;
 
+            if($request->issetParameter('removeGuest')){
+                $guestId = $request->getParameter('removeGuest');
+                $userDAO->deleteGuest($guestId);
+            }
+
+            $displayname = $currentUser->getDisplayname();
             $pageList = $currentUser->getPages();
 
-            $userDAO = new UserDAO;
             $MyGuestList = $userDAO->readGuestListOfUserWithTheirPages($currentUser->getId());
             
-
             // Hier müsste das was unter style in der Tabelle user hinterlegt ist geladen werden. Wie z. B.
             // $style = $currentUser->getStyle();
             $style = "default";
