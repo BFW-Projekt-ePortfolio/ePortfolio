@@ -237,5 +237,23 @@ class PageDAO{
         }
     }
 
+    public function updatePageTitle($pageId, $title){
+        $page_id = "".$pageId;
+        $pageTitle = "".$title;
+
+        $ok = false;
+        $sql = "UPDATE page
+                SET page.title = ?
+                WHERE page.id = ?";
+        $preStmt = $this->dbConnect->prepare($sql);
+		$preStmt->bind_param("ss", $pageTitle, $page_id);
+		$preStmt->execute();
+		$ok = $this->dbConnect->affected_rows;
+		$preStmt->free_result();
+        $preStmt->close();
+        
+        return $ok;
+    }
+
 
 }
