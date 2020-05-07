@@ -57,12 +57,16 @@
 
         // Die lösch optionen:
         $outputString .= '<div style="text-align: center;">Entfernen Sie Gäste, diese können dann nicht mehr auf Ihr Portfolio zugreifen:</div>';
+        $outputString .= '<br>';
+        $outputString .= '<div style="display: flex; justify-content: space-around;">';
         foreach($this->guestList as $guest){
             $outputString .= '<form method="POST" action="#">';
             $outputString .= '<label for="removeGuest">'.$guest->getEmail().'&emsp;</label>';
             $outputString .= '<button type="submit" value="'. $guest->getId() .'" name="removeGuest">Gast entfernen!</button>';
             $outputString .= '</form>';
         }
+        $outputString .= '</div>';
+        $outputString .= '<br><br>';
     }
     else{
         $outputString .= '<p style="text-align: center;">Sie haben keine Seiten die Sie freigeben könnten</p>';
