@@ -28,6 +28,9 @@
             Hier erstellen Sie einen Gast und wählen welche Seiten Ihres Portfolios dieser sehen darf.
             <form action="?cmd=AddGuest" method="post"><button type="submit" value="createGuest" name="createGuest">Gast erstellen!</button></form>
             <br>
+            Hier können Sie einen Gast löschen oder dessen Berechtigungen verwalten.
+            <form action="?cmd=GuestManagement" method="post"><button type="submit" value="manageGuest" name="manageGuest">Gäste verwalten!</button></form>
+            <br>
                 Hier soll der User Einstellungen vornehmen können. Wie Displaynamen ändern, Style ändern, Seite löschen, Account löschen usw.
         </div>
         <footer>&copy; 2020 M. Mandler & D. Zielke</footer>
