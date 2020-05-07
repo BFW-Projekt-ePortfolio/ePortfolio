@@ -50,7 +50,12 @@
                 $file = $contentDAO->readContentName($contentId);
 
                 // Der Content wird erfolgreich aus der DB und die Datei aus dem Ordner gelöscht, aber die Funktion gibt bei Scheitern nichts zurück
-                shell_exec('rm ' . USERS_DIR . $currentUser->getId() . '/' . $file);
+                if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                    unlink(USERS_DIR . $currentUser->getId() . '/' . $file);
+                } else {
+                    shell_exec('rm ' . USERS_DIR . $currentUser->getId() . '/' . $file);
+                }
+                
                 $contentDAO->deleteContent($contentId);
 
                 $pageDAO = new PageDAO();
