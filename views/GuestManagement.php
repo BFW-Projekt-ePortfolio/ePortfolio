@@ -1,3 +1,88 @@
+<?php
+    $outputString = "";
+    if(count($this->pageList) > 1 && count($this->guestList) != 0){ // andernfalls gibts keine Tabelle weil er keine Seiten hat zum freigeben - nur die default-Page
+        $outputString .= '<table style="width:100%">';
+        $outputString .= '<caption>Verwalten sie ihre Berechtigungen:</caption>';
+        $outputString .= '<tr>';
+        $outputString .= '<th>Deine Gäste</th>';
+        for($i = 1; $i < count($this->pageList); $i++){
+            $outputString .= "<th>".$this->pageList[$i]->getTitle()."</th>";
+        }
+        $outputString .= '</tr>';
+        $outputString .= '<tr>';
+        foreach($this->guestList as $guest){
+            $outputString .= '<td>'.$guest->getEmail().'</td>';
+            for($i = 1; $i < count($this->pageList); $i++){
+                if(count($guest->getPages()) > 1){// die default page muss öffentlich sein.
+                    $guestPages = $guest->getPages();
+                    $guestHasPermissionAllready = false;
+                    for($k = 1; $k < count($guestPages); $k++){
+                        if($this->pageList[$i]->getNummer() == $guestPages[$k]->getNummer()){
+                            // zu dieser Seite hat dieser Gast schon eine berechtigung
+                            // möglichkeit zum entfernen einbauen:
+                            $outputString .= '<td>';
+                            $outputString .= '<form method="POST" action="#">';
+                            $outputString .= '<input type="hidden" name="guestId" value="'.$guest->getId().'">';
+                            $outputString .= '<button type="submit" value="'. $this->pageList[$i]->getNummer() .'" name="removePermission">entfernen!</button>';
+                            $outputString .= '</form>';
+                            $outputString .= '</td>';
+                            $guestHasPermissionAllready = true;
+                        }
+                    }
+                    if(!$guestHasPermissionAllready){
+                        // zu dieser Seite hat dieser Gast noch keine Berechtigung:
+                        // möglichkeit zum setzuen bieten
+                        $outputString .= '<td>';
+                        $outputString .= '<form method="POST" action="#">';
+                        $outputString .= '<input type="hidden" name="guestId" value="'.$guest->getId().'">';
+                        $outputString .= '<button type="submit" value="'. $this->pageList[$i]->getNummer() .'" name="addPermission">hinzufügen!</button>';
+                        $outputString .= '</form>';
+                        $outputString .= '</td>';
+                    }
+                }
+                else{
+                    // Der Gast hat noch garkeine Extra-Rechte, also bei allen hinzufügen möglich machen
+                    $outputString .= '<td>';
+                    $outputString .= '<form method="POST" action="#">';
+                    $outputString .= '<input type="hidden" name="guestId" value="'.$guest->getId().'">';
+                    $outputString .= '<button type="submit" value="'. $this->pageList[$i]->getNummer() .'" name="addPermission">hinzufügen!</button>';
+                    $outputString .= '</form>';
+                    $outputString .= '</td>';
+                }
+            }
+            $outputString .= '</tr>';
+        }
+        $outputString .= '</table>';
+        $outputString .= '<br><br>';
+
+        // Die lösch optionen:
+        $outputString .= '<div style="text-align: center;">Entfernen Sie Gäste, diese können dann nicht mehr auf Ihr Portfolio zugreifen:</div>';
+        foreach($this->guestList as $guest){
+            $outputString .= '<form method="POST" action="#">';
+            $outputString .= '<label for="removeGuest">'.$guest->getEmail().'&emsp;</label>';
+            $outputString .= '<button type="submit" value="'. $guest->getId() .'" name="removeGuest">Gast entfernen!</button>';
+            $outputString .= '</form>';
+        }
+    }
+    else{
+        $outputString .= '<p style="text-align: center;">Sie haben keine Seiten die Sie freigeben könnten</p>';
+        $outputString .= '<br><br>';
+        if (count($this->guestList) != 0){
+            $outputString .= '<div style="text-align: center;">Entfernen Sie Gäste, diese können dann nicht mehr auf Ihr Portfolio zugreifen:</div>';
+            $outputString .= '<br>';
+            $outputString .= '<div style="display: flex; justify-content: space-around;">';
+            foreach($this->guestList as $guest){
+                $outputString .= '<form method="POST" action="#">';
+                $outputString .= '<label for="removeGuest">'.$guest->getEmail().'&emsp;</label>';
+                $outputString .= '<button type="submit" value="'. $guest->getId() .'" name="removeGuest">Gast entfernen!</button>';
+                $outputString .= '</form>';
+            }
+            $outputString .= '</div>';
+            $outputString .= '<br><br>';
+        }
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -26,81 +111,7 @@
             <li><a href="./?cmd=AddPage">+</a></li>
         </ul>
         <div id="main">
-                
-            <?php
-                $outputString = "";
-                if(count($this->pageList) > 1 && count($this->guestList) != 0){ // andernfalls gibts keine Tabelle weil er keine Seiten hat zum freigeben - nur die default-Page
-                    $outputString .= '<table style="width:100%">';
-                    $outputString .= '<caption>Verwalten sie ihre Berechtigungen:</caption>';
-                    $outputString .= '<tr>';
-                    $outputString .= '<th>Deine Gäste</th>';
-                    for($i = 1; $i < count($this->pageList); $i++){
-                        $outputString .= "<th>".$this->pageList[$i]->getTitle()."</th>";
-                    }
-                    $outputString .= '</tr>';
-                    $outputString .= '<tr>';
-                    foreach($this->guestList as $guest){
-                        $outputString .= '<td>'.$guest->getEmail().'</td>';
-                        for($i = 1; $i < count($this->pageList); $i++){
-                            if(count($guest->getPages()) > 1){// die default page muss öffentlich sein.
-                                $guestPages = $guest->getPages();
-                                $guestHasPermissionAllready = false;
-                                for($k = 1; $k < count($guestPages); $k++){
-                                    if($this->pageList[$i]->getNummer() == $guestPages[$k]->getNummer()){
-                                        // zu dieser Seite hat dieser Gast schon eine berechtigung
-                                        // möglichkeit zum entfernen einbauen:
-                                        $outputString .= '<td>';
-                                            $outputString .= '<form method="POST" action="#">';
-                                            $outputString .= '<input type="hidden" name="guestId" value="'.$guest->getId().'">';
-                                            $outputString .= '<button type="submit" value="'. $this->pageList[$i]->getNummer() .'" name="removePermission">entfernen!</button>';
-                                            $outputString .= '</form>';
-                                        $outputString .= '</td>';
-                                        $guestHasPermissionAllready = true;
-                                    }
-                                }
-                                if(!$guestHasPermissionAllready){
-                                    // zu dieser Seite hat dieser Gast noch keine Berechtigung:
-                                    // möglichkeit zum setzuen bieten
-                                    $outputString .= '<td>';
-                                        $outputString .= '<form method="POST" action="#">';
-                                        $outputString .= '<input type="hidden" name="guestId" value="'.$guest->getId().'">';
-                                        $outputString .= '<button type="submit" value="'. $this->pageList[$i]->getNummer() .'" name="addPermission">hinzufügen!</button>';
-                                        $outputString .= '</form>';
-                                    $outputString .= '</td>';
-                                }
-
-                            }
-                            else{
-                                // Der Gast hat noch garkeine Extra-Rechte, also bei allen hinzufügen möglich machen
-                                $outputString .= '<td>';
-                                    $outputString .= '<form method="POST" action="#">';
-                                    $outputString .= '<input type="hidden" name="guestId" value="'.$guest->getId().'">';
-                                    $outputString .= '<button type="submit" value="'. $this->pageList[$i]->getNummer() .'" name="addPermission">hinzufügen!</button>';
-                                    $outputString .= '</form>';
-                                $outputString .= '</td>';
-                            }
-
-                        }
-                        $outputString .= '</tr>';
-                    }
-                    $outputString .= '</table>';
-
-
-                    // $outputString .= '<form method="POST" action="#">';
-                    // $outputString .= '<input type="hidden" name="guestId" value="'.$guest->getId().'">';
-                    // $outputString .= '<button type="submit" value="'. $this->pageList[$i]->getNummer() .'" name="addPermission">hinzufügen!</button>';
-                    // $outputString .= '</form>';
-
-                    // $outputString .= '<form method="POST" action="#">';
-                    // $outputString .= '<input type="hidden" name="guestId" value="'.$guest->getId().'">';
-                    // $outputString .= '<button type="submit" value="'. $this->pageList[$i]->getNummer() .'" name="removePermission">entfernen!</button>';
-                    // $outputString .= '</form>';
-
-                }
-                echo $outputString;  
-            ?>
-
-                
+            <?= $outputString ?>                
         </div>
         <footer>&copy; 2020 M. Mandler & D. Zielke</footer>
     </body>
