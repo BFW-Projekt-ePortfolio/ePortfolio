@@ -41,7 +41,7 @@
                         // Die Konstante wird in conf/dirs.inc definiert und über die UserDAO geladen. Bin mir noch nicht sicher, ob das so passt.
                         // Die Berechtigungen für die einzelnen Ordner und Dateien im gesamten Projekt muss ich noch anpassen, habe mich etwas eingelesen
                         // und muss das noch testen.
-                        mkdir(USERS_DIR . $id);
+                        mkdir(USERS_DIR . $id, 0750, true);
 
                         header('location: index.php?cmd=AdminHome');
                         exit;

@@ -66,6 +66,10 @@
         public function getPages() {
             return $this->pages;
         }
+
+        public function setPages($pages) {
+            $this->pages = $pages;
+        }
         // public function addPage(Page $page){
         //     $this->pages[] = $page;
         // }
