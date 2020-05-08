@@ -29,7 +29,8 @@
         <div id="main">
 
             <h2><?= $this->requestedTitle ?></h2>
-            <?= $this->editLink ?>
+            <?= $this->editLink ?><br>
+            <?= $this->addContentLink ?>
 
             <?php
 

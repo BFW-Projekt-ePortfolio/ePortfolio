@@ -34,14 +34,16 @@
             $pageList = $currentUser->getPages();
             $ContentList = $pageList[0]->getContentList();
             $requestedTitle = $pageList[0]->getTitle();
-            $editLink = "<a href='./index.php?cmd=EditPage&page=0'>Seite bearbeiten</a><br><br>";
+            $editLink = "<a href='./index.php?cmd=EditPage&page=0'>Seite bearbeiten</a><br>";
+            $addContentLink = "<a href='./index.php?cmd=AddContent&page=0'>Inhalt hinzufügen</a><br><br>";
 
                 if($request->issetParameter('page')){
                     $index = $request->getParameter('page');
                     if($index >= 0 && $index < count($pageList) && is_numeric($index)){
                         $ContentList = $pageList[$index]->getContentList();
                         $requestedTitle = $pageList[$index]->getTitle();
-                        $editLink = "<a href='./index.php?cmd=EditPage&page=" . $index . "'>Seite bearbeiten</a><br><br>";
+                        $editLink = "<a href='./index.php?cmd=EditPage&page=" . $index . "'>Seite bearbeiten</a><br>";
+                        $addContentLink = "<a href='./index.php?cmd=AddContent&page=" .$index . "'>Inhalt hinzufügen</a><br><br>";
                     }
                 }
 
@@ -59,6 +61,7 @@
             $template->assign('requestedContent', $ContentList);
             $template->assign('displayname', $displayname);
             $template->assign('editLink', $editLink);
+            $template->assign('addContentLink', $addContentLink);
             $template->assign('requestedTitle', $requestedTitle);
             $template->assign('filepath', $filepath);
             $template->render( $request, $response);
