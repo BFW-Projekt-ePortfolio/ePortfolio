@@ -27,30 +27,35 @@
                 // header to bye bye weil kein user - glaub nun sollten alle möglichen unberechtigten rausgefiltert worden sein.
             }
 
+            $pageList = $currentUser->getPages();
+            $userDAO = new UserDAO;
+            $MyGuestList = $userDAO->readGuestListOfUserWithTheirPages($currentUser->getId());
+
             if($request->issetParameter('addPermission')){
-                $guestIdToSetPermissionFor = $request->getParameter('guestId');
-                $pageId = $request->getParameter('addPermission');
+                $guestIndex = $request->getParameter('guestIndex');
+                $pageIndex = $request->getParameter('addPermission');
+                $guestIdToSetPermissionFor = $MyGuestList[$guestIndex]->getId();
+                $pageId = $pageList[$pageIndex]->getNummer();
                 $pageDAO = new PageDAO;
                 $pageDAO->setPermissionForPage($guestIdToSetPermissionFor, $pageId);
             }
             if($request->issetParameter('removePermission')){
-                $guestId = $request->getParameter('guestId');
-                $pageId = $request->getParameter('removePermission');
+                $guestIndex = $request->getParameter('guestIndex');
+                $pageIndex = $request->getParameter('removePermission');
+                $guestId = $MyGuestList[$guestIndex]->getId();
+                $pageId = $pageList[$pageIndex]->getNummer();
                 $pageDAO = new PageDAO;
                 $pageDAO->deletePermissionOfGuestForPage($guestId, $pageId);
             }
-
-            $userDAO = new UserDAO;
-
             if($request->issetParameter('removeGuest')){
-                $guestId = $request->getParameter('removeGuest');
+                $guestIndex = $request->getParameter('removeGuest');
+                $guestId = $MyGuestList[$guestIndex]->getId();
                 $userDAO->deleteGuest($guestId);
             }
+            unset($MyGuestList);
+            $MyGuestList = $userDAO->readGuestListOfUserWithTheirPages($currentUser->getId());
 
             $displayname = $currentUser->getDisplayname();
-            $pageList = $currentUser->getPages();
-
-            $MyGuestList = $userDAO->readGuestListOfUserWithTheirPages($currentUser->getId());
             
             // Hier müsste das was unter style in der Tabelle user hinterlegt ist geladen werden. Wie z. B.
             // $style = $currentUser->getStyle();
