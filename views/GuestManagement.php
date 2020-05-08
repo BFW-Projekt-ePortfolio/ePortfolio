@@ -10,20 +10,20 @@
         }
         $outputString .= '</tr>';
         $outputString .= '<tr>';
-        foreach($this->guestList as $guest){
-            $outputString .= '<td>'.$guest->getEmail().'</td>';
-            for($i = 1; $i < count($this->pageList); $i++){
-                if(count($guest->getPages()) > 1){// die default page muss öffentlich sein.
-                    $guestPages = $guest->getPages();
+        for($guestIndex = 0; $guestIndex < count($this->guestList); $guestIndex++){
+            $outputString .= '<td>'.$this->guestList[$guestIndex]->getEmail().'</td>';
+            for($pageIndex = 1; $pageIndex < count($this->pageList); $pageIndex++){
+                if(count($this->guestList[$guestIndex]->getPages()) > 1){// die default page muss öffentlich sein.
+                    $guestPages = $this->guestList[$guestIndex]->getPages();
                     $guestHasPermissionAllready = false;
-                    for($k = 1; $k < count($guestPages); $k++){
-                        if($this->pageList[$i]->getNummer() == $guestPages[$k]->getNummer()){
+                    for($guestPageIndex = 1; $guestPageIndex < count($guestPages); $guestPageIndex++){
+                        if($this->pageList[$pageIndex]->getNummer() == $guestPages[$guestPageIndex]->getNummer()){
                             // zu dieser Seite hat dieser Gast schon eine berechtigung
                             // möglichkeit zum entfernen einbauen:
                             $outputString .= '<td>';
                             $outputString .= '<form method="POST" action="#">';
-                            $outputString .= '<input type="hidden" name="guestId" value="'.$guest->getId().'">';
-                            $outputString .= '<button type="submit" value="'. $this->pageList[$i]->getNummer() .'" name="removePermission">entfernen!</button>';
+                            $outputString .= '<input type="hidden" name="guestIndex" value="'. $guestIndex .'">';
+                            $outputString .= '<button type="submit" value="'. $pageIndex .'" name="removePermission">entfernen!</button>';
                             $outputString .= '</form>';
                             $outputString .= '</td>';
                             $guestHasPermissionAllready = true;
@@ -34,8 +34,8 @@
                         // möglichkeit zum setzuen bieten
                         $outputString .= '<td>';
                         $outputString .= '<form method="POST" action="#">';
-                        $outputString .= '<input type="hidden" name="guestId" value="'.$guest->getId().'">';
-                        $outputString .= '<button type="submit" value="'. $this->pageList[$i]->getNummer() .'" name="addPermission">hinzufügen!</button>';
+                        $outputString .= '<input type="hidden" name="guestIndex" value="'. $guestIndex .'">';
+                        $outputString .= '<button type="submit" value="'. $pageIndex .'" name="addPermission">hinzufügen!</button>';
                         $outputString .= '</form>';
                         $outputString .= '</td>';
                     }
@@ -44,8 +44,8 @@
                     // Der Gast hat noch garkeine Extra-Rechte, also bei allen hinzufügen möglich machen
                     $outputString .= '<td>';
                     $outputString .= '<form method="POST" action="#">';
-                    $outputString .= '<input type="hidden" name="guestId" value="'.$guest->getId().'">';
-                    $outputString .= '<button type="submit" value="'. $this->pageList[$i]->getNummer() .'" name="addPermission">hinzufügen!</button>';
+                    $outputString .= '<input type="hidden" name="guestIndex" value="'. $guestIndex .'">';
+                    $outputString .= '<button type="submit" value="'. $pageIndex .'" name="addPermission">hinzufügen!</button>';
                     $outputString .= '</form>';
                     $outputString .= '</td>';
                 }
@@ -59,10 +59,10 @@
         $outputString .= '<div style="text-align: center;">Entfernen Sie Gäste, diese können dann nicht mehr auf Ihr Portfolio zugreifen:</div>';
         $outputString .= '<br>';
         $outputString .= '<div style="display: flex; justify-content: space-around;">';
-        foreach($this->guestList as $guest){
+        for($guestIndex = 0; $guestIndex < count($this->guestList); $guestIndex++){
             $outputString .= '<form method="POST" action="#">';
-            $outputString .= '<label for="removeGuest">'.$guest->getEmail().'&emsp;</label>';
-            $outputString .= '<button type="submit" value="'. $guest->getId() .'" name="removeGuest">Gast entfernen!</button>';
+            $outputString .= '<label for="removeGuest">'.$this->guestList[$guestIndex]->getEmail().'&emsp;</label>';
+            $outputString .= '<button type="submit" value="'. $guestIndex .'" name="removeGuest">Gast entfernen!</button>';
             $outputString .= '</form>';
         }
         $outputString .= '</div>';
@@ -75,10 +75,10 @@
             $outputString .= '<div style="text-align: center;">Entfernen Sie Gäste, diese können dann nicht mehr auf Ihr Portfolio zugreifen:</div>';
             $outputString .= '<br>';
             $outputString .= '<div style="display: flex; justify-content: space-around;">';
-            foreach($this->guestList as $guest){
+            for($guestIndex = 0; $guestIndex < count($this->guestList); $guestIndex++){
                 $outputString .= '<form method="POST" action="#">';
-                $outputString .= '<label for="removeGuest">'.$guest->getEmail().'&emsp;</label>';
-                $outputString .= '<button type="submit" value="'. $guest->getId() .'" name="removeGuest">Gast entfernen!</button>';
+                $outputString .= '<label for="removeGuest">'.$this->guestList[$guestIndex]->getEmail().'&emsp;</label>';
+                $outputString .= '<button type="submit" value="'. $guestIndex .'" name="removeGuest">Gast entfernen!</button>';
                 $outputString .= '</form>';
             }
             $outputString .= '</div>';
