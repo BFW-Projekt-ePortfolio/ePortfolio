@@ -23,7 +23,7 @@
                             $outputString .= '<td>';
                             $outputString .= '<form method="POST" action="#">';
                             $outputString .= '<input type="hidden" name="guestIndex" value="'. $guestIndex .'">';
-                            $outputString .= '<button type="submit" value="'. $pageIndex .'" name="removePermission">entfernen!</button>';
+                            $outputString .= '&nbsp;✅&nbsp;berechtigt&nbsp;<button type="submit" value="'. $pageIndex .'" name="removePermission">entfernen!</button>';
                             $outputString .= '</form>';
                             $outputString .= '</td>';
                             $guestHasPermissionAllready = true;
@@ -35,7 +35,7 @@
                         $outputString .= '<td>';
                         $outputString .= '<form method="POST" action="#">';
                         $outputString .= '<input type="hidden" name="guestIndex" value="'. $guestIndex .'">';
-                        $outputString .= '<button type="submit" value="'. $pageIndex .'" name="addPermission">hinzufügen!</button>';
+                        $outputString .= '&nbsp;❌&nbsp;unberechtigt&nbsp;<button type="submit" value="'. $pageIndex .'" name="addPermission">hinzufügen!</button>';
                         $outputString .= '</form>';
                         $outputString .= '</td>';
                     }
@@ -45,7 +45,7 @@
                     $outputString .= '<td>';
                     $outputString .= '<form method="POST" action="#">';
                     $outputString .= '<input type="hidden" name="guestIndex" value="'. $guestIndex .'">';
-                    $outputString .= '<button type="submit" value="'. $pageIndex .'" name="addPermission">hinzufügen!</button>';
+                    $outputString .= '&nbsp;❌&nbsp;unberechtigt&nbsp;<button type="submit" value="'. $pageIndex .'" name="addPermission">hinzufügen!</button>';
                     $outputString .= '</form>';
                     $outputString .= '</td>';
                 }
@@ -62,7 +62,7 @@
         for($guestIndex = 0; $guestIndex < count($this->guestList); $guestIndex++){
             $outputString .= '<form method="POST" action="#">';
             $outputString .= '<label for="removeGuest">'.$this->guestList[$guestIndex]->getEmail().'&emsp;</label>';
-            $outputString .= '<button type="submit" value="'. $guestIndex .'" name="removeGuest">Gast entfernen!</button>';
+            $outputString .= '<button type="submit" value="'. $guestIndex .'" name="removeGuest">Gast entfernen!❌</button>';
             $outputString .= '</form>';
         }
         $outputString .= '</div>';
@@ -78,7 +78,7 @@
             for($guestIndex = 0; $guestIndex < count($this->guestList); $guestIndex++){
                 $outputString .= '<form method="POST" action="#">';
                 $outputString .= '<label for="removeGuest">'.$this->guestList[$guestIndex]->getEmail().'&emsp;</label>';
-                $outputString .= '<button type="submit" value="'. $guestIndex .'" name="removeGuest">Gast entfernen!</button>';
+                $outputString .= '<button type="submit" value="'. $guestIndex .'" name="removeGuest">Gast entfernen!❌</button>';
                 $outputString .= '</form>';
             }
             $outputString .= '</div>';
