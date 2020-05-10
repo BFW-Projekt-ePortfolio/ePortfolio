@@ -17,8 +17,15 @@
             <?php 
                 // Wenn über Command ausgeführt muss das genommen werden
                 $indexOfPageList = 0;
+                $checkBoxPageTitleString = "<p>Welche Seiten soll dieser Gast alles zusätzlich zu Ihrer Hauptseite sehen dürfen?</p>";
                 foreach($this->pageList as $page) {
-                     echo '<li><a href="./index.php?cmd=UserHome&page='.$indexOfPageList.'">'. $page->getTitle() ."</a></li>"; // Link zur jeweiligen Page?
+                     echo '<li><a href="./?cmd=UserHome&page='.$indexOfPageList.'">'. $page->getTitle() ."</a></li>"; // Link zur jeweiligen Page?
+
+                     if($indexOfPageList != 0){ // die erste Seite nicht zur Wahl stellen:
+                        $checkBoxPageTitleString .= '<input type="checkbox" name="page'.$indexOfPageList.'" value="'.$indexOfPageList.'">';
+                        $checkBoxPageTitleString .= '<label for="page'.$indexOfPageList.'">'.$page->getTitle().'</label><br>';
+                     }
+
                      $indexOfPageList++;
                 }
             ?>
