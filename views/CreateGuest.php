@@ -13,23 +13,18 @@
         </div>
         <ul>
              <!-- Die Navigationsleiste, horizontal, evtl mit foreach aus dem pages-Array ein li-Element erzeugen? -->
-            <li><a class="active" href="./?cmd=UserHome">Home</a></li>
+            <li><a class="active" href="./index.php?cmd=UserHome">Home</a></li>
             <?php 
                 // Wenn über Command ausgeführt muss das genommen werden
                 $indexOfPageList = 0;
-                $checkBoxPageTitleString = "<p>Welche Seiten soll dieser Gast alles zusätzlich zu Ihrer Hauptseite sehen dürfen?</p>";
                 foreach($this->pageList as $page) {
-                     echo '<li><a href="./?cmd=UserHome&page='.$indexOfPageList.'">'. $page->getTitle() ."</a></li>"; // Link zur jeweiligen Page?
-
-                     if($indexOfPageList != 0){ // die erste Seite nicht zur Wahl stellen:
-                        $checkBoxPageTitleString .= '<input type="checkbox" name="page'.$indexOfPageList.'" value="'.$page->getNummer().'">';
-                        $checkBoxPageTitleString .= '<label for="page'.$indexOfPageList.'">'.$page->getTitle().'</label><br>';
-                     }
-
+                     echo '<li><a href="./index.php?cmd=UserHome&page='.$indexOfPageList.'">'. $page->getTitle() ."</a></li>"; // Link zur jeweiligen Page?
                      $indexOfPageList++;
                 }
             ?>
-            <li><a href="./?cmd=UserSettings">Einstellungen</a></li>
+            <li><a href="./index.php?cmd=UserSettings">Einstellungen</a></li>
+            <li><a href="./index.php?cmd=AddPage">+</a></li>
+            <li><a href="index.php?cmd=Logout">Logout</a></li>
         </ul>
         <div id="main">
         Neuen Gast anlegen. <?= $this->error ?><br><br>
