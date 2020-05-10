@@ -13,16 +13,18 @@
         </div>
         <ul>
              <!-- Die Navigationsleiste, horizontal, evtl mit foreach aus dem pages-Array ein li-Element erzeugen? -->
-            <li><a class="active" href="./?cmd=UserHome">Home</a></li>
+            <li><a class="active" href="./index.php?cmd=UserHome">Home</a></li>
             <?php 
                 // Wenn über Command ausgeführt muss das genommen werden
                 $indexOfPageList = 0;
                 foreach($this->pageList as $page) {
-                     echo '<li><a href="./?cmd=UserHome&page='.$indexOfPageList.'">'. $page->getTitle() ."</a></li>"; // Link zur jeweiligen Page?
+                     echo '<li><a href="./index.php?cmd=UserHome&page='.$indexOfPageList.'">'. $page->getTitle() ."</a></li>"; // Link zur jeweiligen Page?
                      $indexOfPageList++;
                 }
             ?>
-            <li><a href="./?cmd=UserSettings">Einstellungen</a></li>
+            <li><a href="./index.php?cmd=UserSettings">Einstellungen</a></li>
+            <li><a href="./index.php?cmd=AddPage">+</a></li>
+            <li><a href="index.php?cmd=Logout">Logout</a></li>
         </ul>
         <div id="main">
             Hier erstellen Sie einen Gast und wählen welche Seiten Ihres Portfolios dieser sehen darf.
@@ -32,7 +34,7 @@
             <form action="?cmd=GuestManagement" method="post"><button type="submit" value="manageGuest" name="manageGuest">Gäste verwalten!</button></form>
             <br>
              Hier können Sie Ihr Profil verwalten.
-            <form action="?cmd=updateGuest" method="post"><button type="submit" value="updateUser" name="updateUser">Profil bearbeiten!</button></form>
+            <form action="?cmd=UpdateGuest" method="post"><button type="submit" value="updateUser" name="updateUser">Profil bearbeiten!</button></form>
             <br>
             
                 Hier soll der User Einstellungen vornehmen können. Wie Displaynamen ändern, Style ändern, Seite löschen, Account löschen usw.
