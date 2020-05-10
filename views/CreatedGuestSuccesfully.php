@@ -13,17 +13,18 @@
         </div>
         <ul>
              <!-- Die Navigationsleiste, horizontal, evtl mit foreach aus dem pages-Array ein li-Element erzeugen? -->
-            <li><a class="active" href="./?cmd=UserHome">Home</a></li>
+            <li><a class="active" href="./index.php?cmd=UserHome">Home</a></li>
             <?php 
                 // Wenn über Command ausgeführt muss das genommen werden
                 $indexOfPageList = 0;
-                $checkBoxPageTitleString = "<p>Welche Seiten soll dieser Gast alles zusätzlich zu Ihrer Hauptseite sehen dürfen?</p>";
                 foreach($this->pageList as $page) {
-                     echo '<li><a href="./?cmd=UserHome&page='.$indexOfPageList.'">'. $page->getTitle() ."</a></li>"; // Link zur jeweiligen Page?
+                     echo '<li><a href="./index.php?cmd=UserHome&page='.$indexOfPageList.'">'. $page->getTitle() ."</a></li>"; // Link zur jeweiligen Page?
                      $indexOfPageList++;
                 }
             ?>
-            <li><a href="./?cmd=UserSettings">Einstellungen</a></li>
+            <li><a href="./index.php?cmd=UserSettings">Einstellungen</a></li>
+            <li><a href="./index.php?cmd=AddPage">+</a></li>
+            <li><a href="index.php?cmd=Logout">Logout</a></li>
         </ul>
         <div id="main">
             <?= $this->message ?><br><br>
