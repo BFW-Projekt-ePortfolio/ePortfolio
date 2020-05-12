@@ -33,9 +33,10 @@
 
             // Hier stehen die für den Upload erlaubten MIME-Types
             $allowedMime = ["text/rtf", "text/richtext", "text/plain", "text/comma-separated-values", "image/tiff", "image/png", "image/jpeg", "image/gif", "image/bmp", 
-                            "image/x-bmp", "image/x-ms-bmp", "application/zip", "application/x-tar", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", 
-                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/rtf", "application/pdf", "application/msword", "application/mspowerpoint", 
-                            "application/msexcel", "application/gzip"];
+                            "image/x-bmp", "image/x-ms-bmp", "application/zip", "application/x-tar", "application/vnd.oasis.opendocument.text", 
+                            "application/vnd.oasis.opendocument.spreadsheet", "application/rtf", "application/pdf", "application/msword", "application/mspowerpoint", 
+                            "application/msexcel", "application/gzip", "audio/x-wav", "audio/mpeg", "audio/ogg", "audio/mp4", "audio/wav", "audio/x-midi", "audio/x-mpeg", "audio/", 
+                            "video/mpeg", "video/mp4", "video/ogg"];
 
 
             $alert = "";

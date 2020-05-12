@@ -40,6 +40,10 @@
 
                         if(!strstr($mimeType, "image") == false) {
                             $output = '<a href="data:'.$mimeType.';base64,'.$tmp.'" target="_blank"><img src="data:'.$mimeType.';base64,'.$tmp.'"></a>';
+                        } else if(!strstr($mimeType, "audio") == false) {
+                            $output = '<audio controls><source src="data:'.$mimeType.';base64,'.$tmp.'" type="'.$mimeType.'">Der Browser unterstütz das Format '.$mimeType.' nicht!</audio>';
+                        } else if(!strstr($mimeType, "video") == false) {
+                            $output = '<video controls><source src="data:'.$mimeType.';base64,'.$tmp.'" type="'.$mimeType.'">Der Browser unterstütz das Format '.$mimeType.' nicht!</video>';
                         } else {
                             $output = '<a href="data:'.$mimeType.';base64,'.$tmp.'" target="_blank">'. $content->getContent() .'</a>';
                         }
