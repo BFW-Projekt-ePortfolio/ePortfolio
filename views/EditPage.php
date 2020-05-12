@@ -62,12 +62,6 @@
                     }
                 }
             ?>
-            <div id="content">
-            <form method="POST" action="#">
-            Beschreibung:<br><input type="text" name="descriptionUpload"><br><br>
-            Hier soll noch ein Feld für den Dateiupload hin. Ich arbeite daran :P
-            </form>
-            </div>
         </div>
         <footer>&copy; 2020 M. Mandler & D. Zielke</footer>
     </body>
