@@ -33,10 +33,12 @@
                 Neuer Titel: <br><input type="text" name="newTitle"><br>
                 <input type="submit" name="changeTitle" value="Titel ändern"> <?= $this->alert ?>
             </form>
+            <br>
+            <br>
+            <?= $this->addContentLink ?>
 
             <?php
 
-                $tmp = null;
                 foreach($this->requestedContent as $content) {
 
                     $file = $this->filepath . $content->getContent();
@@ -45,25 +47,19 @@
 
                         $mimeType = mime_content_type($file);
 
-                        switch($mimeType) {
-                            case "image/gif":
-                                $tmp = base64_encode(file_get_contents($file));
-                                echo "<div id='content'><a href='index.php?cmd=RemoveContent&page=" . $request->getParameter('page') . "&content=" . $content->getNummer() . "'>löschen</a><br><a href='data:image/gif;base64,$tmp' target='_blank'><img src='data:image/gif;base64,$tmp'></a><br><br>" . $content->getContentDescription() . "<br><a href='index.php?cmd=EditDescription&page=" . $request->getParameter('page') . "&content=" . $content->getNummer() . "'>Beschreibung bearbeiten</a></div>";
-                            break;
-                            case "image/jpeg":
-                                $tmp = base64_encode(file_get_contents($file));
-                                echo "<div id='content'><a href='index.php?cmd=RemoveContent&page=" . $request->getParameter('page') . "&content=" . $content->getNummer() . "'>löschen</a><br><a href='data:image/jpeg;base64,$tmp' target='_blank'><img src='data:image/jpeg;base64,$tmp'></a><br><br>" . $content->getContentDescription() . "<br><a href='index.php?cmd=EditDescription&page=" . $request->getParameter('page') . "&content=" . $content->getNummer() . "'>Beschreibung bearbeiten</a></div>";
-                            break;
-                            case "application/pdf":
-                                $tmp = base64_encode(file_get_contents($file));
-                                echo "<div id='content'><a href='index.php?cmd=RemoveContent&page=" . $request->getParameter('page') . "&content=" . $content->getNummer() . "'>löschen</a><br><a href='data:application/pdf;base64,$tmp' target='_blank'>" . $content->getContent() . "</a><br><br>" . $content->getContentDescription() . "<br><a href='index.php?cmd=EditDescription&page=" . $request->getParameter('page') . "&content=" . $content->getNummer() . "'>Beschreibung bearbeiten</a></div>";
+                        $tmp = base64_encode(file_get_contents($file));
 
-                            // kann man beliebig fortführen
-                            // WICHTIG: Beim Datei Upload muss geprüft werden welche MIME Types hochgeladen werde. am besten keine html oder php oder áhnliches
-                            //          Evtl auch Dateigröße beschränken
+                        $output = "<a href='data:" . $mimeType . ";base64," . $tmp . "'>" . $content->getContent() . "</a>";
 
+                        if(strpos($mimeType, "image") >= 0) {
+                            $output = "<a href='data:" . $mimeType . ";base64," . $tmp . "' target='_blank'><img src='data:" . $mimeType . ";base64," . $tmp . "'></a>";
                         }
-                    } 
+
+                        if($mimeType === "application/pdf") {
+                            $output = "<a href='data:application/pdf;base64," . $tmp . "' target='_blank'>" . $content->getContent() . "</a>";
+                        }
+                        echo "<div id='content'><br>" . $output . "<br><a href='index.php?cmd=RemoveContent&page=" . $request->getParameter('page') . "&content=" . $content->getNummer() . "'>löschen</a><br><a href='index.php?cmd=EditDescription&page=" . $request->getParameter('page') . "&content=" . $content->getNummer() . "'>Beschreibung bearbeiten</a></div>";
+                    }
                 }
             ?>
             <div id="content">

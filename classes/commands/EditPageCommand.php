@@ -46,7 +46,8 @@
                 }
             }
 
-            // Es funktioniert, aber die Seite im Browser lädt die änderung nicht sofort. man muss sich abmelden und neuanmelden. 
+            $addContentLink = "<a href='./index.php?cmd=AddContent&page=" .$requestedPageId . "'>Inhalt hinzufügen</a><br><br>";
+
             if($request->issetParameter('changeTitle')) {
                 $pageDAO = new PageDAO();
                 $newTitle = $request->getParameter('newTitle');
@@ -64,8 +65,6 @@
                     header('location: index.php?cmd=EditPage&page=' . $request->getParameter('page'));
                     exit;
                     
-                    // der currentUser muss hier noch seine aktuellen Seiten beziehen damit diese im Browser ohne Neuanmeldung angezeigt werden.
-
                 } else {
                     $alert = "da hat was nicht geklappt!";
                 }
@@ -87,6 +86,7 @@
             $template->assign('requestedTitle', $requestedTitle);
             $template->assign('filepath', $filepath);
             $template->assign('alert', $alert);
+            $template->assign('addContentLink', $addContentLink);
             $template->render( $request, $response);
         }
     }

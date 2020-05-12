@@ -34,18 +34,20 @@
             $pageList = $currentUser->getPages();
             $ContentList = $pageList[0]->getContentList();
             $requestedTitle = $pageList[0]->getTitle();
+            $requestedPageId = $pageList[0]->getNummer();
             $editLink = "<a href='./index.php?cmd=EditPage&page=0'>Seite bearbeiten</a><br>";
-            $addContentLink = "<a href='./index.php?cmd=AddContent&page=0'>Inhalt hinzufügen</a><br><br>";
 
                 if($request->issetParameter('page')){
                     $index = $request->getParameter('page');
                     if($index >= 0 && $index < count($pageList) && is_numeric($index)){
                         $ContentList = $pageList[$index]->getContentList();
                         $requestedTitle = $pageList[$index]->getTitle();
+                        $requestedPageId = $pageList[$index]->getNummer();
                         $editLink = "<a href='./index.php?cmd=EditPage&page=" . $index . "'>Seite bearbeiten</a><br>";
-                        $addContentLink = "<a href='./index.php?cmd=AddContent&page=" .$index . "'>Inhalt hinzufügen</a><br><br>";
+                        
                     }
                 }
+            $addContentLink = "<a href='./index.php?cmd=AddContent&page=" .$requestedPageId . "'>Inhalt hinzufügen</a><br><br>";
 
             // Hier müsste das was unter style in der Tabelle user hinterlegt ist geladen werden. Wie z. B.
             // $style = $currentUser->getStyle();

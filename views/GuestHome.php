@@ -25,11 +25,32 @@
         </ul>
         <div id="main">
             <div id="content">
-                <?php
-                foreach($this->requestedContent as $content){
-                    echo $content->getContentDescription();
-                } 
-                ?>
+            <?php
+
+                $tmp = null;
+                foreach($this->requestedContent as $content) {
+
+                    $file = $this->filepath . $content->getContent();
+
+                    if(file_exists($file)) {
+
+                        $mimeType = mime_content_type($file);
+
+                        $tmp = base64_encode(file_get_contents($file));
+
+                        $output = "<a href='data:" . $mimeType . ";base64," . $tmp . "'>" . $content->getContent() . "</a>";
+
+                        if(strpos($mimeType, "image") >= 0) {
+                            $output = "<a href='data:" . $mimeType . ";base64," . $tmp . "' target='_blank'><img src='data:" . $mimeType . ";base64," . $tmp . "'></a>";
+                        }
+
+                        if($mimeType === "application/pdf") {
+                            $output = "<a href='data:application/pdf;base64," . $tmp . "' target='_blank'>" . $content->getContent() . "</a>";
+                        }
+                        echo "<div id='content'><br>" . $output . "<br><br>" . $content->getContentDescription() . "<br></div>";
+                    }
+                }
+            ?>
             </div>
         </div>
         <footer>&copy; 2020 M. Mandler & D. Zielke</footer>
