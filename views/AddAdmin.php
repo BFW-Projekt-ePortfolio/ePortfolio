@@ -23,11 +23,8 @@
         </ul>
         <div id="main">
             <div id="description">
-                Neuen Admin anlegen. <?= $this->error ?> <br><br>
+                Neuen Admin anlegen.<br><br><div style="color:red"> <?= $this->error ?> </div><br>
                 <form method="POST" action="#">
-                    Vorname:<br><input type="text" name="firstname"><br>
-                    Nachname:<br><input type="text" name="lastname"><br>
-                    Displayname:<br><input type="text" name="displayname"><br>
                     E-Mail:<br><input type="text" name="email"><br>
                     Passwort:<br><input type="password" name="password"><br>
                     Passwort wiederholen:<br><input type="password" name="pwRepeat"><br>
