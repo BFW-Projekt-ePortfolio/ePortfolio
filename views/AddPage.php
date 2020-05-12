@@ -12,19 +12,19 @@
             Das ePortfolio von <?= $this->displayname ?>!
         </div>
         <ul>
-             <!-- Die Navigationsleiste, horizontal, evtl mit foreach aus dem pages-Array ein li-Element erzeugen? -->
-            <li><a class="active" href="./?cmd=UserHome">Home</a></li>
+            <!-- Die Navigationsleiste, horizontal, evtl mit foreach aus dem pages-Array ein li-Element erzeugen? -->
+            <!-- <li><a class="active" href="./index.php?cmd=UserHome">Home</a></li> -->
             <?php 
                 // Wenn über Command ausgeführt muss das genommen werden
                 $indexOfPageList = 0;
                 foreach($this->pageList as $page) {
-                     echo '<li><a href="./?cmd=UserHome&page='.$indexOfPageList.'">'. $page->getTitle() ."</a></li>"; // Link zur jeweiligen Page?
+                     echo '<li><a href="./index.php?cmd=UserHome&page='.$indexOfPageList.'">'. $page->getTitle() ."</a></li>"; // Link zur jeweiligen Page?
                      $indexOfPageList++;
                 }
             ?>
-            <li><a href="./?cmd=UserSettings">Einstellungen</a></li>
-            <li><a href="./?cmd=AddPage">±</a></li>
-            <li><a href="index.php?cmd=Logout">Logout</a></li>
+            <li><a href="./index.php?cmd=AddPage">±</a></li>
+            <li style="float: right"><a href="index.php?cmd=Logout">Logout</a></li>
+            <li style="float: right"><a href="./index.php?cmd=UserSettings">Einstellungen</a></li>
         </ul>
         <div id="main">
                 <br>
