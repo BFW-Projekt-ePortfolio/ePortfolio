@@ -33,8 +33,8 @@
             $pageList = $currentUser->getPages();
 
             $allertText = "";
-            if(count($pageList) < 10){ // Seiten Anzahl auf 10 ? begrenzt
-                if($request->issetParameter('createPage')){
+            if($request->issetParameter('createPage')){
+                if(count($pageList) < 10){ // Seiten Anzahl auf 10 ? begrenzt
                     $requestedTitle = $request->getParameter('pageInput');
                     if($requestedTitle != ""){
                         //create Page
@@ -57,9 +57,39 @@
                     }
 
                 }
+                else{
+                    $allertText .= '<div style="color:red; text-align: center;">Portfolios sind derzeit auf maximal 10 Seiten begrenzt!</div>';
+                }
             }
-            else{
-                $allertText .= '<div style="color:red; text-align: center;">Portfolios sind derzeit auf maximal 10 Seiten begrenzt!</div>';
+            if($request->issetParameter('deletePage')){
+                $pageId = $pageList[$request->getParameter('deletePage')]->getNummer();
+                $pageTitle = $pageList[$request->getParameter('deletePage')]->getTitle();
+                $userDAO = new UserDAO;
+                $pageDAO = new PageDAO;
+                $guestList = $userDAO->readGuestListOfUserWithTheirPages($currentUser->getId());
+                foreach($guestList as $guest){
+                    $guestPages = $guest->getPages();
+                    foreach($guestPages as $g_Page){
+                        if($g_Page->getNummer() == $pageId){
+                            // permission des Gastes entfernen
+                            $pageDAO->deletePermissionOfGuestForPage($guest->getId(), $pageId);
+                        }
+                    }
+                } // jetzt sind alle permissions der Gäste für diese Seite gelöscht
+                // jetzt die eigene permission löschen
+                $pageDAO->deletePermissionOfGuestForPage($currentUser->getId(), $pageId);
+                // und dann endlich die Seite selbst löschen
+                $pageDAO->deletePage($pageId);
+                // und jetzt das Objekt $currentUser updaten
+                $currentUser->setPages($pageDAO->readPagesOfUserWithContent($currentUser->getId()));
+                // und dann die session aktualisieren
+                unset($_SESSION['user']);
+                $_SESSION['user'] = serialize($currentUser);
+                // und dann die pagelist für die SeitenAnsicht updaten
+                unset($pageList);
+                $pageList = $currentUser->getPages();
+                // und ne meldung erzeugen mit dem allertText
+                $allertText .= '<div style="color:green; text-align: center;">Die Seite '.$pageTitle.' wurde erfolgreich gelöscht!</div>';
             }
   
 
