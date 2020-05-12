@@ -27,17 +27,18 @@
             <li><a href="index.php?cmd=Logout">Logout</a></li>
         </ul>
         <div id="main">
-                <?= $this->allertText ?>
-                <p>Hier Können Sie eine neue Seite in Ihrem Portfolio erstellen: (Maximal 10 Seiten)</p>
-                <form method="POST" action="#">
-                <p>Bitte wählen Sie zuerst einen Namen für die neue Seite</p>
-                <label for="pageInput">Namen der Seite hier eingeben:</label>
-                <input type="text" name="pageInput"><br>
                 <br>
-                <label for="createPage">Im nächsten Schritt können Sie Ihre neue Seite einrichten, klicken Sie dazu auf den Button:</label>
+                <?= $this->allertText ?>
+                <div>Hier Können Sie eine <strong>neue Seite</strong> in Ihrem Portfolio <strong>erstellen:</strong> (Maximal 10 Seiten)<br>
+                Bitte wählen Sie zuerst einen Namen für die neue Seite</div><br>
+                <form method="POST" action="#">
+                <label for="pageInput"><strong>Namen der Seite hier eingeben:</strong></label>
+                <input type="text" name="pageInput"><br>
+                <label for="createPage">Im nächsten Schritt können Sie Ihre neue Seite einrichten, <strong>klicken Sie dazu auf den Button:</strong></label>
                 <button type="submit" name="createPage">erstellen und weiter!</button>
                 </form>
                 <br>
+                <hr style="height:2px;border-width:0;color:gray;background-color:gray">
                 <br>
                 <?php
                     if(count($this->pageList) > 1){
@@ -48,7 +49,7 @@
                                 $outputString .= '<tr>';
                                 $outputString .= '<form method="POST" action="#">';
                                 $outputString .= '<td>'.$page->getTitle().':</td>';
-                                $outputString .= '<td style="text-align: center"><button type="submit" name="deletePage" value="'.$indexOfPageList.'">Seite löschen!</button></td>';
+                                $outputString .= '<td style="text-align: center"><button type="submit" name="deletePage" value="'.$indexOfPageList.'">Seite löschen!❌</button></td>';
                                 $outputString .= '</form>';
                                 $outputString .= '</tr>';
                             }
