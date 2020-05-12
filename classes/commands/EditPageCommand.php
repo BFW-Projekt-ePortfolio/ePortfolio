@@ -46,7 +46,7 @@
                 }
             }
 
-            $addContentLink = "<a href='./index.php?cmd=AddContent&page=" .$requestedPageId . "'>Inhalt hinzufügen</a><br><br>";
+            $addContentLink = "<a href='./index.php?cmd=AddContent&page=" .$pageId . "'>Inhalt hinzufügen</a><br><br>";
 
             if($request->issetParameter('changeTitle')) {
                 $pageDAO = new PageDAO();
