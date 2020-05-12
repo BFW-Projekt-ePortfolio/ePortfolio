@@ -31,6 +31,30 @@
 
             $pageList = $currentUser->getPages();
 
+            $confirmText = "";
+            if($request->issetParameter('deleteAcc')){
+                // user wants to delete his Acc - asking for a confirmation
+                $confirmText .= '<br><div style="color: red; text-align: center;">Sind Sie sich wirklich sicher?</div><br>';
+                $confirmText .= '<div style="text-align: center">Es gibt danach keinen Weg zur Wiederherstellung</div>';
+                $confirmText .= '<form action="#" method="post" style="text-align:center"><button type="submit" value="cancel" name="cancel">zurück!</button></form>';
+                $confirmText .= '<form action="#" method="post" style="text-align:center"><button type="submit" value="ConfirmAccDelete" name="ConfirmAccDelete">Account entgültig löschen!</button></form>';
+                $confirmText .= '<br>';
+            }
+            if($request->issetParameter('ConfirmAccDelete')){
+                // confirmed - deleting acc
+                $userDAO = new UserDAO;
+                $userDAO->deleteUser($currentUser->getId());
+                // deleting files
+                if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                    unlink(USERS_DIR . $currentUser->getId());
+                } else {
+                    shell_exec('rm ' . USERS_DIR . $currentUser->getId());
+                }
+                // and bye bye
+                header("location: ./?cmd=Logout");
+                exit;
+            }
+
             // Hier muss noch einiges rein damit der User seinen Account und seine Pages verwalten kann. Seiten bearbeiten macht er an anderer Stelle
 
             // Hier müsste das was unter style in der Tabelle user hinterlegt ist geladen werden. Wie z. B.
@@ -44,6 +68,7 @@
             $template->assign('style', $style);
             $template->assign('pageList', $pageList);
             $template->assign('displayname', $displayname);
+            $template->assign('deleteAccText', $confirmText);
             $template->render( $request, $response);
             
         }
