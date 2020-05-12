@@ -40,21 +40,23 @@
                 <br>
                 <br>
                 <?php
-                    $outputString = "<table><caption>Hier können Sie eine Seite Ihres Portfolios löschen:</caption>";
-                    $indexOfPageList = 0;
-                    foreach($this->pageList as $page){
-                        if($indexOfPageList != 0){
-                            $outputString .= '<tr>';
-                            $outputString .= '<form method="POST" action="#">';
-                            $outputString .= '<td>'.$page->getTitle().':</td>';
-                            $outputString .= '<td><button type="submit" name="deletePage" value="'.$indexOfPageList.'">Seite löschen!</button></td>';
-                            $outputString .= '</form>';
-                            $outputString .= '</tr>';
+                    if(count($this->pageList) > 1){
+                        $outputString = '<table style="min-width: 30%"><caption>Hier können Sie eine Seite Ihres Portfolios löschen:</caption>';
+                        $indexOfPageList = 0;
+                        foreach($this->pageList as $page){
+                            if($indexOfPageList != 0){
+                                $outputString .= '<tr>';
+                                $outputString .= '<form method="POST" action="#">';
+                                $outputString .= '<td>'.$page->getTitle().':</td>';
+                                $outputString .= '<td style="text-align: center"><button type="submit" name="deletePage" value="'.$indexOfPageList.'">Seite löschen!</button></td>';
+                                $outputString .= '</form>';
+                                $outputString .= '</tr>';
+                            }
+                            $indexOfPageList++;
                         }
-                        $indexOfPageList++;
+                        $outputString .= "</table>";
+                        echo $outputString;
                     }
-                    $outputString .= "</table>";
-                    echo $outputString;
                 ?>
 
         </div>
