@@ -45,12 +45,12 @@
 
                         $tmp = base64_encode(file_get_contents($file));
 
-                        if(strpos($mimeType, "image") >= 0) {
+                        if(!strstr($mimeType, "image") == false) {
                             $output = '<a href="data:'.$mimeType.';base64,'.$tmp.'" target="_blank"><img src="data:'.$mimeType.';base64,'.$tmp.'"></a>';
                         } else {
                             $output = '<a href="data:'.$mimeType.';base64,'.$tmp.'" target="_blank">'. $content->getContent() .'</a>';
                         }
-                            echo "<div id='content'><br>" . $output . "<br><br>" . $content->getContentDescription() . "<br></div>" . var_dump($mimeType);
+                            echo "<div id='content'><br>" . $output . "<br><br>" . $content->getContentDescription() . "<br></div>";
                     }
                 }
             ?>
