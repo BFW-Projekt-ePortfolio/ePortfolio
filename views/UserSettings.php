@@ -1,3 +1,24 @@
+<?php
+    $outputString = "";
+    if($this->deleteAccText != ""){
+        $outputString = $this->deleteAccText;
+    }
+    else{
+        $outputString .= 'Hier erstellen Sie einen Gast und wählen welche Seiten Ihres Portfolios dieser sehen darf.';
+        $outputString .= '<form action="?cmd=AddGuest" method="post"><button type="submit" value="createGuest" name="createGuest">Gast erstellen!</button></form>';
+        $outputString .= '<br>Hier können Sie einen Gast löschen oder dessen Berechtigungen verwalten.';
+        $outputString .= '<form action="?cmd=GuestManagement" method="post"><button type="submit" value="manageGuest" name="manageGuest">Gäste verwalten!</button></form>';
+        $outputString .= '<br>Hier können Sie Ihr Profil verwalten.';
+        $outputString .= '<form action="?cmd=UpdateGuest" method="post"><button type="submit" value="updateUser" name="updateUser">Profil bearbeiten!</button></form>';
+        $outputString .= '<br>';
+        $outputString .= '<br>Hier können Sie Ihr Portfolio löschen!';
+        $outputString .= '<br>Es werden alle Daten gelöscht, die mit Ihrem Konto in verbindung stehen.';
+        $outputString .= '<br>Sie werden ausgeloggt und weder Sie noch einer Ihrer Gäste wird sich erneut einloggen können.';
+        $outputString .= '<form action="#" method="post"><button type="submit" value="deleteAcc" name="deleteAcc">Account löschen!</button></form>';
+        $outputString .= '<br>';
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -27,17 +48,7 @@
             <li><a href="index.php?cmd=Logout">Logout</a></li>
         </ul>
         <div id="main">
-            Hier erstellen Sie einen Gast und wählen welche Seiten Ihres Portfolios dieser sehen darf.
-            <form action="?cmd=AddGuest" method="post"><button type="submit" value="createGuest" name="createGuest">Gast erstellen!</button></form>
-            <br>
-            Hier können Sie einen Gast löschen oder dessen Berechtigungen verwalten.
-            <form action="?cmd=GuestManagement" method="post"><button type="submit" value="manageGuest" name="manageGuest">Gäste verwalten!</button></form>
-            <br>
-             Hier können Sie Ihr Profil verwalten.
-            <form action="?cmd=UpdateGuest" method="post"><button type="submit" value="updateUser" name="updateUser">Profil bearbeiten!</button></form>
-            <br>
-            
-                Hier soll der User Einstellungen vornehmen können. Wie Displaynamen ändern, Style ändern, Seite löschen, Account löschen usw.
+                <?= $outputString ?>
         </div>
         <footer>&copy; 2020 M. Mandler & D. Zielke</footer>
     </body>
