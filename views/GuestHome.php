@@ -38,14 +38,10 @@
 
                         $tmp = base64_encode(file_get_contents($file));
 
-                        $output = "<a href='data:" . $mimeType . ";base64," . $tmp . "'>" . $content->getContent() . "</a>";
-
                         if(strpos($mimeType, "image") >= 0) {
-                            $output = "<a href='data:" . $mimeType . ";base64," . $tmp . "' target='_blank'><img src='data:" . $mimeType . ";base64," . $tmp . "'></a>";
-                        }
-
-                        if($mimeType === "application/pdf") {
-                            $output = "<a href='data:application/pdf;base64," . $tmp . "' target='_blank'>" . $content->getContent() . "</a>";
+                            $output = '<a href="data:'.$mimeType.';base64,'.$tmp.'" target="_blank"><img src="data:'.$mimeType.';base64,'.$tmp.'"></a>';
+                        } else {
+                            $output = '<a href="data:'.$mimeType.';base64,'.$tmp.'" target="_blank">'. $content->getContent() .'</a>';
                         }
                         echo "<div id='content'><br>" . $output . "<br><br>" . $content->getContentDescription() . "<br></div>";
                     }
