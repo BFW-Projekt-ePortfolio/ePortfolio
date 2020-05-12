@@ -23,13 +23,12 @@
                 }
             ?>
             <li><a href="./?cmd=UserSettings">Einstellungen</a></li>
-            <li><a href="./?cmd=AddPage">+</a></li>
+            <li><a href="./?cmd=AddPage">±</a></li>
             <li><a href="index.php?cmd=Logout">Logout</a></li>
         </ul>
         <div id="main">
                 <?= $this->allertText ?>
                 <p>Hier Können Sie eine neue Seite in Ihrem Portfolio erstellen: (Maximal 10 Seiten)</p>
-                <br>
                 <form method="POST" action="#">
                 <p>Bitte wählen Sie zuerst einen Namen für die neue Seite</p>
                 <label for="pageInput">Namen der Seite hier eingeben:</label>
@@ -38,6 +37,26 @@
                 <label for="createPage">Im nächsten Schritt können Sie Ihre neue Seite einrichten, klicken Sie dazu auf den Button:</label>
                 <button type="submit" name="createPage">erstellen und weiter!</button>
                 </form>
+                <br>
+                <br>
+                <?php
+                    $outputString = "<table><caption>Hier können Sie eine Seite Ihres Portfolios löschen:</caption>";
+                    $indexOfPageList = 0;
+                    foreach($this->pageList as $page){
+                        if($indexOfPageList != 0){
+                            $outputString .= '<tr>';
+                            $outputString .= '<form method="POST" action="#">';
+                            $outputString .= '<td>'.$page->getTitle().':</td>';
+                            $outputString .= '<td><button type="submit" name="deletePage" value="'.$indexOfPageList.'">Seite löschen!</button></td>';
+                            $outputString .= '</form>';
+                            $outputString .= '</tr>';
+                        }
+                        $indexOfPageList++;
+                    }
+                    $outputString .= "</table>";
+                    echo $outputString;
+                ?>
+
         </div>
         <footer>&copy; 2020 M. Mandler & D. Zielke</footer>
     </body>
