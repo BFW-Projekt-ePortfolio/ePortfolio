@@ -23,9 +23,21 @@
                 }
             ?>
             <li><a href="./?cmd=UserSettings">Einstellungen</a></li>
+            <li><a href="./?cmd=AddPage">+</a></li>
+            <li><a href="index.php?cmd=Logout">Logout</a></li>
         </ul>
         <div id="main">
-                Hier kann der User eine neue Seite anlegen. Sollen die auf eine bestimmte Zahl begrenzt werden?
+                <?= $this->allertText ?>
+                <p>Hier Können Sie eine neue Seite in Ihrem Portfolio erstellen: (Maximal 10 Seiten)</p>
+                <br>
+                <form method="POST" action="#">
+                <p>Bitte wählen Sie zuerst einen Namen für die neue Seite</p>
+                <label for="pageInput">Namen der Seite hier eingeben:</label>
+                <input type="text" name="pageInput"><br>
+                <br>
+                <label for="createPage">Im nächsten Schritt können Sie Ihre neue Seite einrichten, klicken Sie dazu auf den Button:</label>
+                <button type="submit" name="createPage">erstellen und weiter!</button>
+                </form>
         </div>
         <footer>&copy; 2020 M. Mandler & D. Zielke</footer>
     </body>
