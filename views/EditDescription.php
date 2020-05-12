@@ -23,7 +23,7 @@
                 }
             ?>
             <li><a href="./?cmd=UserSettings">Einstellungen</a></li>
-            <li><a href="./?cmd=AddPage">+</a></li>
+            <li><a href="./?cmd=AddPage">±</a></li>
             <li><a href="index.php?cmd=Logout">Logout</a></li>
         </ul>
         <div id="main">
