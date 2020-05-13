@@ -176,7 +176,7 @@ class PageDAO{
     public function deletePage($pageId){
         $page_id = "".$pageId;
         // Content muss mitgelöscht werden
-        $contentDao = new ContentDao;
+        $contentDao = new ContentDAO;
         $contentDao->deleteAllContentOfPage($page_id);
         // Jetzt wird die Seite gelöscht
         $ok = 0;
@@ -196,7 +196,7 @@ class PageDAO{
     public function deleteAllPagesOfUser($userId){
         $user_id = "".$userId;
         // der Content muss erst gelöscht werden.
-        $contentDao = new ContentDao;
+        $contentDao = new ContentDAO;
         $myPages = $this->readPagesOfUser($user_id);
         
         foreach($myPages as $page){
@@ -219,7 +219,7 @@ class PageDAO{
 
     public function deleteAllPagesGivenAllPagesOfUser($pageList){
         // der Content muss erst gelöscht werden.
-        $contentDao = new ContentDao;
+        $contentDao = new ContentDAO;
         
         foreach($pageList as $page){
             $page_id = $page->getNummer();
