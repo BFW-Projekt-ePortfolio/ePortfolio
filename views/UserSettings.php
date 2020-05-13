@@ -4,14 +4,14 @@
         $outputString = $this->deleteAccText;
     }
     else{
-        $outputString .= 'Hier erstellen Sie einen Gast und wählen welche Seiten Ihres Portfolios dieser sehen darf.';
+        $outputString .= 'Hier <strong>erstellen</strong> Sie einen <strong>Gast</strong> und wählen welche Seiten Ihres Portfolios dieser sehen darf.';
         $outputString .= '<form action="?cmd=AddGuest" method="post"><button type="submit" value="createGuest" name="createGuest">Gast erstellen!</button></form>';
-        $outputString .= '<br>Hier können Sie einen Gast löschen oder dessen Berechtigungen verwalten.';
+        $outputString .= '<br>Hier können Sie einen <strong>Gast löschen</strong> oder dessen <strong>Berechtigungen verwalten</strong>.';
         $outputString .= '<form action="?cmd=GuestManagement" method="post"><button type="submit" value="manageGuest" name="manageGuest">Gäste verwalten!</button></form>';
-        $outputString .= '<br>Hier können Sie Ihr Profil verwalten.';
+        $outputString .= '<br>Hier können Sie Ihr <strong>Profil verwalten</strong>.';
         $outputString .= '<form action="?cmd=UpdateGuest" method="post"><button type="submit" value="updateUser" name="updateUser">Profil bearbeiten!</button></form>';
         $outputString .= '<br>';
-        $outputString .= '<br>Hier können Sie Ihr Portfolio löschen!';
+        $outputString .= '<br>Hier können Sie Ihr <strong>Portfolio löschen!</strong>';
         $outputString .= '<br>Es werden alle Daten gelöscht, die mit Ihrem Konto in verbindung stehen.';
         $outputString .= '<br>Sie werden ausgeloggt und weder Sie noch einer Ihrer Gäste wird sich erneut einloggen können.';
         $outputString .= '<form action="#" method="post"><button type="submit" value="deleteAcc" name="deleteAcc">Account löschen!</button></form>';
