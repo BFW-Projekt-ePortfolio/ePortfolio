@@ -43,7 +43,7 @@
             $view = 'GuestHome';
             $style = "default"; // provisorisch
 
-            $filepath = USERS_DIR . $owner ."/";
+            $filepath = USERS_DIR . $owner->getId() ."/";
 
             $template = new HtmlTemplateView($view);
             
