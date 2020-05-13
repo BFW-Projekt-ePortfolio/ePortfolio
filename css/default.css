@@ -1,9 +1,14 @@
 /* Hier soll das default-theme rein, da standardmäßig geladen wird, wenn der User keines ausgewählt hat */
+html {
+  height: 100vh;
+}
+
 body {
     background-color: #eff1f2;
     /* background-color: black; */
     font-family: sans-serif;
     font-size: 1rem;
+    min-height: 100vh;
 }
 
 ul {
@@ -37,6 +42,7 @@ ul {
 #main {
     background-color: #ccd2d6;
     padding: 15px;
+    min-height: 62vh;
 }
 
 #header {
