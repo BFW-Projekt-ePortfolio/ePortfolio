@@ -41,11 +41,11 @@
 
             $alert = "";
 
-            if($request->issetParameter('save')) {
+            if($request->issetParameter('saveFile')) {
 
                 $uploadDir = USERS_DIR . $currentUser->getId() . "/";
 
-                $description = $request->getParameter('description');
+                $description = $request->getParameter('descriptionFile');
                 $pageId = $request->getParameter('page');
 
                 // Code zum Dateiupload
@@ -96,6 +96,32 @@
                     } else {
                         $alert = "Dateien vom Typ " . $mimeType .  " sind nicht zulässig!";
                     }
+                }
+            }
+
+            if($request->issetParameter('saveNoFile')) {
+                $description = $request->getParameter('descriptionNoFile');
+                $pageId = $request->getParameter('page');
+
+                $contentDAO = new ContentDAO();
+
+                if($contentDAO->createContent($pageId, $description, null, null) >= 0) {
+
+                    $userDAO = new UserDAO();
+
+                    $pageDAO = new PageDAO();
+    
+                    $updatedPagesList = $pageDAO->readPagesOfUserWithContent($currentUser->getId());
+    
+                    $currentUser->setPages($updatedPagesList);
+    
+                    unset($_SESSION['user']);
+    
+                    $_SESSION['user'] = serialize($currentUser);
+
+                    $alert = "Dateiupload erfolgreich!";
+                } else {
+                    $alert = "Fehler beim Schreiben in die Datenbank!";
                 }
             }
 

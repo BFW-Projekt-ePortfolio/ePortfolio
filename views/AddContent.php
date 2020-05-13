@@ -27,13 +27,25 @@
             <li style="float: right"><a href="./index.php?cmd=UserSettings">Einstellungen</a></li>
         </ul>
         <div id="main">
-                Hier kann der User neuen Content hinzufügen.<br><br>
+                <h3>Neuen Inhalt hinzufügen:</h3><br>
+                <?= $this->alert ?>
+                <br><br>
 
+                <strong>Mit Dateiupload:</strong>
                 <form enctype="multipart/form-data" action="#" method="POST">
                     Datei: <br><input name="userfile" type="file"><br><br>
-                    Beschreibung: <br><input type="text" name="description"><br>
-                    <input type="submit" name="save" value="speichern">
-                    <input type="submit" name="cancel" value="abbrechen"><?= $this->alert ?>
+                    Beschreibung: <br><input type="text" name="descriptionFile"><br>
+                    <input type="submit" name="saveFile" value="speichern">
+                    <input type="submit" name="cancel" value="abbrechen">
+                </form>
+                <br>
+                <br>
+
+                <strong>Ohne Dateiupload:</strong>
+                <form action="#" method="POST">
+                    Beschreibung: <br><input type="text" name="descriptionNoFile"><br>
+                    <input type="submit" name="saveNoFile" value="speichern">
+                    <input type="submit" name="cancel" value="abbrechen">
                 </form>
         </div>
         <footer>&copy; 2020 M. Mandler & D. Zielke</footer>

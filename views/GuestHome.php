@@ -31,25 +31,29 @@
                 $tmp = null;
                 foreach($this->requestedContent as $content) {
 
-                    $file = $this->filepath . $content->getContent();
+                    if(!$content->getContent() == null) {
+                        $file = $this->filepath . $content->getContent();
 
-                    if(file_exists($file)) {
+                        if(file_exists($file)) {
 
-                        $mimeType = mime_content_type($file);
+                            $mimeType = mime_content_type($file);
 
-                        $tmp = base64_encode(file_get_contents($file));
+                            $tmp = base64_encode(file_get_contents($file));
 
-                        if(!strstr($mimeType, "image") == false) {
-                            $output = '<a href="data:'.$mimeType.';base64,'.$tmp.'" target="_blank"><img src="data:'.$mimeType.';base64,'.$tmp.'"></a>';
-                        } else if(!strstr($mimeType, "audio") == false) {
-                            $output = '<audio controls><source src="data:'.$mimeType.';base64,'.$tmp.'" type="'.$mimeType.'">Der Browser unterstütz das Format '.$mimeType.' nicht!</audio>';
-                        } else if(!strstr($mimeType, "video") == false) {
-                            $output = '<video controls><source src="data:'.$mimeType.';base64,'.$tmp.'" type="'.$mimeType.'">Der Browser unterstütz das Format '.$mimeType.' nicht!</video>';
-                        } else {
-                            $output = '<a href="data:'.$mimeType.';base64,'.$tmp.'" target="_blank">'. $content->getContent() .'</a>';
+                            if(!strstr($mimeType, "image") == false) {
+                                $output = '<a href="data:'.$mimeType.';base64,'.$tmp.'" target="_blank"><img src="data:'.$mimeType.';base64,'.$tmp.'"></a><br><br>';
+                            } else if(!strstr($mimeType, "audio") == false) {
+                                $output = '<audio controls><source src="data:'.$mimeType.';base64,'.$tmp.'" type="'.$mimeType.'">Der Browser unterstütz das Format '.$mimeType.' nicht!</audio><br><br>';
+                            } else if(!strstr($mimeType, "video") == false) {
+                                $output = '<video controls><source src="data:'.$mimeType.';base64,'.$tmp.'" type="'.$mimeType.'">Der Browser unterstütz das Format '.$mimeType.' nicht!</video><br><br>';
+                            } else {
+                                $output = '<a href="data:'.$mimeType.';base64,'.$tmp.'" target="_blank">'. $content->getContent() .'</a><br><br>';
+                            }
                         }
-                        echo "<div id='content'><br>" . $output . "<br><br>" . $content->getContentDescription() . "<br></div>";
+                    } else {
+                        $output = "";
                     }
+                    echo "<div id='content'>" . $output . $content->getContentDescription() . "<br></div>";
                 }
             ?>
             </div>
