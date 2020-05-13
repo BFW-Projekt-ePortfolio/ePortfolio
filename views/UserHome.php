@@ -35,6 +35,7 @@
 
             <?php
 
+                $output = "";
                 foreach($this->requestedContent as $content) {
 
                     if(!$content->getContent() == null) {

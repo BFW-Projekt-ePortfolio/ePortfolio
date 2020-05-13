@@ -30,16 +30,20 @@
             $pageList = $currentUser->getPages();
             $ContentList = $pageList[0]->getContentList();
             $owner = $userDAO->readUserById($pageList[0]->getOwner());
+            
 
             if($request->issetParameter('page')){
                 $index = $request->getParameter('page');
                 if($index >= 0 && $index < count($pageList) && is_numeric($index)){
                     $ContentList = $pageList[$index]->getContentList();
+                    $owner = $userDAO->readUserById($pageList[$index]->getOwner());
                 }
             }
 
             $view = 'GuestHome';
             $style = "default"; // provisorisch
+
+            $filepath = USERS_DIR . $owner ."/";
 
             $template = new HtmlTemplateView($view);
             
@@ -47,6 +51,7 @@
             $template->assign('style', $style);
             $template->assign('pageList', $pageList);
             $template->assign('requestedContent', $ContentList);
+            $template->assign('filepath', $filepath);
             $template->render( $request, $response);
         }
     }

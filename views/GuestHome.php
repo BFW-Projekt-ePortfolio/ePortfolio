@@ -28,7 +28,7 @@
             <div id="content">
             <?php
 
-                $tmp = null;
+                $output = "";
                 foreach($this->requestedContent as $content) {
 
                     if(!$content->getContent() == null) {
