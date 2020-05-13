@@ -12,8 +12,8 @@
             Das ePortfolio von <?= $this->owner->getFirstname() ." ". $this->owner->getLastname() ?>!
         </div>
         <ul>
-             <!-- Die Navigationsleiste, horizontal, evtl mit foreach aus dem pages-Array ein li-Element erzeugen? -->
-            <li><a class="active" href="./">Home</a></li>
+            <!-- Die Navigationsleiste, horizontal, evtl mit foreach aus dem pages-Array ein li-Element erzeugen? -->
+            <!-- <li><a class="active" href="./">Home</a></li> -->
             <?php 
                 // Wenn über Command ausgeführt muss das genommen werden
                 $indexOfPageList = 0;
@@ -22,6 +22,7 @@
                      $indexOfPageList++;
                 }
             ?>
+            <li style="float: right"><a href="index.php?cmd=Logout">Logout</a></li>
         </ul>
         <div id="main">
             <div id="content">
