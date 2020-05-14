@@ -46,9 +46,16 @@
                 $userDAO->deleteUser($currentUser->getId());
                 // deleting files
                 if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                    // glob sucht nach Dateien im angegebenen Verzeichnis und unlink löscht diese
+                    foreach (glob(USERS_DIR . $currentUser->getId() . "/*.*") as $filename) {
+                        unlink($filename);
+                    }
+                    // wenn der Ordner leer ist kann er mit unlink gelöscht werden
                     unlink(USERS_DIR . $currentUser->getId());
                 } else {
-                    shell_exec('rm ' . USERS_DIR . $currentUser->getId());
+                    // löscht den Ordner und alle darin enthaltenen Dateien und Unterordner
+                    shell_exec('rm -rf ' . USERS_DIR . $currentUser->getId());
+
                 }
                 // and bye bye
                 header("location: ./?cmd=Logout");

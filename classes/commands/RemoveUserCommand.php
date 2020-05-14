@@ -28,7 +28,21 @@
             $userDAO = new UserDAO;
 
             if($request->issetParameter('deleteUser')){
-                $userDAO->deleteUser($request->getParameter('deleteUser'));
+                $userId = $request->getParameter('deleteUser');
+                $userDAO->deleteUser($userId);
+
+                if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                    // glob sucht nach Dateien im angegebenen Verzeichnis und unlink löscht diese
+                    foreach (glob(USERS_DIR . $userId . "/*.*") as $filename) {
+                        unlink($filename);
+                    }
+                    // wenn der Ordner leer ist kann er mit unlink gelöscht werden
+                    unlink(USERS_DIR . $userId);
+                } else {
+                    // löscht den Ordner und alle darin enthaltenen Dateien und Unterordner
+                    shell_exec('rm -rf ' . USERS_DIR . $userId);
+
+                }
             }
 
             $listOfAllUsers = $userDAO->readAllUsersWithPages("user");
