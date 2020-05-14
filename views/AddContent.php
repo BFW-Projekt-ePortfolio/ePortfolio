@@ -34,7 +34,7 @@
                 <strong>Mit Dateiupload:</strong>
                 <form enctype="multipart/form-data" action="#" method="POST">
                     Datei: <br><input name="userfile" type="file"><br><br>
-                    Beschreibung: <br><input type="text" name="descriptionFile"><br>
+                    Beschreibung: <br><input type="text" name="descriptionFile" size="50"><br>
                     <input type="submit" name="saveFile" value="speichern">
                     <input type="submit" name="cancel" value="abbrechen">
                 </form>
@@ -43,10 +43,21 @@
 
                 <strong>Ohne Dateiupload:</strong>
                 <form action="#" method="POST">
-                    Beschreibung: <br><input type="text" name="descriptionNoFile"><br>
+                    Text oder html: <br><textarea name="descriptionNoFile" cols="35" rows="4"></textarea><br>
                     <input type="submit" name="saveNoFile" value="speichern">
                     <input type="submit" name="cancel" value="abbrechen">
                 </form>
+                <br>
+                <br>
+
+                <strong>Link erzeugen:</strong>
+                <form action="#" method="POST">
+                    Name des Links: <br><input type="text" name="linkName" size="50"><br>
+                    Ziel-Adresse:<br><input type="text" name="linkAddress" size="50"><br>
+                    <input type="submit" name="createLink" value="speichern">
+                    <input type="submit" name="cancel" value="abbrechen">
+                </form>
+
         </div>
         <footer>&copy; 2020 M. Mandler & D. Zielke</footer>
     </body>
