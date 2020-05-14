@@ -27,9 +27,13 @@
             <li style="float: right"><a href="./index.php?cmd=UserSettings">Einstellungen</a></li>
         </ul>
         <div id="main">
+                <!-- ??? -->
+                <image style="position: absolute; left: 48vw; margin-top: 5vh" src="./Example.jpg">
+                <!-- ??? -->
                 <h3>Neuen Inhalt hinzufügen:</h3><br>
                 <?= $this->alert ?>
-                <br><br>
+                <br>
+                <br>
 
                 <strong>Mit Dateiupload:</strong>
                 <form enctype="multipart/form-data" action="#" method="POST">
@@ -42,13 +46,40 @@
                 <br>
 
                 <strong>Ohne Dateiupload:</strong>
+                <div style="display:flex;">
                 <form action="#" method="POST">
-                    Text oder html: <br><textarea name="descriptionNoFile" cols="35" rows="4"></textarea><br>
+                    Text oder html: (html Beispiele rechts)<br><textarea name="descriptionNoFile" cols="40" rows="15"></textarea><br>
                     <input type="submit" name="saveNoFile" value="speichern">
                     <input type="submit" name="cancel" value="abbrechen">
                 </form>
-                <br>
-                <br>
+                
+                <!-- ??? -->
+                <style>
+                    .h1{
+                        line-height: 150%;
+                    }
+                    .h2{
+                        line-height: 100%;
+                    }
+                    .h3{
+                        line-height: 110%;
+                    }
+                    .flex{
+                        display: flex;
+                        justify-content: center;
+                        line-height: 80%;
+                    }
+                </style>
+                <div style="width: 70%;">
+                    <div class="flex"><h3>Hier einige nützliche html Beispiele:</h3></div>
+                    <div class="flex"><p class="h1">&lt;h1&gt; ...</p><h1>Überschrift h1</h1><p class="h1">... &lt;/h1&gt;</p></div>
+                    <div class="flex"><p class="h2">&lt;h2&gt; ...</p><h2>Überschrift h2</h2><p class="h2">... &lt;/h2&gt;</p></div>
+                    <div class="flex"><p class="h3">&lt;h3&gt; ...</p><h3>Überschrift h3</h3><p class="h3">... &lt;/h3&gt;</p></div>
+                    <div class="flex"><p>&lt;p&gt; ...</p><p>Dies ist ein Absatz</p><p>... &lt;/p&gt;</p></div>
+                    <div class="flex"><p>dies ist nicht hervorgehobener text...&lt;strong&gt; ...</p><p><strong>Dies ist fettgedruckt</strong></p><p>... &lt;/strong&gt; ...und hier wieder die normale Größe</p></div>
+                </div>
+                </div>
+                <!-- ??? -->
 
                 <strong>Link erzeugen:</strong>
                 <form action="#" method="POST">
