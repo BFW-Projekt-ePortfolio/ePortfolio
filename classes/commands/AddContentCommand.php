@@ -130,6 +130,40 @@
                 exit;
             }
 
+            if($request->issetParameter('createLink')){
+                $pageId = $request->getParameter('page');
+                $linkName = $request->getParameter('linkName');
+                $linkAddress = $request->getParameter('linkAddress');
+                if($linkName == "" || $linkAddress == ""){
+                    $alert .= '<span style="color: red;">Sie müssen einen Namen und ein Ziel angeben um einen Link erzeugen zu können.</span>';
+                }
+                else{
+                    $prepareAddress = explode('www', $linkAddress);
+                    $linkAddress = 'www'.end($prepareAddress);
+                    $description = '<a href="//'.$linkAddress.'">'.$linkName.'</a>';
+                    $contentDAO = new ContentDAO();
+
+                    if($contentDAO->createContent($pageId, $description, "", "") >= 0) {
+    
+                        $userDAO = new UserDAO();
+    
+                        $pageDAO = new PageDAO();
+        
+                        $updatedPagesList = $pageDAO->readPagesOfUserWithContent($currentUser->getId());
+        
+                        $currentUser->setPages($updatedPagesList);
+        
+                        unset($_SESSION['user']);
+        
+                        $_SESSION['user'] = serialize($currentUser);
+    
+                        $alert = "Dateiupload erfolgreich!";
+                    } else {
+                        $alert = "Fehler beim Schreiben in die Datenbank!";
+                    }
+                }
+            }
+
 
             // Hier muss noch einiges rein damit der User seinen Account und seine Pages verwalten kann. Seiten bearbeiten macht er an anderer Stelle
 
