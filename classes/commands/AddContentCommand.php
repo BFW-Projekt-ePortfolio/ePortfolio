@@ -138,9 +138,14 @@
                     $alert .= '<span style="color: red;">Sie müssen einen Namen und ein Ziel angeben um einen Link erzeugen zu können.</span>';
                 }
                 else{
-                    $prepareAddress = explode('www', $linkAddress);
-                    $linkAddress = 'www'.end($prepareAddress);
-                    $description = '<a href="//'.$linkAddress.'">'.$linkName.'</a>';
+                    $cutOut = array();
+                    $cutOut[] = "https://";
+                    $cutOut[] = "http://";
+
+                    $linkAddress = str_replace($cutOut, "", $linkAddress);
+
+                    $description = '<a href="//'.$linkAddress.'" target="_blank">'.$linkName.'</a>';
+
                     $contentDAO = new ContentDAO();
 
                     if($contentDAO->createContent($pageId, $description, "", "") >= 0) {
