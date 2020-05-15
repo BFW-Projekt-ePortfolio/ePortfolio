@@ -36,8 +36,8 @@
                     foreach (glob(USERS_DIR . $userId . "/*.*") as $filename) {
                         unlink($filename);
                     }
-                    // wenn der Ordner leer ist kann er mit unlink gelöscht werden
-                    unlink(USERS_DIR . $userId);
+                    // wenn der Ordner leer ist kann er mit rmdir gelöscht werden
+                    rmdir(USERS_DIR . $userId);
                 } else {
                     // löscht den Ordner und alle darin enthaltenen Dateien und Unterordner
                     shell_exec('rm -rf ' . USERS_DIR . $userId);
