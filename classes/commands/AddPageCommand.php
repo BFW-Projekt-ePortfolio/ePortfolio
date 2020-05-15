@@ -78,6 +78,22 @@
                 } // jetzt sind alle permissions der Gäste für diese Seite gelöscht
                 // jetzt die eigene permission löschen
                 $pageDAO->deletePermissionOfGuestForPage($currentUser->getId(), $pageId);
+
+                $pageContent = $pageList[$request->getParameter('deletePage')]->getContentList();
+
+                //hier sollten die Dateien der jeweiligen Page gelöscht werden...
+                if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                    // ...auf Windows...
+                    foreach($pageContent as $file) {
+                        unlink(USERS_DIR . $currentUser->getId() . "/" . $file->getContent());
+                    }
+                } else {
+                    // ...und Linux, BSD, macOS, Solaris, etc.
+                    foreach($pageContent as $file) {
+                        shell_exec("rm " . USERS_DIR . $currentUser->getId() . "/". $file->getContent());
+                    }
+                }
+
                 // und dann endlich die Seite selbst löschen
                 $pageDAO->deletePage($pageId);
                 // und jetzt das Objekt $currentUser updaten
