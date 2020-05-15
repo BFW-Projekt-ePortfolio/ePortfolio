@@ -64,17 +64,17 @@
             return $id;
         }
 
-        public function createGuest($firstname, $lastname, $displayname, $email, $password) {
+        public function createGuest($firstname, $lastname, $displayname, $email, $password, $validationKey) {
             
             $id = -1;
             
             $sql = "INSERT INTO user (firstname, lastname, displayname, email, passwd, status, validation)
-                        VALUES (?,?,?,?,?, 'guest', 0)";
+                        VALUES (?,?,?,?,?, 'guest', ?)";
             
             if(!$preStmt = $this->dbConnect->prepare($sql)) {
                 echo "Fehler bei der SQL-Vorbereitung (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
             } else {
-                if(!$preStmt->bind_param("sssss", $firstname, $lastname, $displayname, $email, $password)) {
+                if(!$preStmt->bind_param("ssssss", $firstname, $lastname, $displayname, $email, $password, $validationKey)) {
                     echo "Fehler beim Binding (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
                 } else {
                     if(!$preStmt->execute()) {
