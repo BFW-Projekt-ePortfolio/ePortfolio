@@ -58,8 +58,19 @@
                 }
                 if($emailAllert == "" && $pwAllert == ""){
                     //create Guest
+                    function generateRandomString($length) {
+                        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                        $charactersLength = strlen($characters);
+                        $randomString = '';
+                        for ($i = 0; $i < $length; $i++) {
+                            $randomString .= $characters[rand(0, $charactersLength - 1)];
+                        }
+                        return $randomString;
+                    }
+                    $validationKey = generateRandomString(16);
+
                     $password = password_hash($request->getParameter('createGuestpassword'), PASSWORD_DEFAULT);
-                    $newGuestId = $userDAO->createGuest("","","",$GuestEmail, $password);
+                    $newGuestId = $userDAO->createGuest("","","",$GuestEmail, $password, $validationKey);
                     $pageDAO = new PageDAO;
                     for($i = 0; $i < count($pageList); $i++){
                         if($i == 0){
@@ -74,6 +85,10 @@
                     $createdGuest = true;
 
                     $message = "<h1>Gast erfolgreich angelegt</h1>";
+                    $message .= "<h3>Verschicken Sie bitte diese Mail an Ihren Gast:</h3>";
+                    $message .= "<h3>Sie haben soeben eine Einladung zum ePortfolio von ".$currentUser->getDisplayname(). " erhalten.<br>";
+                    $message .= "Bitte klicken Sie auf den folgenden Link:<br>";
+                    $message .= '<a href="./?cmd=Validation&key='.$validationKey.'" target="_blank">Hier gehts zum ePortfolio von '.$currentUser->getDisplayname().'</a>';
                     $view = "CreatedGuestSuccesfully";
                     $style = "default";
                     $template = new HtmlTemplateView($view);
