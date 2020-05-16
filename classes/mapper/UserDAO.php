@@ -494,5 +494,48 @@
             
             return $ok;
         }
+
+        public function checkValidationKey($key) {
+
+            $ok = false;
+
+            $sql = 'SELECT * FROM user WHERE validation = ?';
+
+            if(!$preStmt = $this->dbConnect->prepare($sql)){
+                echo "Fehler bei SQL-Vorbereitung (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
+            } else {
+                if(!$preStmt->bind_param("s", $key)){
+                    echo "Fehler beim Binding (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
+                } else {
+                    if(!$preStmt->execute()){
+                        echo "Fehler beim Ausführen (" . $this->dbConnect->errno . ")" . $this->dbConnect->error ."<br>";
+                    } else {
+                        $preStmt->store_result();
+                        if($preStmt->num_rows == 1){
+                            $ok = true;
+                        }
+                    }
+                }
+            }
+            return $ok;
+        }
+
+        public function validateGuest($key) {
+
+            $ok = false;
+
+            $sql = 'UPDATE user SET validation = "" WHERE validation = ?';
+
+            $preStmt = $this->dbConnect->prepare($sql);
+            $preStmt->bind_param("s", $key);
+            $preStmt->execute();
+            if($this->dbConnect->affected_rows == 1) {
+                $ok = true;
+            }
+            $preStmt->free_result();
+            $preStmt->close();
+
+            return $ok;
+        }
     }
 ?>
