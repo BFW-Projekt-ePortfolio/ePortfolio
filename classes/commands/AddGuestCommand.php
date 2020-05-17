@@ -87,8 +87,10 @@
                     $message = "<h1>Gast erfolgreich angelegt</h1>";
                     $message .= "<h3>Verschicken Sie bitte diese Mail an Ihren Gast:</h3>";
                     $message .= "<h3>Sie haben soeben eine Einladung zum ePortfolio von ".$currentUser->getDisplayname(). " erhalten.<br>";
+                    
                     $message .= "Bitte klicken Sie auf den folgenden Link:<br>";
-                    $message .= '<a href="./?cmd=Validation&key='.$validationKey.'" target="_blank">Hier gehts zum ePortfolio von '.$currentUser->getDisplayname().'</a>';
+                    $message .= '<a href="./?cmd=Validation&key='.$validationKey.'" target="_blank">Hier gehts zum ePortfolio von '.$currentUser->getDisplayname().'</a></h3>';
+                    $message .= '<br><br><p>'.$_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME'].'?cmd=Validation&key='.$validationKey.'</p>';
                     $view = "CreatedGuestSuccesfully";
                     $style = "default";
                     $template = new HtmlTemplateView($view);
