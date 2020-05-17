@@ -57,7 +57,7 @@
 							// Den Fall rausgefiltert, dass ein Gast zwar existiert, aber überhaupt keine Freigaben hat.
 							$pageList = array();
 							$pageList = $user[0]->getPages();
-							if(count($pageList) != 0){
+							if(count($pageList) != 0 && $user[0]->getValidation() == ""){ // validation-check
 								session_start();
 								$_SESSION["guest"] = serialize($user[0]);
 								header('location: index.php?cmd=GuestHome');
@@ -85,7 +85,8 @@
 					foreach($user as $guest){
 						$pageList = array();
 						$pageList = $guest->getPages();
-						if(count($pageList) != 0){
+						if(count($pageList) != 0 && $guest->getValidation() == ""){	//validation-Check
+
 							$ownerArray[] = $userDAO->readUserById($pageList[0]->getOwner());
 							$updatedUserList[] = $guest;
 						}
