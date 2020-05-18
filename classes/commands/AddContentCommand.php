@@ -36,7 +36,7 @@
                             "image/x-bmp", "image/x-ms-bmp", "application/zip", "application/x-tar", "application/vnd.oasis.opendocument.text", 
                             "application/vnd.oasis.opendocument.spreadsheet", "application/rtf", "application/pdf", "application/msword", "application/mspowerpoint", 
                             "application/msexcel", "application/gzip", "audio/x-wav", "audio/mpeg", "audio/ogg", "audio/mp4", "audio/wav", "audio/x-midi", "audio/x-mpeg", "audio/", 
-                            "video/mpeg", "video/mp4", "video/ogg"];
+                            "video/mpeg", "video/mp4", "video/ogg", "video/x-msvideo"];
 
 
             $alert = "";
@@ -63,34 +63,39 @@
                         if(file_exists($uploadDir . $fileName)) {
                             $alert = "Eine Datei mit diesem Name existiert bereits. Bitte ändern Sie den Dateinamen oder wählen Sie eine andere Datei!";
                         } else {
-
-                            $uploadFile = $uploadDir . $fileName;
-
-                            // 5. Verschieben in den User Ordner
-                            if(move_uploaded_file($tmpFile, $uploadFile)) {
-                                // 6. Erstellen von Datensatz in der DB
-                                $contentDAO = new ContentDAO();
-
-                                if($contentDAO->createContent($pageId, $description, $fileName, null) >= 0) {
-
-                                    $userDAO = new UserDAO();
-
-                                    $pageDAO = new PageDAO();
-                    
-                                    $updatedPagesList = $pageDAO->readPagesOfUserWithContent($currentUser->getId());
-                    
-                                    $currentUser->setPages($updatedPagesList);
-                    
-                                    unset($_SESSION['user']);
-                    
-                                    $_SESSION['user'] = serialize($currentUser);
-
-                                    $alert = "Dateiupload erfolgreich!";
-                                } else {
-                                    $alert = "Fehler beim Schreiben in die Datenbank!";
-                                }
+                            // 5. Prüfung nach Gültigkeit des Dateinamens
+                            if($fileName == "defaultContent") {
+                                $alert = "ungültige Dateiname, bitte ändern Sie ihn!";
                             } else {
-                                $alert = "Fehler beim Datei-Upload!";
+
+                                $uploadFile = $uploadDir . $fileName;
+
+                                // 6. Verschieben in den User Ordner
+                                if(move_uploaded_file($tmpFile, $uploadFile)) {
+                                    // 7. Erstellen von Datensatz in der DB
+                                    $contentDAO = new ContentDAO();
+
+                                    if($contentDAO->createContent($pageId, $description, $fileName, null) >= 0) {
+
+                                        $userDAO = new UserDAO();
+
+                                        $pageDAO = new PageDAO();
+                        
+                                        $updatedPagesList = $pageDAO->readPagesOfUserWithContent($currentUser->getId());
+                        
+                                        $currentUser->setPages($updatedPagesList);
+                        
+                                        unset($_SESSION['user']);
+                        
+                                        $_SESSION['user'] = serialize($currentUser);
+
+                                        $alert = "Dateiupload erfolgreich!";
+                                    } else {
+                                        $alert = "Fehler beim Schreiben in die Datenbank!";
+                                    }
+                                } else {
+                                    $alert = "Fehler beim Datei-Upload!";
+                                }
                             }
                         }
                     } else {
