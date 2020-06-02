@@ -1,0 +1,171 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[parfill]{parskip}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{multirow}
+\usepackage{placeins}
+\usepackage[official]{eurosym}
+\usepackage{listings}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+\title{Entwicklung eines webbasierten ePortfolios}
+\author{Moritz Mandler \& Didier Zielke}
+\date{Juni 2020}
+
+\begin{document}
+
+\maketitle
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\section{Einführung}
+
+Die IT-Solution \& Design GmbH ist eine Lernfirma innerhalb des Berufsförderungswerks Hamburg GmbH (BFW). Als norddeutsches Zentrum für berufliche Rehabilitation und Integration ist das BFW Hamburg kompetenter Partner für Unternehmen, Träger der beruflichen Rehabilitation und Versicherungen und vor allem für Menschen, die aus gesundheitlichen Gründen ihre bisherige Tätigkeit nicht mehr ausüben können.  
+Es soll eine einfache Plattform zur Veröffentlichung einer 'Mappe' der eigenen Arbeitsergebnisse geboten werden. Benutzer müssen sich authentifizieren und können dann die eigene Mappe bearbeiten. Innerhalb dieser Mappe, die hier nur eine Webseite darstellt, können beliebige Download-Dateien, Texte und Bilder eingefügt werden. So soll den Benutzern auch die Möglichkeit gegeben werden Lebensläufe, Arbeitsproben oder Zertifikate auf der eigenen Seite abzulegen.
+Die IT-Solutions \& Design hat vom BFW Hamburg den Auftrag erhalten diese Webanwendung zu erstellen. 
+
+\section{Projektdefinition}
+\subsection{Ist-Analyse}
+
+Die Teilnehmer*innen des BFW müssen sich während ihrer Ausbildung auf einen Praktikums- und einen Arbeitsplatz bewerben. Viele Bewerbungen werden dabei per E-Mail versendet. Um eine E-Mail nicht zu groß werden zu lassen, werden dabei manchmal Arbeitsergebnisse, Zertifikate o. ä. nicht mit gesendet. Das könnte den Gesamteindruck im Bewerbungsprozess verschlechtern.  
+ Außerdem müssen die Teilnehmer*innen entscheiden, auf welche Unterlagen, Arbeitsproben und Bilder sie verzichten wollen.
+ 
+\subsection{Anforderungsdefinition (Soll-Konzept}
+
+Wie im Pflichtenheft angegeben (siehe Anhang) sollen folgende Anforderungen erfüllt werden:
+
+\paragraph{i. Musskriterien}
+
+\begin{itemize}
+\item Neuanlegen, Ändern und Löschen von Benutzern durch den Admin
+\item Jedem Benutzer ist eine Benutzerseite zugeordnet, die nur von dem jeweiligen Benutzer bearbeitet werden darf
+\item Neuanlegen, Ändern und Löschen von Texten (auch Links) auf der jeweiligen Benutzerseite
+\item Hochladen von Bildern und Pdf-Dateien innerhalb der Benutzerseite
+\item Berücksichtigung verschiedener Berechtigungsstufen (Admin, Benutzer, Gast)
+\item  Nur registrierte Gäste dürfen die Inhalte der Benutzer einsehen. Anlegen eines Gasts über Formular mit Überprüfung der E-Mailadresse (Freischaltung des Gastaccounts über E-Mail-Link) und Versenden eines generierten Kennworts 
+\end{itemize}
+
+\paragraph{ii. Wunschkriterien}
+
+\begin{itemize}
+\item Gäste dürfen nur die Portfolios sehen, welche ihnen über eine Freigabe zugeordnet wurden.
+\end{itemize}
+
+\paragraph{iii. Abgrenzungskriterien}
+
+\begin{itemize}
+\item Keine Überprüfung auf Verletzung von Urheberrechten oder Verstöße gegen das    Datenschutzgesetz
+\end{itemize}
+
+
+\section{Projektplanung}
+\subsection{Ressourcenplanung}
+Als Ressource sollen ein PC mit der im Pflichtenheft angegebenen technischen Produktumgebung zur Verfügung gestellt werden. Für die Kalkulation wurde eine Stundenplanung gemacht. Zwei Personen sollen dem Projekt für die folgenden Arbeitsschritte zur Verfügung stehen.
+
+
+%Die Tabelle steht auf der nächsten Seite, weil sie nicht "abgeschnitten" wird. 
+\FloatBarrier
+\begin{table}[ht!]
+\begin{tabular}{lcr}
+    \multicolumn{3}{l}{\textbf{Software-Entwurf}}\\
+    Use-Case-Diagramm& &4h\\
+    Klassenmodell & & 4h\\
+    Datenmodell & & 4h\\
+    \hline
+    Summe: & & 12h\\
+    \\
+    \multicolumn{3}{l}{\textbf{Realisierung}}\\
+    Entwurf der Testfälle & &  4h\\
+    Programmierung Geschäftslogik& &  24h\\
+    Programmierung Datenzugriffsklassen	& &  10h\\
+    Programmierung Controller-Klassen& &  24h\\
+    Programmierung View-Klassen& &  20h\\
+    \hline
+    Summe: & & 82h\\
+    \\
+    \multicolumn{3}{l}{\textbf{Tests}}\\
+    Testfälle programmieren und durchführen& &10h\\
+    Eventuelle Fehlerbeseitigung& &4h\\
+    \hline
+    Summe: & &\\
+    \\
+    \multicolumn{3}{l}{\textbf{Abschluss}}\\
+    Soll-Ist-Vergleich& & 6h\\
+    Dokumentation& & 25h\\
+    Übergabe & & 1h\\
+    \hline
+    Summe: & &32h\\
+   \textbf{Gesamtsumme:} & &\textbf{ 140h}
+
+\end{tabular}
+\end{table}
+\FloatBarrier
+
+
+\subsection{Kosten}
+
+Die Kosten für dieses Projekt belaufen sich bei einem Stundensatz von 35,00\euro{} und einem Gesamteinsatz von 140Std. pro Person, wie aus der Ressourcenplanung hervorgeht, auf:
+\newline
+2 Personen * 140Std * 35,00\euro{} 				= \textbf{9800\euro{}}
+
+\section{Projektdurchführung}
+\subsection{Softwareentwurf}
+
+Zuerst werden die Anwendungsfälle ermittelt. Es wird drei Hauptanwendungsfälle geben. Die Nutzung als Administrator, als Benutzer und als Gast. Wir entscheiden uns für eine zentrale Login-Oberfläche und danach zu einer strikten Trennung der Hauptanwendungsfälle.
+\newline
+
+Für die Umsetzung der Wunschkriterien wird die Benutzeroberfläche unterteilt in:
+\begin{itemize}
+	\item Ansichten aller Seiten des eigenen Portfolios mit Bearbeitungsmöglichkeit
+	\item  Möglichkeit zum erstellen und löschen neuer Seiten innerhalb des eigenen Portfolios
+	\item  Gästeverwaltung zum erstellen und löschen von Gästen des eigenen Portfolios und setzten derer Berechtigungen    \end{itemize}
+Als Vorgehensweise bei der Softwareentwicklung kommt der Ansatz der strukturierten Programmierung oder die objektorientiert Programmierung in Betracht. Die objektorientierte Programmierung bietet den Vorteil, dass das Model-View-Controller-Modell (MVC-Modell) zur Anwendung kommen könnte. Dadurch gibt es ein einheitliches Vorgehen, welches leicht erweitert werden kann. Bei der strukturierten Programmierung besteht die Gefahr, dass ein Wust von ineinander geschachtelten Dateien die Übersicht erschwert. 
+\newline
+
+ Als weiterer Vorteil von objektorientierter Programmierung kann man die Datenkapselung anführen. In dem der Zugriff auf Instanzvariablen als private gekennzeichnet wird, können diese Variablen von außerhalb der Klasse nicht verändert werden, bzw. nur durch geeignete Methoden, wenn es sinnvoll erscheint. Dadurch wird erreicht, dass die Instanzvariablen immer in einem fehlerfreien Zustand vorliegen. 
+\newline 
+ 
+ Aus diesen Gründen haben wir entschieden die Anwendung objektorientiert zu entwickeln. 
+\newline 
+ 
+ Für die Verwendung der programmierten Klassen sollen Namespaces zum Einsatz kommen, weil dadurch kein Import für jede benutzte Klasse nötig ist.  
+ \newline
+ 
+ Wenn bei dem Prinzip der Objektorientierung eine strikte Trennung der Zuständigkeiten von Klassen und Methoden beachtet wird, ist die Wartbarkeit des Codes einfacher. Hier ist ein einfaches MVCModell geplant, bei welchem die Model-Klassen die Geschäftslogik implementieren, die View-Klassen die Ein- und Ausgaben darstellen und die Controller-Klassen für die Verbindung dazwischen eingesetzt werden sollen. 
+\newline
+
+ Für jeden Anwendungsfall soll es mindestens eine Controller-Klasse geben, die über den Frontcontroller aufgerufen wird. Außerdem soll es Klassen geben, die für die Schnittstelle der ankommenden HTTP-Anfragen zuständig sind (Request) und Klassen, die für die Antwort benutzt werden (Response). Neben den reinen Modelklassen wird geplant, Datenzugriffsklassen zu implementieren, die für die Datenbankzugriffe (CRUD) verwendet werden sollen. Durch die Verwendung eines DAO-Interfaces könnte man schnell die Datenzugriffsklassen für andere Datenbanksysteme erweitert werden. Aus Zeitgründen wurde aber hierauf verzichtet. 
+
+\subsection{Daten- und Klassenentwurf}
+
+Das Klassenmodell und das Datenmodell befindet sich im Anhang:
+Da ein Benutzer mehrere Seiten in seinem Portfolio haben kann, wurde hier eine 1:n Beziehung im Datenmodell genutzt.
+Da eine Seite sich aus mehreren Inhalten zusammensetzen kann, wird auch hier eine 1:n Beziehung im Datenmodell genutzt. 
+Da ein Gast keine eigenen Seiten hat, wird eine Berechtigungs-Tabelle für Seiten der Benutzer genutzt. Ein Gast kann mehrere Berechtigungen haben, aber jede Berechtigung muss eindeutig einer Person zugeordnet sein. Daher wird hier eine 1:n Beziehung im Datenmodell genutzt.
+\newline
+
+Im Klassenmodell wird festgelegt, dass jeder User eine Liste von Seiten beinhaltet.
+Jede Seite beinhaltet wiederum eine Liste von Inhalten.
+\newline
+
+Aus Gründen der Einfachheit wird im Klassenmodell und im Datenmodell zwischen den Benutzergruppen Administrator, Benutzer und Gast über eine Eigenschaft „status“ unterschieden, ansonsten jedoch das gleiche Model genutzt.
+
+\subsection{Realisierung}
+\subsubsection{Übersicht}
+\subsubsection{Programmierung der Geschäftslogik und der Datenzugriffsklassen}
+\subsubsection{Programmierung der Controllerklassen}
+\subsubsection{Programmierung der Viewklassen}
+\subsection{Tests}
+\section{Soll-/Ist-Vergleich}
+\section{Fazit}
+\section{Anhang}
+
+%Code Listings müssen noch eingefügt werden. Da gibt es mehrere Methoden. Muss noch schauen welche am besten ist.
+
+\end{document}
