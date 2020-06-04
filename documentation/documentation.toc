@@ -3,9 +3,9 @@
 \contentsline {section}{\numberline {2}Projektdefinition}{3}% 
 \contentsline {subsection}{\numberline {2.1}Ist-Analyse}{3}% 
 \contentsline {subsection}{\numberline {2.2}Anforderungsdefinition (Soll-Konzept}{3}% 
-\contentsline {paragraph}{i. Musskriterien}{3}% 
-\contentsline {paragraph}{ii. Wunschkriterien}{3}% 
-\contentsline {paragraph}{iii. Abgrenzungskriterien}{3}% 
+\contentsline {paragraph}{\nonumberline i. Musskriterien}{3}% 
+\contentsline {paragraph}{\nonumberline ii. Wunschkriterien}{3}% 
+\contentsline {paragraph}{\nonumberline iii. Abgrenzungskriterien}{3}% 
 \contentsline {section}{\numberline {3}Projektplanung}{3}% 
 \contentsline {subsection}{\numberline {3.1}Ressourcenplanung}{3}% 
 \contentsline {subsection}{\numberline {3.2}Kosten}{4}% 
@@ -17,7 +17,11 @@
 \contentsline {subsubsection}{\numberline {4.3.2}Programmierung der Geschäftslogik und der Datenzugriffsklassen}{6}% 
 \contentsline {subsubsection}{\numberline {4.3.3}Programmierung der Controllerklassen}{6}% 
 \contentsline {subsubsection}{\numberline {4.3.4}Programmierung der Viewklassen}{6}% 
-\contentsline {subsubsection}{\numberline {4.3.5}Realisierung des Dateiuploads}{6}% 
+\contentsline {subsubsection}{\numberline {4.3.5}Dateiverwaltung}{6}% 
+\contentsline {paragraph}{\nonumberline Dateiupload}{6}% 
+\contentsline {paragraph}{\nonumberline Benutzerordner}{6}% 
+\contentsline {paragraph}{\nonumberline Löschen von Dateien}{6}% 
+\contentsline {paragraph}{\nonumberline Verhalten bei Accountlöschung}{6}% 
 \contentsline {subsection}{\numberline {4.4}Tests}{6}% 
 \contentsline {section}{\numberline {5}Soll-/Ist-Vergleich}{6}% 
 \contentsline {section}{\numberline {6}Fazit}{6}% 

@@ -1,4 +1,4 @@
-\documentclass[10pt]{article}
+\documentclass[10pt]{scrarticle}
 \usepackage[utf8]{inputenc}
 \usepackage[parfill]{parskip}
 \usepackage[T1]{fontenc}
@@ -17,8 +17,9 @@
 \renewcommand{\familydefault}{\sfdefault}
 
 \title{Entwicklung eines webbasierten ePortfolios}
+\subtitle{im Rahmen einer Umschulung zum Fachinformatiker - Anwendungsentwicklung}
 \author{Moritz Mandler \& Didier Zielke}
-\date{Juni 2020}
+\date{\today}
 
 \begin{document}
 
@@ -26,6 +27,16 @@
 
 %Hier müssen noch weitere Daten rein (siehe Merkblat der HK Hamburg):
 %Berufsbezeichnung, Ausbilder, Ausbildungsbetrieb (mit Adresse)
+
+\vspace{\fill}
+\textbf{Ausbildungsbetrieb:}\newline
+BFW Berufsförderungswerk Hamburg \newline
+Marie-Bautz-Weg ??? \newline
+22159 Hamburg
+
+\textbf{Ausbilder:}\newline
+Petra Treubel \newline
+Dr. Olaf Kubillus
 
 \newpage
 
@@ -189,13 +200,25 @@ Diese Seite kann jeder Benutzer selbst verändern und gestalten, jedoch nicht l�
 \subsubsection{Programmierung der Geschäftslogik und der Datenzugriffsklassen}
 \subsubsection{Programmierung der Controllerklassen}
 \subsubsection{Programmierung der Viewklassen}
-\subsubsection{Realisierung des Dateiuploads}
+\subsubsection{Dateiverwaltung}
 
-%Soll das lieber woanders hin?
+
+
+\paragraph{Dateiupload}
 
 Beim Dateiupload werden die folgend beschriebenen Schritte durchlaufen. Ein Auszug des Codes befindet sich im Anhang (Abbildung ???, Seite ???).
 
 Beim Upload von Dateien durch den Benutzer wird zunächst geprüft, ob es sich auch tatsächlich und eine hochgeladene Datei handelt. Aus Sicherheitsgründen werden danach die MIME-Types der Dateien geprüft und mit einem Array zulässiger Typen verglichen. So wird vermieden, dass der Benutzer Shell-Scripts, php-Scripts usw. hochlädt, selbst wenn er die Dateiendung ändert. Sollte die Datei zulässig sein, wird geprüft, ob bereits eine Datei mit gewählten Namen existiert und ggf. eine Meldung ausgegeben und der Upload abgebrochen. Ist diese Prüfung negativ wird geprüft, ob der Dateiname zulässig ist. Nach aktuellem Stand ist nur der Dateiname "defaultContent" unzulässig. Wenn der Name zulässig ist, wird die Datei in den Ordner des Users verschoben und der Dateiname in der Tabelle \textit{content} eingetragen.
+
+\paragraph{Benutzerordner}
+
+Jeder Bentuzer erhält beim Anlegen einen eigenen Ordner, der nach seiner ID benannt wird. In diesem werden seine Uploads gespeichert. Aus Sicherheitsgründen befindet sich der Benutzerordner außerhalb des Webroots um einen ungewollten Zugriff von Außen zu verhindern.
+
+\paragraph{Löschen von Dateien}
+Will der Benutzer seinen Content löschen, so wird nicht nur der Datesatz aus der Datenbank gelöscht, sonder auch die Datei. Der Benutzer kann somit sicher sein, dass seine Dateien nicht auf ungewollt versteckt verbleiben. Hierzu wird zunächst ermittelt welches Betriebssystem auf dem Server läuft um mit dem korrekten Befehl die Datei zu entfernen.
+
+\paragraph{Verhalten bei Accountlöschung}
+Möchte der Benutzer seinen Account vollständig löschen, so werden alle seine Dateien sowie sein Benutzerordner vom System gelöscht. Um dies sicherzustellen wird auch hier zuerst das Betriebssystem ermittelt. Bei Windows wird zunächst jede Datei einzeln gelöscht um anschließend den Ordner zu entfernen. Bei Linux Systemen sowie BSD und anderen unixoiden System kann der Ordner samt Inhalt mit einem an die Shell übergebenem Befehl gelöscht werden.
 
 \subsection{Tests}
 
