@@ -4,20 +4,21 @@
 \contentsline {subsection}{\numberline {2.1}Ist-Analyse}{3}% 
 \contentsline {subsection}{\numberline {2.2}Anforderungsdefinition (Soll-Konzept}{3}% 
 \contentsline {paragraph}{i. Musskriterien}{3}% 
-\contentsline {paragraph}{ii. Wunschkriterien}{4}% 
-\contentsline {paragraph}{iii. Abgrenzungskriterien}{4}% 
-\contentsline {section}{\numberline {3}Projektplanung}{4}% 
-\contentsline {subsection}{\numberline {3.1}Ressourcenplanung}{4}% 
-\contentsline {subsection}{\numberline {3.2}Kosten}{5}% 
-\contentsline {section}{\numberline {4}Projektdurchführung}{5}% 
-\contentsline {subsection}{\numberline {4.1}Softwareentwurf}{5}% 
-\contentsline {subsection}{\numberline {4.2}Daten- und Klassenentwurf}{7}% 
-\contentsline {subsection}{\numberline {4.3}Realisierung}{8}% 
-\contentsline {subsubsection}{\numberline {4.3.1}Übersicht}{8}% 
-\contentsline {subsubsection}{\numberline {4.3.2}Programmierung der Geschäftslogik und der Datenzugriffsklassen}{8}% 
-\contentsline {subsubsection}{\numberline {4.3.3}Programmierung der Controllerklassen}{8}% 
-\contentsline {subsubsection}{\numberline {4.3.4}Programmierung der Viewklassen}{8}% 
-\contentsline {subsection}{\numberline {4.4}Tests}{8}% 
-\contentsline {section}{\numberline {5}Soll-/Ist-Vergleich}{8}% 
-\contentsline {section}{\numberline {6}Fazit}{8}% 
-\contentsline {section}{\numberline {7}Anhang}{8}% 
+\contentsline {paragraph}{ii. Wunschkriterien}{3}% 
+\contentsline {paragraph}{iii. Abgrenzungskriterien}{3}% 
+\contentsline {section}{\numberline {3}Projektplanung}{3}% 
+\contentsline {subsection}{\numberline {3.1}Ressourcenplanung}{3}% 
+\contentsline {subsection}{\numberline {3.2}Kosten}{4}% 
+\contentsline {section}{\numberline {4}Projektdurchführung}{4}% 
+\contentsline {subsection}{\numberline {4.1}Softwareentwurf}{4}% 
+\contentsline {subsection}{\numberline {4.2}Daten- und Klassenentwurf}{5}% 
+\contentsline {subsection}{\numberline {4.3}Realisierung}{6}% 
+\contentsline {subsubsection}{\numberline {4.3.1}Übersicht}{6}% 
+\contentsline {subsubsection}{\numberline {4.3.2}Programmierung der Geschäftslogik und der Datenzugriffsklassen}{6}% 
+\contentsline {subsubsection}{\numberline {4.3.3}Programmierung der Controllerklassen}{6}% 
+\contentsline {subsubsection}{\numberline {4.3.4}Programmierung der Viewklassen}{6}% 
+\contentsline {subsubsection}{\numberline {4.3.5}Realisierung des Dateiuploads}{6}% 
+\contentsline {subsection}{\numberline {4.4}Tests}{6}% 
+\contentsline {section}{\numberline {5}Soll-/Ist-Vergleich}{6}% 
+\contentsline {section}{\numberline {6}Fazit}{6}% 
+\contentsline {section}{\numberline {7}Anhang}{6}% 
