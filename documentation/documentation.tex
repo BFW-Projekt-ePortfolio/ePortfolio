@@ -13,6 +13,7 @@
 \graphicspath{ {./images/} }
 \usepackage{tabularx}
 \usepackage{makecell}
+\usepackage{courier}
 
 \renewcommand{\familydefault}{\sfdefault}
 
@@ -22,6 +23,8 @@
 \date{\today}
 
 \begin{document}
+
+\lstset{frameround=fttt,numbers=left,breaklines=true, xleftmargin=0.5cm, basicstyle=\footnotesize\ttfamily}
 
 \maketitle
 
@@ -215,7 +218,15 @@ Beim Upload von Dateien durch den Benutzer wird zunächst geprüft, ob es sich a
 Jeder Bentuzer erhält beim Anlegen einen eigenen Ordner, der nach seiner ID benannt wird. In diesem werden seine Uploads gespeichert. Aus Sicherheitsgründen befindet sich der Benutzerordner außerhalb des Webroots um einen ungewollten Zugriff von Außen zu verhindern.
 
 \paragraph{Löschen von Dateien}
-Will der Benutzer seinen Content löschen, so wird nicht nur der Datesatz aus der Datenbank gelöscht, sonder auch die Datei. Der Benutzer kann somit sicher sein, dass seine Dateien nicht auf ungewollt versteckt verbleiben. Hierzu wird zunächst ermittelt welches Betriebssystem auf dem Server läuft um mit dem korrekten Befehl die Datei zu entfernen.
+Will der Benutzer seinen Content löschen, so wird nicht nur der Datesatz aus der Datenbank gelöscht, sonder auch die Datei. Der Benutzer kann somit sicher sein, dass seine Dateien nicht auf ungewollt versteckt verbleiben. Hierzu wird zunächst ermittelt welches Betriebssystem auf dem Server läuft um mit dem korrekten Befehl die Datei zu entfernen:
+
+\begin{lstlisting}
+if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                    unlink(USERS_DIR . $currentUser->getId() . '/' . $file);
+                } else {
+                    shell_exec('rm ' . USERS_DIR . $currentUser->getId() . '/' . $file);
+                }
+\end{lstlisting}
 
 \paragraph{Verhalten bei Accountlöschung}
 Möchte der Benutzer seinen Account vollständig löschen, so werden alle seine Dateien sowie sein Benutzerordner vom System gelöscht. Um dies sicherzustellen wird auch hier zuerst das Betriebssystem ermittelt. Bei Windows wird zunächst jede Datei einzeln gelöscht um anschließend den Ordner zu entfernen. Bei Linux Systemen sowie BSD und anderen unixoiden System kann der Ordner samt Inhalt mit einem an die Shell übergebenem Befehl gelöscht werden.
