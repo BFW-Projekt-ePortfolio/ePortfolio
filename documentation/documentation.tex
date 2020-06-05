@@ -8,13 +8,13 @@
 \usepackage[official]{eurosym}
 \usepackage{listings}
 \usepackage{geometry}
-\geometry{a4paper, margin=2.5cm}
 \usepackage{graphicx}
-\graphicspath{ {./images/} }
 \usepackage{tabularx}
 \usepackage{makecell}
 \usepackage{courier}
 \usepackage[many]{tcolorbox}
+\geometry{a4paper, margin=2.5cm}
+\graphicspath{ {./images/} }
 
 \renewcommand{\familydefault}{\sfdefault}
 
@@ -220,9 +220,24 @@ Diese Seite kann jeder Benutzer selbst verändern und gestalten, jedoch nicht l�
 \subsubsection{Programmierung der Geschäftslogik und der Datenzugriffsklassen}
 \subsubsection{Programmierung der Controllerklassen}
 \subsubsection{Programmierung der Viewklassen}
+
+\paragraph{Darstellung der Dateien}
+
+Um den unberechtigten Zugriff zu verhindern, werden die Dateien außerhalb des Webroots gespeichert. Damit der Pfad über den Browser nicht ersichtlich ist, wird die Datei in einen base64-String umgewandelt und als URI in den HTML-Code eingefügt. Abhängig vom MIME-Type werden die Dateien unterschiedlich dargestellt:
+
+\FloatBarrier
+\begin{table}[ht!]
+\begin{tabular}{ll}
+PDF-Dokumente & Link, der einen neuen Tab im Browser öffnet, in welchem die PDF dargestellt wird \\
+Audio-Dateien & Direkt auf der Seite abspielbar \\
+Video-Dateien & Direkt auf der Seite abspielbar \\
+Alle weiteren & Downloadlink
+
+\end{tabular}
+\end{table}
+\FloatBarrier
+
 \subsubsection{Dateiverwaltung}
-
-
 
 \paragraph{Dateiupload}
 
@@ -271,7 +286,7 @@ Als Beispiel befindet sich der vollständige Code zur Accountlöschung durch den
 
 \textbf{Test}  & \textbf{Ziel}  & \textbf{Ergebnis} & \textbf{Maßnahmen}\\
 \hline
-Testname  & Testziel, kurz beschrieben  & Ergebnis & \makecell[l]{Maßnahmen, falls der Test nicht ausgefallen ist wie \\ erwartet}\\
+Gast  & Testziel, kurz beschrieben  & Ergebnis & \makecell[l]{Maßnahmen, falls der Test nicht ausgefallen ist wie \\ erwartet}\\
 
 \end{tabularx}
 \end{table}
