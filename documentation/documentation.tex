@@ -14,8 +14,26 @@
 \usepackage{tabularx}
 \usepackage{makecell}
 \usepackage{courier}
+\usepackage[many]{tcolorbox}
 
 \renewcommand{\familydefault}{\sfdefault}
+
+\newtcolorbox{infobox}[1][]{
+  breakable,
+  title=#1,
+  colback=white,
+  colbacktitle=white,
+  coltitle=black,
+  fonttitle=\bfseries,
+  bottomrule=1pt,
+  toprule=1pt,
+  leftrule=1pt,
+  rightrule=1pt,
+  titlerule=0pt,
+  arc=0pt,
+  outer arc=0pt,
+  colframe=black,
+}
 
 \title{Entwicklung eines webbasierten ePortfolios}
 \subtitle{im Rahmen einer Umschulung zum Fachinformatiker - Anwendungsentwicklung}
@@ -23,8 +41,7 @@
 \date{\today}
 
 \begin{document}
-
-\lstset{frameround=fttt,numbers=left,breaklines=true, xleftmargin=0.5cm, basicstyle=\footnotesize\ttfamily}
+\lstset{frameround=fttt,numbers=left,breaklines=true, xleftmargin=0.75cm, basicstyle=\ttfamily, numberstyle=\ttfamily}
 
 \maketitle
 
@@ -209,27 +226,43 @@ Diese Seite kann jeder Benutzer selbst verändern und gestalten, jedoch nicht l�
 
 \paragraph{Dateiupload}
 
-Beim Dateiupload werden die folgend beschriebenen Schritte durchlaufen. Ein Auszug des Codes befindet sich im Anhang (Abbildung ???, Seite ???).
-
 Beim Upload von Dateien durch den Benutzer wird zunächst geprüft, ob es sich auch tatsächlich und eine hochgeladene Datei handelt. Aus Sicherheitsgründen werden danach die MIME-Types der Dateien geprüft und mit einem Array zulässiger Typen verglichen. So wird vermieden, dass der Benutzer Shell-Scripts, php-Scripts usw. hochlädt, selbst wenn er die Dateiendung ändert. Sollte die Datei zulässig sein, wird geprüft, ob bereits eine Datei mit gewählten Namen existiert und ggf. eine Meldung ausgegeben und der Upload abgebrochen. Ist diese Prüfung negativ wird geprüft, ob der Dateiname zulässig ist. Nach aktuellem Stand ist nur der Dateiname "defaultContent" unzulässig. Wenn der Name zulässig ist, wird die Datei in den Ordner des Users verschoben und der Dateiname in der Tabelle \textit{content} eingetragen.
 
 \paragraph{Benutzerordner}
 
 Jeder Bentuzer erhält beim Anlegen einen eigenen Ordner, der nach seiner ID benannt wird. In diesem werden seine Uploads gespeichert. Aus Sicherheitsgründen befindet sich der Benutzerordner außerhalb des Webroots um einen ungewollten Zugriff von Außen zu verhindern.
 
+\begin{infobox}[Alternative:]
+Es kann auch in den Tabellen \textit{user}, \textit{content} und \textit{page} jeweils eine weitere Spalte hinzugefügt werden mit einer zufälligen Folge aus Buchstaben und Zahlen, die eine externe ID darstellen sollen. Dies erhöht nochmals die Sicherheit, da manche Daten über GET in der URL übermittelt werden.
+\end{infobox}
+
 \paragraph{Löschen von Dateien}
 Will der Benutzer seinen Content löschen, so wird nicht nur der Datesatz aus der Datenbank gelöscht, sonder auch die Datei. Der Benutzer kann somit sicher sein, dass seine Dateien nicht auf ungewollt versteckt verbleiben. Hierzu wird zunächst ermittelt welches Betriebssystem auf dem Server läuft um mit dem korrekten Befehl die Datei zu entfernen:
 
+\lstset{firstnumber=53}
 \begin{lstlisting}
 if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                    unlink(USERS_DIR . $currentUser->getId() . '/' . $file);
-                } else {
-                    shell_exec('rm ' . USERS_DIR . $currentUser->getId() . '/' . $file);
-                }
+    unlink(USERS_DIR . $currentUser->getId() . '/' . $file);
+} else {
+    shell_exec('rm ' . USERS_DIR . $currentUser->getId() . '/' . $file);
+}
 \end{lstlisting}
 
 \paragraph{Verhalten bei Accountlöschung}
-Möchte der Benutzer seinen Account vollständig löschen, so werden alle seine Dateien sowie sein Benutzerordner vom System gelöscht. Um dies sicherzustellen wird auch hier zuerst das Betriebssystem ermittelt. Bei Windows wird zunächst jede Datei einzeln gelöscht um anschließend den Ordner zu entfernen. Bei Linux Systemen sowie BSD und anderen unixoiden System kann der Ordner samt Inhalt mit einem an die Shell übergebenem Befehl gelöscht werden.
+Möchte der Benutzer seinen Account vollständig löschen, so werden alle seine Dateien sowie sein Benutzerordner vom System gelöscht. Um dies sicherzustellen wird auch hier zuerst das Betriebssystem ermittelt. Bei Windows wird zunächst jede Datei einzeln gelöscht um anschließend den Ordner zu entfernen. Bei Linux Systemen sowie BSD und anderen unixoiden System kann der Ordner samt Inhalt mit einem an die Shell übergebenem Befehl gelöscht werden:
+
+\lstset{firstnumber=31}
+\begin{lstlisting}
+if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+    foreach (glob(USERS_DIR . $userId . "/*.*") as $filename) {
+        unlink($filename);
+    }
+    rmdir(USERS_DIR . $userId);
+} else {
+    shell_exec('rm -rf ' . USERS_DIR . $userId);
+}
+\end{lstlisting}
+Als Beispiel befindet sich der vollständige Code zur Accountlöschung durch den Admin im Anhang (Listing \ref{lst:RemoveUserCommand}, Seite \pageref{lst:RemoveUserCommand}).
 
 \subsection{Tests}
 
@@ -245,16 +278,78 @@ Testname  & Testziel, kurz beschrieben  & Ergebnis & \makecell[l]{Maßnahmen, fa
 
 \section{Soll-/Ist-Vergleich}
 \section{Fazit}
+
+Die Entwicklung des ePortfolios ermöglicht einen ersten Einblick in den Aufbau und Struktur von Social Media Seiten. Einer der wichtigsten Aspekte bei der Entwicklung stellt die Sicherheit dar und die jeweiligen Tests um diese zu erhöhen. Bei der Entwicklung ist uns aufgefallen, dass man sehr viele Optionen implementieren kann um den User größtmögliche Individualität zu ermöglichen. Auch beim Design gibt es sehr viel Spielraum, der ein erfahrener Webdesign nutzen kann um den Benutzer ein optisch ansprechendes Portfolio zu bieten, mit welchem er sich bei Kunden und potenziellen Arbeitgeber präsentieren kann.
+
 \section{Anhang}
+
+\subsection{Code Listings}
+
+\lstset{firstnumber=1, basicstyle=\footnotesize}
+\begin{lstlisting}[caption={RemoveUserCommand.php}, label={lst:RemoveUserCommand}]
+<?php
+    namespace classes\commands;
+
+    use classes\request\Request;
+    use classes\response\Response;
+    use classes\template\HtmlTemplateView;
+    use classes\mapper\UserDAO;
+    use classes\model\User;
+
+    class RemoveUserCommand implements Command{
+        public function execute(Request $request, Response $response) {
+
+            if (isset($_SESSION['admin'])){
+                $currentUser = unserialize($_SESSION['admin']);
+            }
+            else{
+                header('location: index.php');
+            }
+            if (!($currentUser instanceof User)){
+                header('location: index.php');
+            }
+            if ($currentUser->getStatus() != "admin"){
+                header('location: index.php');
+            }
+            $userDAO = new UserDAO;
+
+            if($request->issetParameter('deleteUser')){
+                $userId = $request->getParameter('deleteUser');
+                $userDAO->deleteUser($userId);
+
+                if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                    foreach (glob(USERS_DIR . $userId . "/*.*") as $filename) {
+                        unlink($filename);
+                    }
+                    rmdir(USERS_DIR . $userId);
+                } else {
+                    shell_exec('rm -rf ' . USERS_DIR . $userId);
+                }
+            }
+
+            $listOfAllUsers = $userDAO->readAllUsersWithPages("user");
+            $multiListArray = array();
+            for($i = 0; $i < count($listOfAllUsers); $i++){
+                $multiListArray[$i][] = $listOfAllUsers[$i];
+                $multiListArray[$i][] = $userDAO->readGuestListOfUser($listOfAllUsers[$i]->getId());
+            }
+
+            $view = 'RemoveUser';
+
+            $template = new HtmlTemplateView($view);
+            $style = "default"; // provisorisch
+            $template->assign('style', $style);
+            $template->assign('userList', $multiListArray);
+            $template->render( $request, $response);
+        }
+    }
+?>
+\end{lstlisting}
+
+\subsection{Abbildungen}
 
 
 %Code Listings müssen noch eingefügt werden. Da gibt es mehrere Methoden. Muss noch schauen welche am besten ist.
-
-\begin{figure}[h]
-\caption{Klassendiagramm}
-\includegraphics[width=\textwidth]{ClassDiagram}
-\label{fig:classdiagram}
-\end{figure}
 
 \begin{figure}[h]
 \caption{Datenmodell}
@@ -263,11 +358,15 @@ Testname  & Testziel, kurz beschrieben  & Ergebnis & \makecell[l]{Maßnahmen, fa
 \end{figure}
 
 \begin{figure}[h]
+\caption{Klassendiagramm}
+\includegraphics[width=\textwidth]{ClassDiagram}
+\label{fig:classdiagram}
+\end{figure}
+
+\begin{figure}[h]
 \caption{Use Case Diagram}
 \includegraphics[width=\textwidth]{UseCaseDiagram}
 \label{fig:usecasediagram}
 \end{figure}
-
-
 
 \end{document}
