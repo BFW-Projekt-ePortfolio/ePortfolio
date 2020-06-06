@@ -1,4 +1,4 @@
-\documentclass[10pt]{scrarticle}
+\documentclass[10.5pt]{scrarticle}
 \usepackage[utf8]{inputenc}
 \usepackage[parfill]{parskip}
 \usepackage[T1]{fontenc}
@@ -41,7 +41,16 @@
 \date{\today}
 
 \begin{document}
-\lstset{frameround=fttt,numbers=left,breaklines=true, xleftmargin=0.75cm, basicstyle=\ttfamily, numberstyle=\ttfamily}
+\lstset{
+frameround=fttt,
+numbers=left,
+breaklines=true,
+xleftmargin=0.75cm,
+basicstyle=\ttfamily,
+numberstyle=\ttfamily,
+extendedchars=true,
+inputencoding=utf8
+}
 
 \maketitle
 
@@ -49,14 +58,17 @@
 %Berufsbezeichnung, Ausbilder, Ausbildungsbetrieb (mit Adresse)
 
 \vspace{\fill}
+\textbf{Prüflingsnummer:} \newline
+XXX.XXX.XXX
+
 \textbf{Ausbildungsbetrieb:}\newline
 BFW Berufsförderungswerk Hamburg \newline
 Marie-Bautz-Weg ??? \newline
 22159 Hamburg
 
 \textbf{Ausbilder:}\newline
-Petra Treubel \newline
-Dr. Olaf Kubillus
+Frau Treubel \newline
+Herr Dr. Kubillus
 
 \newpage
 
@@ -199,6 +211,8 @@ Wenn bei dem Prinzip der Objektorientierung eine strikte Trennung der Zuständig
 
 Das Klassenmodell (Abbildung \ref{fig:classdiagram}) und das Datenmodell (Abbildung \ref{fig:datenmodell}) befindet sich im Anhang auf den Seiten \pageref{fig:classdiagram} und \pageref{fig:datenmodell}.
 
+Der nach dem Login validierte Nutzer wird als Objekt der Klasse User inklusive der dazugehörigen Seiten-Liste in eine Session Variable geschrieben und dient im weiteren Verlauf der Anwendung zur Identifikation sowie zur Legitimierung. Ein weiterer Vorteil ist, dass so ein schneller und bequemer Zugriff auf die wichtigsten User-Daten jederzeit gewährleistet ist.
+
 Da ein Benutzer mehrere Seiten in seinem Portfolio haben kann, wurde hier eine 1:n Beziehung im Datenmodell genutzt.
 Da eine Seite sich aus mehreren Inhalten zusammensetzen kann, wird auch hier eine 1:n Beziehung im Datenmodell genutzt. 
 Da ein Gast keine eigenen Seiten hat, wird eine Berechtigungs-Tabelle für Seiten der Benutzer genutzt. Ein Gast kann mehrere Berechtigungen haben, aber jede Berechtigung muss eindeutig einer Person zugeordnet sein. Daher wird hier eine 1:n Beziehung im Datenmodell genutzt.
@@ -217,13 +231,154 @@ Diese Seite kann jeder Benutzer selbst verändern und gestalten, jedoch nicht l�
 
 \subsection{Realisierung}
 \subsubsection{Übersicht}
+
+Im Entwurf wurde die Entscheidung für das MVC-Muster getroffen. Das Modell ist dabei für die Geschäftslogik und die Persistenz verantwortlich, der Controller nimmt die Benutzereingaben entgegen, wertet sie aus und übergibt Ergebnisse an die entsprechende Präsentations-Schicht. Der View (Präsentation) ist für die Interaktion zum Benutzer verantwortlich. Hier werden die Eingaben des Benutzers entgegen genommen und die Darstellung der Ausgaben getätigt.
+
 \subsubsection{Programmierung der Geschäftslogik und der Datenzugriffsklassen}
+
+Die Klassen User, Page und Content werden gemäß dem Pflichtenheft umgesetzt. Zusätzlich werden Klassen konzipiert, in denen die einzelnen Anwendungsfälle wie „Seiten des Gastes anzeigen“ oder „Seiten des Users bearbeiten“entwickelt werden.
+Über die Datenzugriffsklassen UserDAO und PageDAO und ContentDAO gibt es die Möglichkeit Daten aus der Datenbank zu lesen oder in die Datenbank zu schreiben. Aus Vereinfachungsgründen ist in der unten stehenden Abbildung nur der Mapper ContentDAO angegeben. Für die Datenbankkommandos gibt es aber eine ähnliche UserDAO sowie eine PageDAO.
+
+\begin{figure}[h!]
+\caption{Geschäftslogik}
+\includegraphics[scale=0.52]{GeschäftsLogik1}
+\label{fig:GeschäftsLogik}
+\end{figure}
+
+Eine Datenbankverbindung erhalten die Datenmapper UserDAO, PageDAO und ContentDAO über das Singleton MySQLDAOFactory. Ein Singleton ist ein Entwurfsmuster, welches eine statische Eigenschaft enthält,  hier die Verbindung zur Datenbank. Auf diese Eigenschaft kann über eine statische Methode zugegriffen werden. Dabei ist wichtig, dass es nur eine Instanz/ ein Objekt dieser Klasse geben darf.
+
+So werden alle Methoden, die etwas mit der Datenbank zu tun haben, über die Eigenschaft dbConnect aufgerufen. Der Austausch zwischen den Datenzugriffsklassen und den übrigen Komponenten wird über die Standardklassen User, Page und Content gemacht. Entweder wird ein Objekt vom Typ Content übergeben, um einen neuen Inhalt (Content) anzulegen (siehe: Schreiben von neuen Datensätzen) oder es wird zum Lesen ein neues Objekt vom Typ Content angelegt und an die aufrufenden Methode zurückgegeben (siehe: Lesen von Datensätzen).
+
+\textbf{Lesen von Datensätzen:}
+
+\lstset{firstnumber=16}
+\begin{lstlisting}
+public function readContentOfPage($pageNr){
+        $contentList = array();
+        $pageNummer = "".$pageNr;
+        $sql = "SELECT content.*
+                FROM content
+                WHERE content.page = ?
+                ORDER BY content.id";
+        $preStmt = $this->dbConnect->prepare($sql);
+        $preStmt->bind_param("s", $pageNummer);
+        $preStmt->execute();
+		$preStmt->store_result();
+        $preStmt->bind_result($id, $page, $content, $description, $html_id);
+        
+        while($preStmt->fetch()){
+			$thisContent = new Content($id, $page, $description, $content, $html_id);
+
+			$contentList[] = $thisContent;
+        }
+        
+        $preStmt->free_result();
+        $preStmt->close();
+        
+        return $contentList;
+    }
+\end{lstlisting}
+
+\textbf{Schreiben von Datensätzen:}
+
+\lstset{firstnumber=103}
+\begin{lstlisting}
+public function createContentByCopy(Content $content){
+
+        $pageNummer = (int)$content->getPageNummer();
+        $contentDescription = "".$content->getContentDescription();
+        $thisContent = "".$content->getContent();
+        $html_id = "".$content->getHtml_id();
+
+        $ok = -1;
+        $sql = "INSERT INTO content (page, content, description, html_id)
+                VALUES (?,?,?,?)";
+        $preStmt = $this->dbConnect->prepare($sql);
+        $preStmt->bind_param("ssss", $pageNummer, $thisContent, $contentDescription, $html_id);
+        $preStmt->execute();
+        $ok = $preStmt->insert_id;
+        $preStmt->close();
+        unset($preStmt);
+
+        return $ok;
+    }
+\end{lstlisting}
+
 \subsubsection{Programmierung der Controllerklassen}
+
+Über das Front-Controller-Pattern (Anhang D) wird eine zentrale Stelle geschaffen, die Anfragen bearbeitet und an die betreffenden Controller-Klassen weiterleitet.  
+Die Command-Control-Schicht hat die Aufgabe eine Anforderung (Request) zu analysieren und die Anfrage mit allen Parametern an den Teil der Anwendung weiterzuleiten, der für die Verarbeitung verantwortlich ist. So erfüllt im Command-Control-Pattern jede Command-Instanz eine spezielle Aufgabe. Eine bestimmte Command-Instanz bearbeitet den Fall, dass vorhandener Content auf Seiten entfernt werden soll (RemoveContentCommand), und eine andere, wenn neuer Content erstellt werden soll (CreateContentCommand).  
+Innerhalb der Command-Instanz wird die Verarbeitung an die Businesslogik weitergeleitet, die die Daten verarbeitet, speichert und eventuell ein Ergebnis zurückliefert. Diese Ergebnisse werden als Antwort (Response) an den Browser zurückgeschickt.  
+Eingaben werden mittels Request an den Server weitergeleitet. Sämtliche Details zu den Anfragen sind in den beiden Super Globals \textit{\$\_REQUEST} und \textit{\$\_SERVER} gespeichert. Unabhängig von der verwendeten Methode werden alle Name-Werte-Paare in \textit{\$\_REQUEST} zur Verfügung gestellt. Dies ist ein assoziatives Array, welches in allen PHP-Scripten sichtbar ist. Das heißt, dass eine URL \textit{index.php?cmd=RemoveContent} innerhalb des Array \textit{\$\_REQUEST} mit \textit{\$\_REQUEST['cmd']} den Wert \textit{RemoveContent} liefert. 
+Zuerst werden die Klassen zur Speicherung der Request-Parameter geschrieben.  
+Das Interface Request definiert die Methoden:
+\begin{itemize}
+    \item public function getParameterNames();
+	\item public function issetParameter(\$name);
+	\item public function getParameter(\$name);
+	\item public function getHeader(\$name);
+\end{itemize}
+Wobei in der konkreten Klasse HttpRequest das ganze \textit{\$\_REQUEST}-Array in der Eigenschaft parameters gespeichert wird, so dass über die Methode getParameter der Wert des einzelnen Eintrags zurückgegeben wird.
+
+\lstset{firstnumber=1}
+\begin{lstlisting}
+public function getParameter(\$name){
+    if (isset(\$this->parameters[\$name])) {
+        return \$this->parameters[\$name];
+    }
+    return null;
+} 
+\end{lstlisting}
+
+Mit textit{\$cmdName = \$request->getParameter("cmd");} wird der Name des nächsten Commands ermittelt. 
+Und mit \textit{\$command = \$this->loadCommand(\$cmdName);} die entsprechende Command-Klasse geladen.
+
+Für die verschiedenen Command-Klassen wird wieder ein Interface angelegt, um sicherzustellen, dass jede Command-Klasse die gleiche Methode implementiert. Das Interface enthält nur eine Methodendefinition: 
+
+\begin{lstlisting}
+interface Command{
+    public function execute(Request $request, Response $response);
+} 
+\end{lstlisting}
+
+In jeder Command-Implementierung steht der Code, der hier ausgeführt werden soll. Der FrontController lädt die entsprechende Command-Instanz auf und führt genau diese Methode auf. 
+
+\begin{lstlisting}
+public function handleRequest(Request $request, Response $response){
+    $command = $this->resolver->getCommand($request);
+    $command->execute($request, $response);   $response->flush();
+}
+\end{lstlisting}
+
+Das Interface Response dient den Ausgaben, die dem Benutzer nach der Ausführung der entsprechenden Command-Instanz angezeigt werden sollen.  
+In der konkreten Implementierung HttpResponse werden alle Daten, die geschrieben werden an die Eigenschaft body gehängt:
+
+\begin{lstlisting}
+public function write($data){
+    $this->body .= $data;
+} 
+\end{lstlisting}
+
+So können innerhalb der Command-Instanzen die Ausgaben mit response->write("   ") getätigt werden. 
+Für die Antwort an den Client dient die Methode flush, die alle Inhalte überträgt und die Variablen wieder leert:
+
+\begin{lstlisting}
+public function flush(){
+    header("HTTP/1.0 " . $this->status);
+    foreach ($this->headers as $name => $value){
+        header($name . ":" . $value);
+    }
+    print $this->body;
+    $this->headers = array();
+    $this->data = null;
+}
+\end{lstlisting}
+
 \subsubsection{Programmierung der Viewklassen}
 
 \paragraph{Darstellung der Dateien}
 
-Um den unberechtigten Zugriff zu verhindern, werden die Dateien außerhalb des Webroots gespeichert. Damit der Pfad über den Browser nicht ersichtlich ist, wird die Datei in einen base64-String umgewandelt und als URI in den HTML-Code eingefügt. Abhängig vom MIME-Type werden die Dateien unterschiedlich dargestellt:
+Die Seiten und Inhalte eines Benutzers bzw. die ein Gast einsehen darf werden als Arrays im jeweiligen Objekt abgelegt. Diese werden mit \textit{foreach} verarbeitet und abhängig von MIME-Type unterschiedlich dargestellt:
 
 \FloatBarrier
 \begin{table}[ht!]
@@ -236,6 +391,10 @@ Alle weiteren & Downloadlink
 \end{tabular}
 \end{table}
 \FloatBarrier
+
+Um den unberechtigten Zugriff zu verhindern, werden die Dateien au{\ss}erhalb des Webroots gespeichert. Damit der Pfad über den Browser nicht ersichtlich ist, wird die Datei in einen base64-String umgewandelt und als URI in den HTML-Code eingefügt.
+
+Als Beispiel befindet sich der Code der UserHome View im Anhang (Listing \ref{lst:UserHome}, Seite \pageref{lst:UserHome})
 
 \subsubsection{Dateiverwaltung}
 
@@ -282,25 +441,117 @@ Als Beispiel befindet sich der vollständige Code zur Accountlöschung durch den
 \subsection{Tests}
 
 \begin{table}[ht!]
-\begin{tabularx}{\textwidth}{l | l | l | l}
+\begin{tabularx}{\textwidth}{l | l}
 
-\textbf{Test}  & \textbf{Ziel}  & \textbf{Ergebnis} & \textbf{Maßnahmen}\\
+\textbf{Test}  & \textbf{Ergebnis}\\
 \hline
-Gast  & Testziel, kurz beschrieben  & Ergebnis & \makecell[l]{Maßnahmen, falls der Test nicht ausgefallen ist wie \\ erwartet}\\
+Selber Gast von zwei Benutzern  & Der Gast kann sich mit zwei verschiedenen Passwörtern anmelden\\
+s. o. mit gleichem Passwort & Gast kann sich die Portfolios aussuchen, die er sehen will\\
+Anmeldung ohne Validierung & nicht möglich, Gast muss seine Adresse erst validieren\\
 
 \end{tabularx}
 \end{table}
 
 \section{Soll-/Ist-Vergleich}
+
+Folgende Musskriterien wurden implementiert:
+
+\begin{itemize}
+	\item Neuanlegen, bearbeiten und löschen von Benutzern durch den Admin
+	\item Jeder Benutzer hat eine Seite, die nur er bearbeiten kann
+	\item Anlegen, bearbeiten und löschen von Texten und Links
+	\item Upload von Dateien (Bilder, Dokumente)
+	\item nur registrierte Gäste mit validierter Adresse können die Portfolios einsehen.
+\end{itemize}
+
+Folgende Wunschkriterien wurden implementiert:
+
+\begin{itemize}
+	\item Gäste können nur für sie freigegebene Portfolios einsehen
+\end{itemize}
+
+Es konnten alle Kriterien implementiert werden. Der Code ist erweiterbar und lässt weitere Implementierungen zu, wenn der Kunde dies wünscht.
+
 \section{Fazit}
 
 Die Entwicklung des ePortfolios ermöglicht einen ersten Einblick in den Aufbau und Struktur von Social Media Seiten. Einer der wichtigsten Aspekte bei der Entwicklung stellt die Sicherheit dar und die jeweiligen Tests um diese zu erhöhen. Bei der Entwicklung ist uns aufgefallen, dass man sehr viele Optionen implementieren kann um den User größtmögliche Individualität zu ermöglichen. Auch beim Design gibt es sehr viel Spielraum, der ein erfahrener Webdesign nutzen kann um den Benutzer ein optisch ansprechendes Portfolio zu bieten, mit welchem er sich bei Kunden und potenziellen Arbeitgeber präsentieren kann.
 
+\newpage
 \section{Anhang}
-
 \subsection{Code Listings}
 
 \lstset{firstnumber=1, basicstyle=\footnotesize}
+
+\begin{lstlisting}[caption={UserHome.php}, label={lst:UserHome}]
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link href="./css/<?= $this->style ?>.css" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" type="image/x-icon" href="./favicon_96x96.png" size="48x48">
+    </head>
+    <body>
+        <div id="header">
+            Das ePortfolio von <?= $this->displayname ?>!
+        </div>
+        <ul>
+            <?php 
+                $indexOfPageList = 0;
+                foreach($this->pageList as $page) {
+                     echo '<li><a href="./index.php?cmd=UserHome&page='.$indexOfPageList.'">'. $page->getTitle() ."</a></li>"; 
+                     $indexOfPageList++;
+                }
+            ?>
+            <li><a href="./index.php?cmd=AddPage">±</a></li>
+            <li style="float: right"><a href="index.php?cmd=Logout">Logout</a></li>
+            <li style="float: right"><a href="./index.php?cmd=UserSettings">Einstellungen</a></li>
+        </ul>
+        <div id="main">
+
+            <h2><?= $this->requestedTitle ?></h2>
+            <?= $this->alert ?>
+            <?= $this->editLink ?><br>
+            <?= $this->addContentLink ?>
+
+            <?php
+
+                $output = "";
+                foreach($this->requestedContent as $content) {
+
+                    if(!$content->getContent() == null) {
+                        $file = $this->filepath . $content->getContent();
+
+                        if(file_exists($file)) {
+
+                            $mimeType = mime_content_type($file);
+
+                            $tmp = base64_encode(file_get_contents($file));
+
+                            if(!strstr($mimeType, "image") == false) {
+                                $output = '<a href="data:'.$mimeType.';base64,'.$tmp.'" target="_blank"><img src="data:'.$mimeType.';base64,'.$tmp.'"></a><br><br>';
+                            } else if(!strstr($mimeType, "audio") == false) {
+                                $output = '<audio controls><source src="data:'.$mimeType.';base64,'.$tmp.'" type="'.$mimeType.'">Der Browser unterstütz das Format '.$mimeType.' nicht!</audio><br><br>';
+                            } else if(!strstr($mimeType, "video") == false) {
+                                $output = '<video controls><source src="data:'.$mimeType.';base64,'.$tmp.'" type="'.$mimeType.'">Der Browser unterstütz das Format '.$mimeType.' nicht!</video><br><br>';
+                            } else {
+                                $output = '<a href="data:'.$mimeType.';base64,'.$tmp.'" target="_blank">'. $content->getContent() .'</a><br><br>';
+                            }
+                        }
+                    } else {
+                        $output = "";
+                    }
+                    echo "<div id='content'>" . $output . $content->getContentDescription() . "<br></div>";
+                }
+            ?>
+        </div>
+        <footer>&copy; 2020 M. Mandler & D. Zielke</footer>
+    </body>
+</html>
+\end{lstlisting}
+
+
 \begin{lstlisting}[caption={RemoveUserCommand.php}, label={lst:RemoveUserCommand}]
 <?php
     namespace classes\commands;
@@ -316,19 +567,19 @@ Die Entwicklung des ePortfolios ermöglicht einen ersten Einblick in den Aufbau 
 
             if (isset($_SESSION['admin'])){
                 $currentUser = unserialize($_SESSION['admin']);
-            }
-            else{
+            } else {
                 header('location: index.php');
-            }
+            }             
             if (!($currentUser instanceof User)){
                 header('location: index.php');
-            }
+            }            
             if ($currentUser->getStatus() != "admin"){
                 header('location: index.php');
             }
+            
             $userDAO = new UserDAO;
 
-            if($request->issetParameter('deleteUser')){
+            if($request->issetParameter('deleteUser')) {
                 $userId = $request->getParameter('deleteUser');
                 $userDAO->deleteUser($userId);
 
@@ -350,7 +601,6 @@ Die Entwicklung des ePortfolios ermöglicht einen ersten Einblick in den Aufbau 
             }
 
             $view = 'RemoveUser';
-
             $template = new HtmlTemplateView($view);
             $style = "default"; // provisorisch
             $template->assign('style', $style);
@@ -361,24 +611,22 @@ Die Entwicklung des ePortfolios ermöglicht einen ersten Einblick in den Aufbau 
 ?>
 \end{lstlisting}
 
+\newpage
 \subsection{Abbildungen}
 
-
-%Code Listings müssen noch eingefügt werden. Da gibt es mehrere Methoden. Muss noch schauen welche am besten ist.
-
-\begin{figure}[h]
+\begin{figure}[h!]
 \caption{Datenmodell}
 \includegraphics[width=\textwidth]{DatenmodellEPortfolio}
 \label{fig:datenmodell}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[h!]
 \caption{Klassendiagramm}
-\includegraphics[width=\textwidth]{ClassDiagram}
+\includegraphics[scale=0.35]{ClassDiagram}
 \label{fig:classdiagram}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[h!]
 \caption{Use Case Diagram}
 \includegraphics[width=\textwidth]{UseCaseDiagram}
 \label{fig:usecasediagram}
