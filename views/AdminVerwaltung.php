@@ -1,13 +1,20 @@
 <?php
     $outputString = "";
-    foreach($this->userList as $user){
-
-        $outputString .= "<div>";
-        $outputString .= "<strong>".$user->getEmail()."</strong> löschen?";
-        $outputString .= '<form action="?cmd=AdminVerwaltung" method="post"><button type="submit" value="'. $user->getId() .'" name="deleteAdmin">löschen!</button></form>';
-        $outputString .= '<br>';
-        $outputString .= "</div>";    
+    if(count($this->userList) == 1){
+        $outputString .= "Es gibt momentan nur einen Administrator!<br>";
+        $outputString .= "<strong>".$this->userList[0]->getEmail()."</strong> kann nicht gelöscht werden! (letzter seiner Art)";
     }
+    else{
+        foreach($this->userList as $user){
+
+            $outputString .= "<div>";
+            $outputString .= "<strong>".$user->getEmail()."</strong> löschen?";
+            $outputString .= '<form action="?cmd=AdminVerwaltung" method="post"><button type="submit" value="'. $user->getId() .'" name="deleteAdmin">löschen!</button></form>';
+            $outputString .= '<br>';
+            $outputString .= "</div>";    
+        }
+    }
+
 ?>
 
 <!DOCTYPE html>
