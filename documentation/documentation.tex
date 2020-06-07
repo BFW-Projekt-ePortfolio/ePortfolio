@@ -85,8 +85,8 @@ Die IT-Solutions \& Design hat vom BFW Hamburg den Auftrag erhalten diese Webanw
 \section{Projektdefinition}
 \subsection{Ist-Analyse}
 
-Die Teilnehmer*innen des BFW müssen sich während ihrer Ausbildung auf einen Praktikums- und einen Arbeitsplatz bewerben. Viele Bewerbungen werden dabei per E-Mail versendet. Um eine E-Mail nicht zu groß werden zu lassen, werden dabei manchmal Arbeitsergebnisse, Zertifikate o. ä. nicht mit gesendet. Das könnte den Gesamteindruck im Bewerbungsprozess verschlechtern.  
- Außerdem müssen die Teilnehmer*innen entscheiden, auf welche Unterlagen, Arbeitsproben und Bilder sie verzichten wollen.
+Die Teilnehmer*innen des BFW müssen sich während ihrer Ausbildung auf einen Praktikums- und einen Arbeitsplatz bewerben. Viele Bewerbungen werden dabei per E-Mail versendet. Um eine E-Mail nicht zu gro{\ss} werden zu lassen, werden dabei manchmal Arbeitsergebnisse, Zertifikate o. ä. nicht mit gesendet. Das könnte den Gesamteindruck im Bewerbungsprozess verschlechtern.  
+ Au{\ss}erdem müssen die Teilnehmer*innen entscheiden, auf welche Unterlagen, Arbeitsproben und Bilder sie verzichten wollen.
  
 \subsection{Anforderungsdefinition (Soll-Konzept}
 
@@ -112,7 +112,7 @@ Wie im Pflichtenheft angegeben (siehe Anhang) sollen folgende Anforderungen erf�
 \paragraph{iii. Abgrenzungskriterien}
 
 \begin{itemize}
-\item Keine Überprüfung auf Verletzung von Urheberrechten oder Verstöße gegen das    Datenschutzgesetz
+\item Keine Überprüfung auf Verletzung von Urheberrechten oder Verstö{\ss}e gegen das    Datenschutzgesetz
 \end{itemize}
 
 
@@ -205,7 +205,7 @@ Ein weiterer Schwerpunkt ist die Sicherheit der Daten eines jeden Benutzers. Wir
 
 Wenn bei dem Prinzip der Objektorientierung eine strikte Trennung der Zuständigkeiten von Klassen und Methoden beachtet wird, ist die Wartbarkeit des Codes einfacher. Hier ist ein einfaches MVCModell geplant, bei welchem die Model-Klassen die Geschäftslogik implementieren, die View-Klassen die Ein- und Ausgaben darstellen und die Controller-Klassen für die Verbindung dazwischen eingesetzt werden sollen. 
 
- Für jeden Anwendungsfall soll es mindestens eine Controller-Klasse geben, die über den Frontcontroller aufgerufen wird. Außerdem soll es Klassen geben, die für die Schnittstelle der ankommenden HTTP-Anfragen zuständig sind (Request) und Klassen, die für die Antwort benutzt werden (Response). Neben den reinen Modelklassen wird geplant, Datenzugriffsklassen zu implementieren, die für die Datenbankzugriffe (CRUD) verwendet werden sollen. Durch die Verwendung eines DAO-Interfaces könnte man schnell die Datenzugriffsklassen für andere Datenbanksysteme erweitert werden. Aus Zeitgründen wurde aber hierauf verzichtet. 
+ Für jeden Anwendungsfall soll es mindestens eine Controller-Klasse geben, die über den Frontcontroller aufgerufen wird. Au{\ss}erdem soll es Klassen geben, die für die Schnittstelle der ankommenden HTTP-Anfragen zuständig sind (Request) und Klassen, die für die Antwort benutzt werden (Response). Neben den reinen Modelklassen wird geplant, Datenzugriffsklassen zu implementieren, die für die Datenbankzugriffe (CRUD) verwendet werden sollen. Durch die Verwendung eines DAO-Interfaces könnte man schnell die Datenzugriffsklassen für andere Datenbanksysteme erweitert werden. Aus Zeitgründen wurde aber hierauf verzichtet. 
 
 \subsection{Daten- und Klassenentwurf}
 
@@ -227,7 +227,7 @@ Jede dieser Seiten enthält zudem eine Liste von Inhalten, welche jeweils Datein
 Die Liste an Seiten eines jeden Users wird anhand der Berechtigungstabelle der Datenbank initialisiert. Bei einem Admin wird diese Liste also leer sein.
 
 Damit für einen existierenden Gast oder Benutzer immer mindestens eine Seite mit Inhalt existiert, die nach dem Login angezeigt werden kann, entscheiden wir uns für eine Standard „Home“ Seite.
-Diese Seite kann jeder Benutzer selbst verändern und gestalten, jedoch nicht löschen. Diese Seite wird außerdem all seinen Gästen zur Begrüßung angezeigt, sprich die Berechtigungen werden automatisch jedem Gast gewährt und können nicht entzogen werden.
+Diese Seite kann jeder Benutzer selbst verändern und gestalten, jedoch nicht löschen. Diese Seite wird au{\ss}erdem all seinen Gästen zur Begrü{\ss}ung angezeigt, sprich die Berechtigungen werden automatisch jedem Gast gewährt und können nicht entzogen werden.
 
 \subsection{Realisierung}
 \subsubsection{Übersicht}
@@ -236,7 +236,7 @@ Im Entwurf wurde die Entscheidung für das MVC-Muster getroffen. Das Modell ist 
 
 \subsubsection{Programmierung der Geschäftslogik und der Datenzugriffsklassen}
 
-Die Klassen User, Page und Content werden gemäß dem Pflichtenheft umgesetzt. Zusätzlich werden Klassen konzipiert, in denen die einzelnen Anwendungsfälle wie „Seiten des Gastes anzeigen“ oder „Seiten des Users bearbeiten“entwickelt werden.
+Die Klassen User, Page und Content werden gemä{\ss} dem Pflichtenheft umgesetzt. Zusätzlich werden Klassen konzipiert, in denen die einzelnen Anwendungsfälle wie „Seiten des Gastes anzeigen“ oder „Seiten des Users bearbeiten“entwickelt werden.
 Über die Datenzugriffsklassen UserDAO und PageDAO und ContentDAO gibt es die Möglichkeit Daten aus der Datenbank zu lesen oder in die Datenbank zu schreiben. Aus Vereinfachungsgründen ist in der unten stehenden Abbildung nur der Mapper ContentDAO angegeben. Für die Datenbankkommandos gibt es aber eine ähnliche UserDAO sowie eine PageDAO.
 
 \begin{figure}[h!]
@@ -309,7 +309,7 @@ public function createContentByCopy(Content $content){
 Über das Front-Controller-Pattern (Anhang D) wird eine zentrale Stelle geschaffen, die Anfragen bearbeitet und an die betreffenden Controller-Klassen weiterleitet.  
 Die Command-Control-Schicht hat die Aufgabe eine Anforderung (Request) zu analysieren und die Anfrage mit allen Parametern an den Teil der Anwendung weiterzuleiten, der für die Verarbeitung verantwortlich ist. So erfüllt im Command-Control-Pattern jede Command-Instanz eine spezielle Aufgabe. Eine bestimmte Command-Instanz bearbeitet den Fall, dass vorhandener Content auf Seiten entfernt werden soll (RemoveContentCommand), und eine andere, wenn neuer Content erstellt werden soll (CreateContentCommand).  
 Innerhalb der Command-Instanz wird die Verarbeitung an die Businesslogik weitergeleitet, die die Daten verarbeitet, speichert und eventuell ein Ergebnis zurückliefert. Diese Ergebnisse werden als Antwort (Response) an den Browser zurückgeschickt.  
-Eingaben werden mittels Request an den Server weitergeleitet. Sämtliche Details zu den Anfragen sind in den beiden Super Globals \textit{\$\_REQUEST} und \textit{\$\_SERVER} gespeichert. Unabhängig von der verwendeten Methode werden alle Name-Werte-Paare in \textit{\$\_REQUEST} zur Verfügung gestellt. Dies ist ein assoziatives Array, welches in allen PHP-Scripten sichtbar ist. Das heißt, dass eine URL \textit{index.php?cmd=RemoveContent} innerhalb des Array \textit{\$\_REQUEST} mit \textit{\$\_REQUEST['cmd']} den Wert \textit{RemoveContent} liefert. 
+Eingaben werden mittels Request an den Server weitergeleitet. Sämtliche Details zu den Anfragen sind in den beiden Super Globals \textit{\$\_REQUEST} und \textit{\$\_SERVER} gespeichert. Unabhängig von der verwendeten Methode werden alle Name-Werte-Paare in \textit{\$\_REQUEST} zur Verfügung gestellt. Dies ist ein assoziatives Array, welches in allen PHP-Scripten sichtbar ist. Das hei{\ss}t, dass eine URL \textit{index.php?cmd=RemoveContent} innerhalb des Array \textit{\$\_REQUEST} mit \textit{\$\_REQUEST['cmd']} den Wert \textit{RemoveContent} liefert. 
 Zuerst werden die Klassen zur Speicherung der Request-Parameter geschrieben.  
 Das Interface Request definiert die Methoden:
 \begin{itemize}
@@ -322,9 +322,9 @@ Wobei in der konkreten Klasse HttpRequest das ganze \textit{\$\_REQUEST}-Array i
 
 \lstset{firstnumber=1}
 \begin{lstlisting}
-public function getParameter(\$name){
-    if (isset(\$this->parameters[\$name])) {
-        return \$this->parameters[\$name];
+public function getParameter($name){
+    if (isset($this->parameters[$name])) {
+        return $this->parameters[$name];
     }
     return null;
 } 
@@ -404,7 +404,7 @@ Beim Upload von Dateien durch den Benutzer wird zunächst geprüft, ob es sich a
 
 \paragraph{Benutzerordner}
 
-Jeder Bentuzer erhält beim Anlegen einen eigenen Ordner, der nach seiner ID benannt wird. In diesem werden seine Uploads gespeichert. Aus Sicherheitsgründen befindet sich der Benutzerordner außerhalb des Webroots um einen ungewollten Zugriff von Außen zu verhindern.
+Jeder Bentuzer erhält beim Anlegen einen eigenen Ordner, der nach seiner ID benannt wird. In diesem werden seine Uploads gespeichert. Aus Sicherheitsgründen befindet sich der Benutzerordner au{\ss}erhalb des Webroots um einen ungewollten Zugriff von Au{\ss}en zu verhindern.
 
 \begin{infobox}[Alternative:]
 Es kann auch in den Tabellen \textit{user}, \textit{content} und \textit{page} jeweils eine weitere Spalte hinzugefügt werden mit einer zufälligen Folge aus Buchstaben und Zahlen, die eine externe ID darstellen sollen. Dies erhöht nochmals die Sicherheit, da manche Daten über GET in der URL übermittelt werden.
@@ -423,7 +423,7 @@ if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 \end{lstlisting}
 
 \paragraph{Verhalten bei Accountlöschung}
-Möchte der Benutzer seinen Account vollständig löschen, so werden alle seine Dateien sowie sein Benutzerordner vom System gelöscht. Um dies sicherzustellen wird auch hier zuerst das Betriebssystem ermittelt. Bei Windows wird zunächst jede Datei einzeln gelöscht um anschließend den Ordner zu entfernen. Bei Linux Systemen sowie BSD und anderen unixoiden System kann der Ordner samt Inhalt mit einem an die Shell übergebenem Befehl gelöscht werden:
+Möchte der Benutzer seinen Account vollständig löschen, so werden alle seine Dateien sowie sein Benutzerordner vom System gelöscht. Um dies sicherzustellen wird auch hier zuerst das Betriebssystem ermittelt. Bei Windows wird zunächst jede Datei einzeln gelöscht um anschlie{\ss}end den Ordner zu entfernen. Bei Linux Systemen sowie BSD und anderen unixoiden System kann der Ordner samt Inhalt mit einem an die Shell übergebenem Befehl gelöscht werden:
 
 \lstset{firstnumber=31}
 \begin{lstlisting}
@@ -474,7 +474,7 @@ Es konnten alle Kriterien implementiert werden. Der Code ist erweiterbar und lä
 
 \section{Fazit}
 
-Die Entwicklung des ePortfolios ermöglicht einen ersten Einblick in den Aufbau und Struktur von Social Media Seiten. Einer der wichtigsten Aspekte bei der Entwicklung stellt die Sicherheit dar und die jeweiligen Tests um diese zu erhöhen. Bei der Entwicklung ist uns aufgefallen, dass man sehr viele Optionen implementieren kann um den User größtmögliche Individualität zu ermöglichen. Auch beim Design gibt es sehr viel Spielraum, der ein erfahrener Webdesign nutzen kann um den Benutzer ein optisch ansprechendes Portfolio zu bieten, mit welchem er sich bei Kunden und potenziellen Arbeitgeber präsentieren kann.
+Die Entwicklung des ePortfolios ermöglicht einen ersten Einblick in den Aufbau und Struktur von Social Media Seiten. Einer der wichtigsten Aspekte bei der Entwicklung stellt die Sicherheit dar und die jeweiligen Tests um diese zu erhöhen. Bei der Entwicklung ist uns aufgefallen, dass man sehr viele Optionen implementieren kann um den User grö{\ss}tmögliche Individualität zu ermöglichen. Auch beim Design gibt es sehr viel Spielraum, der ein erfahrener Webdesign nutzen kann um den Benutzer ein optisch ansprechendes Portfolio zu bieten, mit welchem er sich bei Kunden und potenziellen Arbeitgeber präsentieren kann.
 
 \newpage
 \section{Anhang}
