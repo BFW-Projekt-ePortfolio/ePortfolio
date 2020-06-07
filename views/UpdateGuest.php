@@ -29,39 +29,39 @@
         <div id="main">
             <br>
             <?= $this->allertText ?><?= $this->successText ?>
-                <div style="display: flex; justify-content: center">
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <form method="POST" action="#">
                     <table>
                     <caption>Hier können Sie Ihre Daten ändern:</caption>
                         <tr>
-                            <form method="POST" action="#">
                                 <td>Vorname:</td>
                                 <td><input type="text" name="firstname" value="<?= $this->user->getFirstname() ?>"></td>
-                                <td><input type="submit" name="firstnameChange" value="ändern!"></td>
-                            </form>
                         </tr>
                         <tr>
-                            <form method="POST" action="#">
                                 <td>Nachname:</td>
                                 <td><input type="text" name="lastname" value="<?= $this->user->getLastname() ?>"></td>
-                                <td><input type="submit" name="lastnameChange" value="ändern!"></td>
-                            </form>
                         </tr>
                         <tr>
-                            <form method="POST" action="#">
                                 <td>E-Mail:</td>
-                                <td><input type="text" name="email" value="<?= $this->user->getEmail() ?>"></td>
-                                <td><input type="submit" name="emailChange" value="ändern!"></td>
-                            </form>
+                                <td><input type="text" name="email" value="<?= $this->user->getEmail() ?>"></td>       
                         </tr>
+                    </table>
+                    <input style="float: right" type="submit" name="userDataChange" value="ändern!">
+                    </form>
+
+                    <p></p>
+
+                    <form method="POST" action="#">
+                    <table>
+                    <caption>Hier können Sie Ihr Passwort ändern:</caption>
                         <tr>
-                            <form method="POST" action="#">
                                 <td>Passwort:<br>Passwort wiederholen:</td>
                                 <td><input type="password" name="password"><br>
                                 <input type="password" name="pwRepeat"></td>
-                                <td><input type="submit" name="pwChange" value="ändern!"></td>
-                            </form>
                         </tr>
                     </table>
+                    <input style="float: right" type="submit" name="pwChange" value="ändern!">
+                    </form>
                 </div>
                 <br><br>
         </div>
