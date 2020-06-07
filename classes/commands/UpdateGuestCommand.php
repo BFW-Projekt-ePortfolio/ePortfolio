@@ -32,7 +32,7 @@
             $allertText = "";
             $successText = "";
             $changedSomething = false;
-            if($request->issetParameter('firstnameChange')){
+            if($request->issetParameter('userDataChange')){
                 $requestedFirstname = $request->getParameter('firstname');
                 if($requestedFirstname != ""){
                     if($currentUser->getFirstname() != $requestedFirstname){
@@ -46,7 +46,7 @@
                     $allertText .= '<p style="Color: red; text-align: center">Sie müssen einen Vornamen für Ihr Portfolio angeben!</p>';
                 }
             }
-            if($request->issetParameter('lastnameChange')){
+            if($request->issetParameter('userDataChange')){
                 $requestedLastname = $request->getParameter('lastname');
                 if($requestedLastname != ""){
                     if($currentUser->getLastname() != $requestedLastname){
@@ -60,7 +60,7 @@
                     $allertText .= '<p style="Color: red; text-align: center">Sie müssen einen Nachnamen füt Ihr Portfolio angeben!</p>';
                 }
             }
-            if($request->issetParameter('emailChange')){
+            if($request->issetParameter('userDataChange')){
                 $requestedEmail = $request->getParameter('email');
                 if($requestedEmail != ""){
                     if($userDAO->exist($requestedEmail)){
